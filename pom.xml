@@ -60,14 +60,14 @@
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>6.1.4</version>
-				<configuration>
-					<url>jdbc:postgresql://localhost:5432/diplom</url>
-					<user>postgres</user>
-					<password>1111</password>
-					<schemas>
-						<schema>new</schema>
-					</schemas>
-				</configuration>
+<!--				<configuration>-->
+<!--					<url>jdbc:postgresql://localhost:5432/diplom</url>-->
+<!--					<user>postgres</user>-->
+<!--					<password>1111</password>-->
+<!--					<schemas>-->
+<!--						<schema>new</schema>-->
+<!--					</schemas>-->
+<!--				</configuration>-->
 				<dependencies>
 					<dependency>
 						<groupId>com.h2database</groupId>
