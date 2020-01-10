@@ -1,7 +1,7 @@
 CREATE TABLE new.users
 (
 id SERIAL PRIMARY KEY,
-is_moderator SMALLINT NOT NULL,
+is_moderator boolean NOT NULL DEFAULT false,
 reg_time TIMESTAMP NOT NULL,
 name VARCHAR(255) NOT NULL,
 email VARCHAR(255) NOT NULL,
@@ -15,9 +15,9 @@ CREATE TYPE e_moderation_status AS ENUM ('NEW', 'ACCEPTED', 'DECLINED');
 CREATE TABLE new.posts
 (
 id SERIAL PRIMARY KEY,
-is_active SMALLINT NOT NULL,
+is_active boolean NOT NULL DEFAULT true,
 moderation_status e_moderation_status NOT NULL DEFAULT 'NEW',
-moderator_id SMALLINT,
+moderator_id INT,
 user_id INT NOT NULL REFERENCES users (id),
 time TIMESTAMP NOT NULL,
 title VARCHAR(255) NOT NULL,
