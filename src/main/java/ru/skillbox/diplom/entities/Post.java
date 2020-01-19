@@ -14,7 +14,8 @@ public class Post {
     private boolean isActive;
 
     @Column(name = "moderation_status")
-    private String eModerationStatus;
+    @Enumerated(EnumType.STRING)
+    private EModerationStatus eModerationStatus;
 
     @Column(name = "moderator_id")
     private int moderatorId;
@@ -23,8 +24,8 @@ public class Post {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private Date time;
-
+    //    private Date time;
+    private long time;
     private String title;
 
     private String text;
@@ -39,24 +40,12 @@ public class Post {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public boolean isActive() {
         return isActive;
     }
 
     public void setActive(boolean active) {
         isActive = active;
-    }
-
-    public String geteModerationStatus() {
-        return eModerationStatus;
-    }
-
-    public void seteModerationStatus(String eModerationStatus) {
-        this.eModerationStatus = eModerationStatus;
     }
 
     public int getModeratorId() {
@@ -73,14 +62,6 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
     }
 
     public String getTitle() {
@@ -105,5 +86,21 @@ public class Post {
 
     public void setViewCount(int viewCount) {
         this.viewCount = viewCount;
+    }
+
+    public EModerationStatus geteModerationStatus() {
+        return eModerationStatus;
+    }
+
+    public void seteModerationStatus(EModerationStatus eModerationStatus) {
+        this.eModerationStatus = eModerationStatus;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

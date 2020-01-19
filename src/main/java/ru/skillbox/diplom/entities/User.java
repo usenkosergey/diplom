@@ -14,7 +14,8 @@ public class User {
     private boolean isModerator;
 
     @Column(name = "reg_time")
-    private Date regTime;
+//    private Date regTime;
+    private long regTime;
 
     private String name;
 
@@ -23,6 +24,8 @@ public class User {
     private String password;
 
     private String code;
+
+    private String photo;
 
     public User() {
     }
@@ -41,14 +44,6 @@ public class User {
 
     public void setModerator(Boolean moderator) {
         isModerator = moderator;
-    }
-
-    public Date getRegTime() {
-        return regTime;
-    }
-
-    public void setRegTime(Date regTime) {
-        this.regTime = regTime;
     }
 
     public String getName() {
@@ -91,5 +86,19 @@ public class User {
         this.photo = photo;
     }
 
-    private String photo;
+    public boolean isModerator() {
+        return isModerator;
+    }
+
+    public void setModerator(boolean moderator) {
+        isModerator = moderator;
+    }
+
+    public long getRegTime() {
+        return regTime;
+    }
+
+    public void setRegTime(long regTime) {
+        this.regTime = regTime;
+    }
 }
