@@ -11,13 +11,15 @@ import ru.skillbox.diplom.repositories.VotesRepositori;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 public class PostDAO {
     private int postId;
-    private LocalDate time;
+    private String time;
     private User user;
     private String title;
     private String text;
@@ -39,7 +41,8 @@ public class PostDAO {
     public PostDAO(int postId) {
         Optional<Post> currentPost = postRepositori.findById(postId);
         this.postId = postId;
-        this.time = Instant.ofEpochMilli(currentPost.get().getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+        this.time = Instant.ofEpochMilli(currentPost.get().getTime()).atZone(ZoneId.systemDefault())
+                .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm"));
         this.user = currentPost.get().getUser();
         this.title = currentPost.get().getTitle();
         this.text = currentPost.get().getText();
