@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.diplom.Mapper.PostMapper;
 import ru.skillbox.diplom.api.responses.PostResponse;
+import ru.skillbox.diplom.entities.Tag;
 import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.TagsRepositori;
 import ru.skillbox.diplom.repositories.UserRepositori;
@@ -29,6 +30,6 @@ public class ApiPostController {
 //        if (!votesService.addVote(1, (byte) -1))
 //            votesService.addVote(1, (byte) -1);
 
-        return PostMapper.getPostResponse(postRepositori.findById(id).get());
+        return PostMapper.getPostResponse(postRepositori.findById(id).get()); //TODO проверку на существование сделать
     }
 }
