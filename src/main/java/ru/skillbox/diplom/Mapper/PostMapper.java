@@ -1,0 +1,36 @@
+package ru.skillbox.diplom.Mapper;
+
+import ru.skillbox.diplom.api.responses.PostResponse;
+import ru.skillbox.diplom.entities.Post;
+import ru.skillbox.diplom.entities.Tag;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
+public class PostMapper {
+
+    public static PostResponse getPostResponse(Post post) {
+        PostResponse postResponse = new PostResponse();
+        ArrayList<String> tempTag = new ArrayList<>();
+        postResponse.setId(post.getId());
+        postResponse.setText(post.getText());
+        postResponse.setTime(Instant.ofEpochMilli(post.getTime()).atZone(ZoneId.systemDefault())
+                .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm")));
+        postResponse.setUser(UserIdNameMapper.getUser(post));
+        postResponse.setAnnounce("анннноонс");//TODO RUKAMI
+        postResponse.setTitle(post.getTitle());
+        postResponse.setViewCount(5);//TODO RUKAMI
+        postResponse.setLikeCount(10);//TODO RUKAMI
+        postResponse.setDislikeCount(2);//TODO RUKAMI
+        for (Tag tag : post.getTags()) {
+            tempTag.add(tag.getText());
+        }
+        postResponse.setTags(tempTag);
+
+
+
+        return postResponse;
+    }
+}

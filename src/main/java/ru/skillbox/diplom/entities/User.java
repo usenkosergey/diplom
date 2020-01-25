@@ -1,7 +1,6 @@
 package ru.skillbox.diplom.entities;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "users")
@@ -14,7 +13,7 @@ public class User {
     private boolean isModerator;
 
     @Column(name = "reg_time")
-//    private Date regTime;
+
     private long regTime;
 
     private String name;
@@ -28,6 +27,10 @@ public class User {
     private String photo;
 
     public User() {
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Integer getId() {

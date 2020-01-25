@@ -23,19 +23,19 @@ public class PostService {
 
 
     public boolean addPost() {
-        User userEntiti = userRepositori.getOne(1);
-
-        Post newPost = new Post();
-        newPost.setActive(true);
-        newPost.seteModerationStatus(EModerationStatus.NEW);
-        newPost.setModeratorId(1);
-        newPost.setUser(userEntiti);
-        newPost.setTime(System.currentTimeMillis());
-        newPost.setTitle("wewqewqe");
-        newPost.setText("yyyyyyyyyyyyyyyyy");
-        newPost.setViewCount(0);
-
-        postRepositori.save(newPost);
-        return true;
+//        User userEntiti = userRepositori.getOne(1);
+//
+//        Post newPost = new Post();
+//        newPost.setActive(true);
+//        newPost.seteModerationStatus(EModerationStatus.NEW);
+//        newPost.setModeratorId(1);
+//        newPost.setUser(userEntiti);
+//        newPost.setTime(System.currentTimeMillis());
+//        newPost.setTitle("wewqewqe");
+//        newPost.setText("yyyyyyyyyyyyyyyyy");
+//        newPost.setViewCount(0);
+//
+//        postRepositori.save(newPost);
+        return true; //TODO нужно переделать
     }
 }

@@ -16,14 +16,14 @@ public class UserService {
     private UserRepositori userRepositori;
 
     public boolean addNewUser() {
-        User newUser = new User();
-        newUser.setModerator(true);
-        newUser.setName("Sergey");
-        newUser.setEmail("www@sss.ru");
-        newUser.setPassword("10000");
-        newUser.setRegTime(System.currentTimeMillis());
-        userRepositori.save(newUser);
+//        User newUser = new User();
+//        newUser.setModerator(true);
+//        newUser.setName("Sergey");
+//        newUser.setEmail("www@sss.ru");
+//        newUser.setPassword("10000");
+//        newUser.setRegTime(System.currentTimeMillis());
+//        userRepositori.save(newUser);
 
-        return true;
+        return true; //TODO нужно переделать
     }
 }
