@@ -6,6 +6,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.skillbox.diplom.entities.Tag;
 
+import java.util.Optional;
+
 @Repository
 public interface TagsRepositori extends JpaRepository<Tag, Integer> {
 
@@ -18,4 +20,6 @@ public interface TagsRepositori extends JpaRepository<Tag, Integer> {
 From new.tag2post JOIN new.tags
 on new.tags.id = new.tag2post.tag_id GROUP BY new.tags.name;
      */
+
+    Optional<Tag> findByText(String text);
 }
