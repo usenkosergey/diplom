@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface PostRepositori extends PagingAndSortingRepository<Post, Integer> {
-
+//TODO экранирование спец символов проверить и сделать
 }

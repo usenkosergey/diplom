@@ -10,7 +10,12 @@ import ru.skillbox.diplom.entities.Tag;
 public interface TagsRepositori extends JpaRepository<Tag, Integer> {
 
     @Query(nativeQuery = true,
-            value = "INSERT INTO new.tags (name) values (:tagNew) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id;")
+            value = "INSERT INTO tags (name) values (:tagNew) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id;")
     Integer addNewTag(@Param("tagNew") String tag);
 
+    /*
+    select new.tags.name, count(*)
+From new.tag2post JOIN new.tags
+on new.tags.id = new.tag2post.tag_id GROUP BY new.tags.name;
+     */
 }

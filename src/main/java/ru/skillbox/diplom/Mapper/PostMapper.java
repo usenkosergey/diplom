@@ -19,7 +19,7 @@ public class PostMapper {
         postResponse.setTime(Instant.ofEpochMilli(post.getTime()).atZone(ZoneId.systemDefault())
                 .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm")));
         postResponse.setUser(UserIdNameMapper.getUser(post));
-        postResponse.setAnnounce("анннноонс");//TODO RUKAMI
+        postResponse.setAnnounce("");
         postResponse.setTitle(post.getTitle());
         postResponse.setViewCount(5);//TODO RUKAMI
         postResponse.setLikeCount(10);//TODO RUKAMI

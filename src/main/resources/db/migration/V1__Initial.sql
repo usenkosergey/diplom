@@ -11,14 +11,11 @@ code VARCHAR(255),
 photo TEXT
 );
 
---CREATE TYPE e_moderation_status AS ENUM ('NEW', 'ACCEPTED', 'DECLINED');
-
 CREATE TABLE new.posts
 (
 id SERIAL PRIMARY KEY,
 is_active boolean NOT NULL,
 moderation_status VARCHAR(8) NOT NULL,
---moderation_status e_moderation_status NOT NULL DEFAULT 'NEW',
 moderator_id INT,
 user_id INT NOT NULL REFERENCES users (id),
 --time TIMESTAMP NOT NULL,
@@ -43,11 +40,9 @@ value SMALLINT NOT NULL
 CREATE TABLE new.tags
 (
 id SERIAL PRIMARY KEY,
---name VARCHAR(255) UNIQUE NOT NULL
-name VARCHAR(255) NOT NULL
+name VARCHAR(255) UNIQUE NOT NULL
+--name VARCHAR(255) NOT NULL
 );
-
---CREATE UNIQUE INDEX tagsIndex ON new.tags (name);
 
 CREATE TABLE new.tag2post
 (

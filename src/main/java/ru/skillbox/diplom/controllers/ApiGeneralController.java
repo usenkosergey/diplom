@@ -21,21 +21,21 @@ public class ApiGeneralController {
     @Autowired
     private SettingsRepositori settingsRepositori;
 
-        @Autowired
-        EMailService eMailService;
+//        @Autowired TODO это почту я проверял, удалить.
+//        EMailService eMailService;
 
 
     @GetMapping("/api/init")
     public InitData getInit() {
         System.out.println("Это инит - я тут"); //TODO удалить позже
 
-        try {
-            eMailService.sendEmail();
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        try { //TODO это почту я проверял, удалить.
+//            eMailService.sendEmail();
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
 
         return InitData.getInitData();
     }
