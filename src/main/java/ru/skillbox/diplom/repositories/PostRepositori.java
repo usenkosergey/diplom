@@ -19,7 +19,7 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
 
     @Query(nativeQuery = true,
             value = "SELECT * FROM posts WHERE moderation_status = 'ACCEPTED' and is_active = true " +
-                    "and time <= (:currentTime) ORDER BY time ASC LIMIT 10;")
+                    "and time <= (:currentTime) ORDER BY time DESC LIMIT 10;")
     List<Post> getListActualPosts(@Param("currentTime") long currentTime);
 
 }

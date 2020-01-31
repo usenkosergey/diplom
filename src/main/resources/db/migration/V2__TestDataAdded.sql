@@ -22,7 +22,7 @@ $$<h2 data-id=\"overview\"><strong>1. Overview</strong></h2>
 INSERT INTO new.posts
 (is_active, moderation_status, moderator_id, user_id,
 time, title, text, view_count )
-VALUES ('true', 'ACCEPTED', 1, 1, 1579956779856, 'Creating the Project',
+VALUES ('true', 'ACCEPTED', 1, 1, 1579956979856, 'Creating the Project',
 $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaffolding-your-spring-boot-application/#spring-boot-cli\">Spring Boot CLI</a> by typing the following command in your terminal -</p>
  <pre><code class=\"language-bash\">spring init -n=jpa-many-to-many-demo -d=web,jpa,mysql --package-name=com.example.jpa jpa-many-to-many-demo
  </code></pre>
@@ -39,7 +39,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  INSERT INTO new.posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'ACCEPTED', 1, 1, 1579956739856, 'Configuring the Database and Hibernate Log levels',
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156739856, 'Configuring the Database and Hibernate Log levels',
  $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
   <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
@@ -50,7 +50,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  INSERT INTO new.posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'NEW', 1, 1, 1579956739856, 'Скопируйте любой понравившийся статус и используйте его в ВК на своей стене.',
+ VALUES ('true', 'NEW', 1, 1, 1579956039856, 'Скопируйте любой понравившийся статус и используйте его в ВК на своей стене.',
  $$<blockquote>Когда есть совесть - закон не нужен. </blockquote>
  <blockquote>— А… на что я тебе? - А на всю жизнь&#33; </blockquote>
  <blockquote>Работа свыше нам дана: замена счастию она. </blockquote>
