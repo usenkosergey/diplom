@@ -1,15 +1,14 @@
 package ru.skillbox.diplom.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.skillbox.diplom.api.responses.InitData;
 import ru.skillbox.diplom.api.responses.TagsForTopicOne;
 import ru.skillbox.diplom.api.responses.TagsForTopicResponse;
 import ru.skillbox.diplom.entities.Settings;
 import ru.skillbox.diplom.repositories.SettingsRepositori;
-import ru.skillbox.diplom.services.EMailService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/")
+@ConfigurationProperties(prefix = "my")
 public class ApiGeneralController {
 
     @Autowired
@@ -26,10 +26,22 @@ public class ApiGeneralController {
 //        @Autowired TODO это почту я проверял, удалить.
 //        EMailService eMailService;
 
+    private List<String> initData = new ArrayList<String>();
+
+    public List<String> getinitData() {
+        return this.initData;
+    }
 
     @GetMapping("/api/init")
-    public InitData getInit() {
+    public Map<String, String> getInit() {
         System.out.println("Это инит - я тут"); //TODO удалить позже
+
+        Map<String, String> initDataResponse = new HashMap<>();
+        List<String> tempListInitData = initData;
+        for (String data : tempListInitData) {
+            String[] tempData = data.split(":");
+            initDataResponse.put(tempData[0], tempData[1]);
+        }
 
 //        try { //TODO это почту я проверял, удалить.
 //            eMailService.sendEmail();
@@ -38,8 +50,8 @@ public class ApiGeneralController {
 //        } catch (UnsupportedEncodingException e) {
 //            e.printStackTrace();
 //        }
-//TODO тут сразу из пропертис взять инфу и через МАР их вывести
-        return InitData.getInitData();
+
+        return initDataResponse;
     }
 
     @GetMapping("api/settings")
@@ -52,8 +64,9 @@ public class ApiGeneralController {
         }
         return currentSettings;
     }
+
     @GetMapping("api/tag")
-    public TagsForTopicResponse getTagsForTopic(){
+    public TagsForTopicResponse getTagsForTopic() {
         //TODO это тест как выводить теги на фронт
         TagsForTopicResponse tagsForTopicResponse = new TagsForTopicResponse();
 
@@ -76,7 +89,7 @@ public class ApiGeneralController {
     }
 
     @GetMapping("api/auth/check")
-    public Map<String, Boolean> chek(){
+    public Map<String, Boolean> chek() {
         HashMap<String, Boolean> temp = new HashMap<>();
         temp.put("result", false);
         return temp;
