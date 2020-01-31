@@ -71,14 +71,14 @@ public class ApiGeneralController {
         TagsForTopicResponse tagsForTopicResponse = new TagsForTopicResponse();
 
         TagsForTopicOne tags1 = new TagsForTopicOne();
-        tags1.setId(1);
+        //tags1.setId(1);
         tags1.setName("Tag_1");
-        tags1.setWeight(0.9);
+        tags1.setWeight(0.45);
 
         TagsForTopicOne tags2 = new TagsForTopicOne();
-        tags1.setId(2);
+        //tags1.setId(2);
         tags2.setName("Tag_2");
-        tags2.setWeight(0.6);
+        tags2.setWeight(0.91);
 
         List<TagsForTopicOne> list = new ArrayList<>();
         list.add(tags1);

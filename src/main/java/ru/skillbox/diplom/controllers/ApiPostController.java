@@ -68,10 +68,6 @@ public class ApiPostController {
     @GetMapping("/api/post")
     public PostsResponseAll getPosts(@RequestParam int offset, @RequestParam int limit, @RequestParam String mode) {
         System.out.println("getPosts ---- ");
-//        System.out.println(offset);
-//        System.out.println(limit);
-//        System.out.println(mode);
-
 
         PostsResponseAll postsResponseAll = new PostsResponseAll();
         postsResponseAll.setCount(postRepositori.count());
