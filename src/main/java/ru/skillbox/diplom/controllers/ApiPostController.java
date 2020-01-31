@@ -16,6 +16,13 @@ import ru.skillbox.diplom.services.PostService;
 import ru.skillbox.diplom.services.UserService;
 import ru.skillbox.diplom.services.VotesService;
 
+import java.math.BigInteger;
+import java.nio.file.LinkOption;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/")
 public class ApiPostController {
@@ -26,11 +33,14 @@ public class ApiPostController {
     @Autowired
     TagsRepositori tagsRepositori;
 
+    @Autowired
+    private PostService postService;
 
-    @GetMapping ("/api/post/{id}") //Getting post by ID
+
+    @GetMapping("/api/post/{id}") //Getting post by ID
     public PostResponse getById(@PathVariable int id) {
         System.out.println("ApiPostController : getById : id - " + id); //TODO удалить позже
-        tagsRepositori.addNewTag("asdfg");
+        //tagsRepositori.addNewTag("asdfg");
         //TODO удаление тегов
         //System.out.println(postRepositori.findById(2).get().getText().replaceAll("\\<.*?\\>", ""));
 //        //TODO добавление лайка или дизлайка к записи, потом убиру от сюда
@@ -39,18 +49,41 @@ public class ApiPostController {
 //        if (!votesService.addVote(1, (byte) -1))
 //            votesService.addVote(1, (byte) -1);
 
+
+//        List<Object[]> test = tagsRepositori.tagsForTopic(System.currentTimeMillis());
+//        Map<String, Integer> testMap = new HashMap<>();
+//        int max = 0;
+//        for (Object[] obj : test) {
+//            String a = (String) obj[0];
+//            BigInteger b = (BigInteger) obj[1];
+//            if (max < b.intValue()) max = b.intValue();
+//            testMap.put(a, b.intValue());
+//        }
+//        System.out.println("max --- " + max);
+//
+//        System.out.println("--------");
         return PostMapper.getPostResponse(postRepositori.findById(id).get()); //TODO проверку на существование сделать
     }
 
-//    @GetMapping("/api/post")
-//    public boolean getPosts(@RequestParam int offset, @RequestParam int limit, @RequestParam String mode){
-//        System.out.println("getPosts ---- ");
-////        System.out.println(offset);
-////        System.out.println(limit);
-////        System.out.println(mode);
-//        postRepositori.count();
-//        Iterable<Post> time = postRepositori.findAll(new Sort(Sort.Direction.ASC, "time"));
-//
-//        return true;
-//    }
+    @GetMapping("/api/post")
+    public PostsResponseAll getPosts(@RequestParam int offset, @RequestParam int limit, @RequestParam String mode) {
+        System.out.println("getPosts ---- ");
+//        System.out.println(offset);
+//        System.out.println(limit);
+//        System.out.println(mode);
+
+
+        PostsResponseAll postsResponseAll = new PostsResponseAll();
+        postsResponseAll.setCount(postRepositori.count());
+        List<PostResponse> postResponseList = new ArrayList<>();
+        for (Post post : postService.getPosts()) {
+            //PostResponse postResponse = new PostResponse();
+
+            postResponseList.add(PostMapper.getPostResponse(post));
+
+        }
+        postsResponseAll.setPosts(postResponseList);
+
+        return postsResponseAll;
+    }
 }

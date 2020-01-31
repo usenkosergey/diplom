@@ -46,6 +46,30 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
   <p><strong>1. Post model</strong></p>$$, 3);
+
+ INSERT INTO new.posts
+ (is_active, moderation_status, moderator_id, user_id,
+ time, title, text, view_count )
+ VALUES ('true', 'NEW', 1, 1, 1579956739856, 'Скопируйте любой понравившийся статус и используйте его в ВК на своей стене.',
+ $$<blockquote>Когда есть совесть - закон не нужен. </blockquote>
+ <blockquote>— А… на что я тебе? - А на всю жизнь&#33; </blockquote>
+ <blockquote>Работа свыше нам дана: замена счастию она. </blockquote>
+ <blockquote>Мефобия — страх стать настолько офигенным, что все остальные не смогут совладать с таким великолепием и умрут. </blockquote>$$, 5);
+
+  INSERT INTO new.posts
+  (is_active, moderation_status, moderator_id, user_id,
+  time, title, text, view_count )
+  VALUES ('false', 'NEW', 1, 1, 1579956739856, 'Правильно подобранный статус на стену в ВК.',
+  $$<blockquote>Не льсти себе, ты можешь лучше </blockquote><blockquote>Не сахарная, от красивых слов не таю...
+     </blockquote><blockquote>Лучше семь раз покрыться потом, чем один раз инеем!  </blockquote>$$, 5);
+
+   INSERT INTO new.posts
+   (is_active, moderation_status, moderator_id, user_id,
+   time, title, text, view_count )
+   VALUES ('true', 'NEW', 1, 1, 1579959939856, 'что можно потавить на статус',
+   $$<blockquote>Мужчина, как и машина, должен принадлежать только одной владелице.. Иначе это - общественный транспорт! </blockquote>
+   <blockquote>смейся и весь мир будет смеяться вместе с тобой, плачь и ты будешь плакать в одиночестве </blockquote>$$, 5);
+
 ----------------
 Insert Into new.tags (name) VALUES ('Tag_1');
 Insert Into new.tags (name) VALUES ('Tag_2');
@@ -59,6 +83,11 @@ Insert Into new.tag2post (post_id, tag_id) VALUES (2,3);
 Insert Into new.tag2post (post_id, tag_id) VALUES (2,4);
 Insert Into new.tag2post (post_id, tag_id) VALUES (3,1);
 Insert Into new.tag2post (post_id, tag_id) VALUES (3,5);
+Insert Into new.tag2post (post_id, tag_id) VALUES (4,5);
+Insert Into new.tag2post (post_id, tag_id) VALUES (4,2);
+Insert Into new.tag2post (post_id, tag_id) VALUES (5,5);
+Insert Into new.tag2post (post_id, tag_id) VALUES (5,1);
+Insert Into new.tag2post (post_id, tag_id) VALUES (6,2);
 
 -----------------
 Insert Into new.global_settings

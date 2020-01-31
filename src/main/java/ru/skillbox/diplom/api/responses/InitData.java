@@ -1,5 +1,5 @@
 package ru.skillbox.diplom.api.responses;
-
+//TODO удалить это все, вынести в пропертис с сразу в контроллере это выводить
 public class InitData {
     private String title;
     private String subtitle;

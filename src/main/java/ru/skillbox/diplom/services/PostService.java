@@ -12,7 +12,9 @@ import ru.skillbox.diplom.repositories.TagsRepositori;
 import ru.skillbox.diplom.repositories.UserRepositori;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -56,5 +58,10 @@ public class PostService {
 
         postRepositori.save(newPost);
         return true; //TODO нужно переделать
+    }
+    public List<Post> getPosts(){
+        List<Post> list = postRepositori.getListActualPosts(System.currentTimeMillis());
+
+        return list;
     }
 }
