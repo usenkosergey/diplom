@@ -69,6 +69,121 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
    VALUES ('true', 'NEW', 1, 1, 1579959939856, 'что можно потавить на статус',
    $$<blockquote>Мужчина, как и машина, должен принадлежать только одной владелице.. Иначе это - общественный транспорт! </blockquote>
    <blockquote>смейся и весь мир будет смеяться вместе с тобой, плачь и ты будешь плакать в одиночестве </blockquote>$$, 5);
+   
+  
+
+  
+    INSERT INTO new.posts
+ (is_active, moderation_status, moderator_id, user_id,
+ time, title, text, view_count )
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156739856, '1-Configuring the Database and Hibernate Log levels',
+ $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
+  <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
+  <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
+  <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
+  <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
+  <p><strong>1. Post model</strong></p>$$, 3);
+  
+  
+ INSERT INTO new.posts
+ (is_active, moderation_status, moderator_id, user_id,
+ time, title, text, view_count )
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156749856, '2-Configuring the Database and Hibernate Log levels',
+ $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
+  <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
+  <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
+  <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
+  <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
+  <p><strong>1. Post model</strong></p>$$, 3);
+
+ INSERT INTO new.posts
+ (is_active, moderation_status, moderator_id, user_id,
+ time, title, text, view_count )
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156759856, '3-Configuring the Database and Hibernate Log levels',
+ $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
+  <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
+  <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
+  <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
+  <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
+  <p><strong>1. Post model</strong></p>$$, 3);
+
+ INSERT INTO new.posts
+ (is_active, moderation_status, moderator_id, user_id,
+ time, title, text, view_count )
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156769856, '4-Configuring the Database and Hibernate Log levels',
+ $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
+  <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
+  <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
+  <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
+  <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
+  <p><strong>1. Post model</strong></p>$$, 3);
+
+ INSERT INTO new.posts
+ (is_active, moderation_status, moderator_id, user_id,
+ time, title, text, view_count )
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156779856, '4-Configuring the Database and Hibernate Log levels',
+ $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
+  <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
+  <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
+  <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
+  <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
+  <p><strong>1. Post model</strong></p>$$, 3);
+
+ INSERT INTO new.posts
+ (is_active, moderation_status, moderator_id, user_id,
+ time, title, text, view_count )
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156789856, '5-Configuring the Database and Hibernate Log levels',
+ $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
+  <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
+  <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
+  <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
+  <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
+  <p><strong>1. Post model</strong></p>$$, 3);
+
+ INSERT INTO new.posts
+ (is_active, moderation_status, moderator_id, user_id,
+ time, title, text, view_count )
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156799856, '6-Configuring the Database and Hibernate Log levels',
+ $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
+  <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
+  <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
+  <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
+  <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
+  <p><strong>1. Post model</strong></p>$$, 3);
+
+ INSERT INTO new.posts
+ (is_active, moderation_status, moderator_id, user_id,
+ time, title, text, view_count )
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156839856, '7-Configuring the Database and Hibernate Log levels',
+ $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
+  <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
+  <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
+  <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
+  <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
+  <p><strong>1. Post model</strong></p>$$, 3);
+
+ INSERT INTO new.posts
+ (is_active, moderation_status, moderator_id, user_id,
+ time, title, text, view_count )
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156939856, '8-Configuring the Database and Hibernate Log levels',
+ $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
+  <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
+  <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
+  <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
+  <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
+  <p><strong>1. Post model</strong></p>$$, 3);
+
+ INSERT INTO new.posts
+ (is_active, moderation_status, moderator_id, user_id,
+ time, title, text, view_count )
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579157739856, '9-Configuring the Database and Hibernate Log levels',
+ $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
+  <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
+  <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
+  <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
+  <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
+  <p><strong>1. Post model</strong></p>$$, 3);
+  
 
 ----------------
 Insert Into new.tags (name) VALUES ('Tag_1');

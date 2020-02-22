@@ -17,7 +17,7 @@ public class PostMapper {
         postResponse.setId(post.getId());
         postResponse.setText(post.getText());
         postResponse.setTime(Instant.ofEpochMilli(post.getTime()).atZone(ZoneId.systemDefault())
-                .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm")));
+                .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         postResponse.setUser(UserIdNameMapper.getUser(post));
         postResponse.setAnnounce("");
         postResponse.setTitle(post.getTitle());

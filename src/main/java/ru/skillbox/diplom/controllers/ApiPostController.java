@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 import ru.skillbox.diplom.Mapper.PostMapper;
 import ru.skillbox.diplom.api.responses.PostResponse;
 import ru.skillbox.diplom.api.responses.PostsResponseAll;
@@ -72,18 +73,21 @@ public class ApiPostController {
     @GetMapping("/api/post")
     public PostsResponseAll getPosts(@RequestParam int offset, @RequestParam int limit, @RequestParam String mode) {
         logger.info("Это ApiPostController метод /api/post");
-
         PostsResponseAll postsResponseAll = new PostsResponseAll();
-        postsResponseAll.setCount(postRepositori.count());
+        postsResponseAll.setCount(postRepositori.countActualPosts(System.currentTimeMillis()));
         List<PostResponse> postResponseList = new ArrayList<>();
-        for (Post post : postService.getPosts()) {
-            //PostResponse postResponse = new PostResponse();
-
+        for (Post post : postService.getPosts(offset)) {
             postResponseList.add(PostMapper.getPostResponse(post));
-
         }
         postsResponseAll.setPosts(postResponseList);
 
         return postsResponseAll;
+    }
+
+    @GetMapping("/posts/{mode}")
+    public RedirectView redirect(@PathVariable String mode) {
+        logger.info("Это ApiPostController метод /posts/{mode}");
+        //System.out.println(mode);
+        return new RedirectView("/");
     }
 }

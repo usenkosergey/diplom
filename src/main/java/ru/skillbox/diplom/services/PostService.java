@@ -11,9 +11,6 @@ import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.TagsRepositori;
 import ru.skillbox.diplom.repositories.UserRepositori;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,12 +40,12 @@ public class PostService {
         newPost.setViewCount(0);
 
         Tag tag1 = tagsRepositori.findByText("Test_tag_14").isEmpty()
-                ?new Tag("Test_tag_14")
-                :tagsRepositori.getOne(tagsRepositori.findByText("Test_tag_14").get().getId());
+                ? new Tag("Test_tag_14")
+                : tagsRepositori.getOne(tagsRepositori.findByText("Test_tag_14").get().getId());
 
         Tag tag2 = tagsRepositori.findByText("Spring Boot_12").isEmpty()
-                ?new Tag("Spring Boot_12")
-                :tagsRepositori.getOne(tagsRepositori.findByText("Spring Boot_12").get().getId());
+                ? new Tag("Spring Boot_12")
+                : tagsRepositori.getOne(tagsRepositori.findByText("Spring Boot_12").get().getId());
 
         newPost.getTags().add(tag1);
         newPost.getTags().add(tag2);
@@ -59,9 +56,9 @@ public class PostService {
         postRepositori.save(newPost);
         return true; //TODO нужно переделать
     }
-    public List<Post> getPosts(){
-        List<Post> list = postRepositori.getListActualPosts(System.currentTimeMillis());
 
+    public List<Post> getPosts(int offset) {
+        List<Post> list = postRepositori.getListRecentPosts(System.currentTimeMillis(), offset);
         return list;
     }
 }
