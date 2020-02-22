@@ -20,11 +20,11 @@ public interface TagsRepositori extends JpaRepository<Tag, Integer> {
     Integer addNewTag(@Param("tagNew") String tag);
 
     @Query(nativeQuery = true,
-    value = "select tags.id, tags.name, count(*) from tag2post\n" +
+    value = "select tags.name, count(*) from tag2post\n" +
             "JOIN posts on posts.id = tag2post.post_id\n" +
             "JOIN tags on tag2post.tag_id = tags.id\n" +
             "WHERE moderation_status = 'ACCEPTED' and is_active = true\n" +
-            "and time <= (:currentTime) GROUP BY tags.id, tags.name;")
+            "and time <= (:currentTime) GROUP BY tags.name;")
     List<Object[]> tagsForTopic(@Param("currentTime") long currentTime);
 
     /*

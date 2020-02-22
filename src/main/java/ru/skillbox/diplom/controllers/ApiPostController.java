@@ -1,5 +1,7 @@
 package ru.skillbox.diplom.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/")
 public class ApiPostController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private PostRepositori postRepositori;
@@ -67,7 +71,7 @@ public class ApiPostController {
 
     @GetMapping("/api/post")
     public PostsResponseAll getPosts(@RequestParam int offset, @RequestParam int limit, @RequestParam String mode) {
-        System.out.println("getPosts ---- ");
+        logger.info("Это ApiPostController метод /api/post");
 
         PostsResponseAll postsResponseAll = new PostsResponseAll();
         postsResponseAll.setCount(postRepositori.count());

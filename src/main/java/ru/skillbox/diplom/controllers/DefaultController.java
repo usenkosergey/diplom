@@ -1,14 +1,18 @@
 package ru.skillbox.diplom.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class DefaultController {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-//    @RequestMapping("/")
-//    public String index() {
-//        System.out.println("я в DefaultController"); //TODO удалить позже
-//        return "index";
-//    }
+
+    @RequestMapping("/")
+    public String index() {
+        logger.info("Это дефолтный контроллер"); //TODO удалить позже
+        return "index";
+    }
 }
