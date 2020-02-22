@@ -87,7 +87,8 @@ public class ApiPostController {
     @GetMapping("/posts/{mode}")
     public RedirectView redirect(@PathVariable String mode) {
         logger.info("Это ApiPostController метод /posts/{mode}");
-        //System.out.println(mode);
-        return new RedirectView("/");
+        RedirectView rv = new RedirectView("/api/post?offset=0&limit=10&mode=recent");
+        rv.setExposeModelAttributes(false);
+        return rv;
     }
 }
