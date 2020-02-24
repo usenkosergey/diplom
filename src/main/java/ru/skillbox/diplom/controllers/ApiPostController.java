@@ -1,5 +1,6 @@
 package ru.skillbox.diplom.controllers;
 
+import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,8 +80,11 @@ public class ApiPostController {
         PostsResponseAll postsResponseAll = new PostsResponseAll();
         postsResponseAll.setCount(postRepositori.countActualPosts(System.currentTimeMillis()));
         List<PostResponse> postResponseList = new ArrayList<>();
+
         for (Post post : postService.getPosts(offset)) {
-            postResponseList.add(PostMapper.getPostResponse(post));
+            PostResponse postResponse = PostMapper.getPostResponse(post);
+            postResponse.setAnnounce(Jsoup.parse(post.getText()).text().substring(0, 150) + "...");
+            postResponseList.add(postResponse);
         }
         postsResponseAll.setPosts(postResponseList);
 

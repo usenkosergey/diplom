@@ -21,7 +21,7 @@ public class PostMapper {
         postResponse.setUser(UserIdNameMapper.getUser(post));
         postResponse.setAnnounce("");
         postResponse.setTitle(post.getTitle());
-        postResponse.setViewCount(post.getViewCount());//TODO RUKAMI
+        postResponse.setViewCount(post.getViewCount());
         postResponse.setLikeCount(10);//TODO RUKAMI
         postResponse.setDislikeCount(2);//TODO RUKAMI
         for (Tag tag : post.getTags()) {
