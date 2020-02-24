@@ -67,6 +67,9 @@ public class ApiPostController {
 //        System.out.println("max --- " + max);
 //
 //        System.out.println("--------");
+        if (postRepositori.updateViewCount(id) != 1) {
+            logger.error("Update количество просмотров не +1 :" + id);
+        }
         return PostMapper.getPostResponse(postRepositori.findById(id).get()); //TODO проверку на существование сделать
     }
 

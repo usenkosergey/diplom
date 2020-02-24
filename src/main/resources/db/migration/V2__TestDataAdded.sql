@@ -17,7 +17,7 @@ $$<h2 data-id=\"overview\"><strong>1. Overview</strong></h2>
  <p>Our demo web application\'s functionality will be pretty simplistic indeed. It will be just narrowed to fetching and displaying a <em>List</em> of JPA entities from an&nbsp;in-memory <a href=\"https://www.baeldung.com/java-in-memory-databases\" rel=\"noopener noreferrer\">H2 database</a>, and persisting new ones through a plain HTML form.</p>
  <h3 data-id=\"1-the-maven-dependencies\"><strong>2.1. The Maven Dependencies</strong></h3>
  <div class=\"bd-anchor\" id=\"1-the-maven-dependencies\"></div>
- <p>Here are our Spring Boot project\'s dependencies:</p>$$, 6);
+ <p>Here are our Spring Boot project\'s dependencies:</p>$$, 1);
 
 INSERT INTO new.posts
 (is_active, moderation_status, moderator_id, user_id,
@@ -34,7 +34,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  <li>Change <strong>Package Name</strong> to &ldquo;com.example.jpa&rdquo;</li>
  <li>Select <strong>Web</strong>, <strong>JPA</strong> and <strong>Mysql</strong> dependencies.</li>
  <li>Click <strong>Generate Project</strong> to download the project.</li>
- </ol>$$, 3);
+ </ol>$$, 2);
 
  INSERT INTO new.posts
  (is_active, moderation_status, moderator_id, user_id,
@@ -54,7 +54,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  $$<blockquote>Когда есть совесть - закон не нужен. </blockquote>
  <blockquote>— А… на что я тебе? - А на всю жизнь&#33; </blockquote>
  <blockquote>Работа свыше нам дана: замена счастию она. </blockquote>
- <blockquote>Мефобия — страх стать настолько офигенным, что все остальные не смогут совладать с таким великолепием и умрут. </blockquote>$$, 5);
+ <blockquote>Мефобия — страх стать настолько офигенным, что все остальные не смогут совладать с таким великолепием и умрут. </blockquote>$$, 4);
 
   INSERT INTO new.posts
   (is_active, moderation_status, moderator_id, user_id,
@@ -68,7 +68,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
    time, title, text, view_count )
    VALUES ('true', 'NEW', 1, 1, 1579959939856, 'что можно потавить на статус',
    $$<blockquote>Мужчина, как и машина, должен принадлежать только одной владелице.. Иначе это - общественный транспорт! </blockquote>
-   <blockquote>смейся и весь мир будет смеяться вместе с тобой, плачь и ты будешь плакать в одиночестве </blockquote>$$, 5);
+   <blockquote>смейся и весь мир будет смеяться вместе с тобой, плачь и ты будешь плакать в одиночестве </blockquote>$$, 6);
    
   
 
@@ -82,7 +82,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
   <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
-  <p><strong>1. Post model</strong></p>$$, 3);
+  <p><strong>1. Post model</strong></p>$$, 7);
   
   
  INSERT INTO new.posts
@@ -94,7 +94,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
   <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
-  <p><strong>1. Post model</strong></p>$$, 3);
+  <p><strong>1. Post model</strong></p>$$, 8);
 
  INSERT INTO new.posts
  (is_active, moderation_status, moderator_id, user_id,
@@ -105,7 +105,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
   <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
-  <p><strong>1. Post model</strong></p>$$, 3);
+  <p><strong>1. Post model</strong></p>$$, 9);
 
  INSERT INTO new.posts
  (is_active, moderation_status, moderator_id, user_id,
@@ -116,7 +116,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
   <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
-  <p><strong>1. Post model</strong></p>$$, 3);
+  <p><strong>1. Post model</strong></p>$$, 10);
 
  INSERT INTO new.posts
  (is_active, moderation_status, moderator_id, user_id,
@@ -127,7 +127,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
   <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
-  <p><strong>1. Post model</strong></p>$$, 3);
+  <p><strong>1. Post model</strong></p>$$, 11);
 
  INSERT INTO new.posts
  (is_active, moderation_status, moderator_id, user_id,
@@ -138,7 +138,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
   <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
-  <p><strong>1. Post model</strong></p>$$, 3);
+  <p><strong>1. Post model</strong></p>$$, 12);
 
  INSERT INTO new.posts
  (is_active, moderation_status, moderator_id, user_id,
@@ -149,7 +149,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
   <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
-  <p><strong>1. Post model</strong></p>$$, 3);
+  <p><strong>1. Post model</strong></p>$$, 13);
 
  INSERT INTO new.posts
  (is_active, moderation_status, moderator_id, user_id,
@@ -160,7 +160,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
   <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
-  <p><strong>1. Post model</strong></p>$$, 3);
+  <p><strong>1. Post model</strong></p>$$, 14);
 
  INSERT INTO new.posts
  (is_active, moderation_status, moderator_id, user_id,
@@ -171,7 +171,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
   <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
-  <p><strong>1. Post model</strong></p>$$, 3);
+  <p><strong>1. Post model</strong></p>$$, 15);
 
  INSERT INTO new.posts
  (is_active, moderation_status, moderator_id, user_id,
@@ -182,7 +182,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
   <h2 id=\"defining-the-domain-models\">Defining the Domain models</h2>
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
-  <p><strong>1. Post model</strong></p>$$, 3);
+  <p><strong>1. Post model</strong></p>$$, 16);
   
 
 ----------------
