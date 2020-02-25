@@ -68,8 +68,8 @@ CREATE TABLE new.captcha_codes
 id SERIAL PRIMARY KEY,
 --time TIMESTAMP NOT NULL,
 time BIGINT NOT NULL,
-code SMALLINT NOT NULL,
-secret_code SMALLINT NOT NULL
+code TEXT NOT NULL,
+secret_code TEXT NOT NULL
 );
 
 CREATE TABLE new.global_settings
