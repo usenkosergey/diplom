@@ -1,8 +1,8 @@
-INSERT INTO new.users (is_moderator, reg_time, name, email, password)
+INSERT INTO users (is_moderator, reg_time, name, email, password)
 VALUES
 ('true',1579956771856,'Sergey', 'wert@dfre.cf', '454545');
 ---------------
-INSERT INTO new.posts
+INSERT INTO posts
 (is_active, moderation_status, moderator_id, user_id,
 time, title, text, view_count )
 VALUES ('true', 'ACCEPTED', 1, 1, 1579956779856, 'The canonical reference for building a production grade API with Spring.',
@@ -19,7 +19,7 @@ $$<h2 data-id=\"overview\"><strong>1. Overview</strong></h2>
  <div class=\"bd-anchor\" id=\"1-the-maven-dependencies\"></div>
  <p>Here are our Spring Boot project\'s dependencies:</p>$$, 1);
 
-INSERT INTO new.posts
+INSERT INTO posts
 (is_active, moderation_status, moderator_id, user_id,
 time, title, text, view_count )
 VALUES ('true', 'ACCEPTED', 1, 1, 1579956979856, 'Creating the Project',
@@ -36,7 +36,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  <li>Click <strong>Generate Project</strong> to download the project.</li>
  </ol>$$, 2);
 
- INSERT INTO new.posts
+ INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
  VALUES ('true', 'ACCEPTED', 1, 1, 1579156739856, 'Configuring the Database and Hibernate Log levels',
@@ -47,7 +47,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
   <p><strong>1. Post model</strong></p>$$, 3);
 
- INSERT INTO new.posts
+ INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
  VALUES ('true', 'NEW', 1, 1, 1579956039856, 'Скопируйте любой понравившийся статус и используйте его в ВК на своей стене.',
@@ -56,14 +56,14 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  <blockquote>Работа свыше нам дана: замена счастию она. </blockquote>
  <blockquote>Мефобия — страх стать настолько офигенным, что все остальные не смогут совладать с таким великолепием и умрут. </blockquote>$$, 4);
 
-  INSERT INTO new.posts
+  INSERT INTO posts
   (is_active, moderation_status, moderator_id, user_id,
   time, title, text, view_count )
   VALUES ('false', 'NEW', 1, 1, 1579956739856, 'Правильно подобранный статус на стену в ВК.',
   $$<blockquote>Не льсти себе, ты можешь лучше </blockquote><blockquote>Не сахарная, от красивых слов не таю...
      </blockquote><blockquote>Лучше семь раз покрыться потом, чем один раз инеем!  </blockquote>$$, 5);
 
-   INSERT INTO new.posts
+   INSERT INTO posts
    (is_active, moderation_status, moderator_id, user_id,
    time, title, text, view_count )
    VALUES ('true', 'NEW', 1, 1, 1579959939856, 'что можно потавить на статус',
@@ -73,7 +73,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   
 
   
-    INSERT INTO new.posts
+    INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
  VALUES ('true', 'ACCEPTED', 1, 1, 1579156739856, '1-Configuring the Database and Hibernate Log levels',
@@ -85,7 +85,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p><strong>1. Post model</strong></p>$$, 7);
   
   
- INSERT INTO new.posts
+ INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
  VALUES ('true', 'ACCEPTED', 1, 1, 1579156749856, '2-Configuring the Database and Hibernate Log levels',
@@ -96,7 +96,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
   <p><strong>1. Post model</strong></p>$$, 8);
 
- INSERT INTO new.posts
+ INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
  VALUES ('true', 'ACCEPTED', 1, 1, 1579156759856, '3-Configuring the Database and Hibernate Log levels',
@@ -107,7 +107,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
   <p><strong>1. Post model</strong></p>$$, 9);
 
- INSERT INTO new.posts
+ INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
  VALUES ('true', 'ACCEPTED', 1, 1, 1579156769856, '4-Configuring the Database and Hibernate Log levels',
@@ -118,7 +118,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
   <p><strong>1. Post model</strong></p>$$, 10);
 
- INSERT INTO new.posts
+ INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
  VALUES ('true', 'ACCEPTED', 1, 1, 1579156779856, '4-Configuring the Database and Hibernate Log levels',
@@ -129,7 +129,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
   <p><strong>1. Post model</strong></p>$$, 11);
 
- INSERT INTO new.posts
+ INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
  VALUES ('true', 'ACCEPTED', 1, 1, 1579156789856, '5-Configuring the Database and Hibernate Log levels',
@@ -140,7 +140,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
   <p><strong>1. Post model</strong></p>$$, 12);
 
- INSERT INTO new.posts
+ INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
  VALUES ('true', 'ACCEPTED', 1, 1, 1579156799856, '6-Configuring the Database and Hibernate Log levels',
@@ -151,7 +151,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
   <p><strong>1. Post model</strong></p>$$, 13);
 
- INSERT INTO new.posts
+ INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
  VALUES ('true', 'ACCEPTED', 1, 1, 1579156839856, '7-Configuring the Database and Hibernate Log levels',
@@ -162,7 +162,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
   <p><strong>1. Post model</strong></p>$$, 14);
 
- INSERT INTO new.posts
+ INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
  VALUES ('true', 'ACCEPTED', 1, 1, 1579156939856, '8-Configuring the Database and Hibernate Log levels',
@@ -173,7 +173,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   <p>Let&rsquo;s define the domain models which will be mapped to the tables we saw earlier. First, Create a package named <code>model</code> inside <code>com.example.jpa</code>, and then add the following classes inside the <code>model</code> package -</p>
   <p><strong>1. Post model</strong></p>$$, 15);
 
- INSERT INTO new.posts
+ INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
  VALUES ('true', 'ACCEPTED', 1, 1, 1579157739856, '9-Configuring the Database and Hibernate Log levels',
@@ -186,26 +186,26 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   
 
 ----------------
-Insert Into new.tags (name) VALUES ('Tag_1');
-Insert Into new.tags (name) VALUES ('Tag_2');
-Insert Into new.tags (name) VALUES ('Tag_3');
-Insert Into new.tags (name) VALUES ('Tag_4');
-Insert Into new.tags (name) VALUES ('Tag_5');
+Insert Into tags (name) VALUES ('Tag_1');
+Insert Into tags (name) VALUES ('Tag_2');
+Insert Into tags (name) VALUES ('Tag_3');
+Insert Into tags (name) VALUES ('Tag_4');
+Insert Into tags (name) VALUES ('Tag_5');
 ------------------------
-Insert Into new.tag2post (post_id, tag_id) VALUES (1,1);
-Insert Into new.tag2post (post_id, tag_id) VALUES (1,2);
-Insert Into new.tag2post (post_id, tag_id) VALUES (2,3);
-Insert Into new.tag2post (post_id, tag_id) VALUES (2,4);
-Insert Into new.tag2post (post_id, tag_id) VALUES (3,1);
-Insert Into new.tag2post (post_id, tag_id) VALUES (3,5);
-Insert Into new.tag2post (post_id, tag_id) VALUES (4,5);
-Insert Into new.tag2post (post_id, tag_id) VALUES (4,2);
-Insert Into new.tag2post (post_id, tag_id) VALUES (5,5);
-Insert Into new.tag2post (post_id, tag_id) VALUES (5,1);
-Insert Into new.tag2post (post_id, tag_id) VALUES (6,2);
+Insert Into tag2post (post_id, tag_id) VALUES (1,1);
+Insert Into tag2post (post_id, tag_id) VALUES (1,2);
+Insert Into tag2post (post_id, tag_id) VALUES (2,3);
+Insert Into tag2post (post_id, tag_id) VALUES (2,4);
+Insert Into tag2post (post_id, tag_id) VALUES (3,1);
+Insert Into tag2post (post_id, tag_id) VALUES (3,5);
+Insert Into tag2post (post_id, tag_id) VALUES (4,5);
+Insert Into tag2post (post_id, tag_id) VALUES (4,2);
+Insert Into tag2post (post_id, tag_id) VALUES (5,5);
+Insert Into tag2post (post_id, tag_id) VALUES (5,1);
+Insert Into tag2post (post_id, tag_id) VALUES (6,2);
 
 -----------------
-Insert Into new.global_settings
+Insert Into global_settings
 (code, name, value)
 VALUES
 ('MULTIUSER_MODE', 'Многопользовательский режим', 'true'),

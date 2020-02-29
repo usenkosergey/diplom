@@ -1,4 +1,4 @@
-CREATE TABLE new.users
+CREATE TABLE users
 (
 id SERIAL PRIMARY KEY,
 is_moderator boolean NOT NULL,
@@ -11,7 +11,7 @@ code VARCHAR(255),
 photo TEXT
 );
 
-CREATE TABLE new.posts
+CREATE TABLE posts
 (
 id SERIAL PRIMARY KEY,
 is_active boolean NOT NULL,
@@ -25,7 +25,7 @@ text TEXT NOT NULL,
 view_count INT NOT NULL
 );
 
-CREATE TABLE new.post_votes
+CREATE TABLE post_votes
 (
 id SERIAL PRIMARY KEY,
 user_id INT NOT NULL,
@@ -37,21 +37,21 @@ time BIGINT NOT NULL,
 value SMALLINT NOT NULL
 );
 
-CREATE TABLE new.tags
+CREATE TABLE tags
 (
 id SERIAL PRIMARY KEY,
 name VARCHAR(255) UNIQUE NOT NULL
 --name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE new.tag2post
+CREATE TABLE tag2post
 (
 id SERIAL PRIMARY KEY,
 post_id INT NOT NULL REFERENCES posts (id),
 tag_id INT NOT NULL REFERENCES tags (id)
 );
 
-CREATE TABLE new.post_comments
+CREATE TABLE post_comments
 (
 id SERIAL PRIMARY KEY,
 parent_id INT,
@@ -63,7 +63,7 @@ text TEXT NOT NULL,
 time BIGINT NOT NULL
 );
 
-CREATE TABLE new.captcha_codes
+CREATE TABLE captcha_codes
 (
 id SERIAL PRIMARY KEY,
 --time TIMESTAMP NOT NULL,
@@ -72,7 +72,7 @@ code TEXT NOT NULL,
 secret_code TEXT NOT NULL
 );
 
-CREATE TABLE new.global_settings
+CREATE TABLE global_settings
 (
 id SERIAL PRIMARY KEY,
 code VARCHAR(255) NOT NULL,

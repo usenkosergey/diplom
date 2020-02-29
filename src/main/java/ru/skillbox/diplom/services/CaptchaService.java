@@ -24,6 +24,8 @@ public class CaptchaService {
     private CaptchaRepositori captchaRepositori;
 
     public CaptchaCode genAndSaveCaptcha() {
+        long deltaTime = 3_600_000;
+
         CaptchaCode captchaCode = null;
         ConfigurableCaptchaService cs = new ConfigurableCaptchaService();
         RandomWordFactory wordFactory = new RandomWordFactory();
@@ -50,7 +52,9 @@ public class CaptchaService {
         }
 
         captchaRepositori.save(captchaCode);
+        captchaRepositori.deleteOldCaptca(System.currentTimeMillis() - deltaTime);
+        //TODO сделать удаление старой капчи
+
         return captchaCode;
     }
-
 }
