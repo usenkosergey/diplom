@@ -53,7 +53,6 @@ public class CaptchaService {
 
         captchaRepositori.save(captchaCode);
         captchaRepositori.deleteOldCaptca(System.currentTimeMillis() - deltaTime);
-        //TODO сделать удаление старой капчи
 
         return captchaCode;
     }

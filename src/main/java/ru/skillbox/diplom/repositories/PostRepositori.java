@@ -23,6 +23,10 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
             value = "SELECT * FROM posts WHERE moderation_status = 'ACCEPTED' and is_active = true " +
                     "and time <= (:currentTime) ORDER BY time DESC LIMIT 10 OFFSET (:offset);")
     List<Post> getListRecentPosts(@Param("currentTime") long currentTime, @Param("offset") int offset);
+    @Query(nativeQuery = true,
+            value = "SELECT * FROM posts WHERE moderation_status = 'ACCEPTED' and is_active = true " +
+                    "and time <= (:currentTime) ORDER BY time ASC LIMIT 10 OFFSET (:offset);")
+    List<Post> getListEarlyPosts(@Param("currentTime") long currentTime, @Param("offset") int offset);
 
     @Transactional
     @Modifying

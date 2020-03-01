@@ -57,8 +57,14 @@ public class PostService {
         return true; //TODO нужно переделать
     }
 
-    public List<Post> getPosts(int offset) {
-        List<Post> list = postRepositori.getListRecentPosts(System.currentTimeMillis(), offset);
-        return list;
+    public List<Post> getPosts(int offset, String mode) {
+        if (mode.equals("recent")) {
+            return postRepositori.getListRecentPosts(System.currentTimeMillis(), offset);
+        } else if (mode.equals("early")) {
+            return postRepositori.getListEarlyPosts(System.currentTimeMillis(), offset);
+        }
+
+
+        return null;
     }
 }

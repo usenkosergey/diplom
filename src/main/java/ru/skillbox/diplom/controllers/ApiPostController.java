@@ -81,7 +81,7 @@ public class ApiPostController {
         postsResponseAll.setCount(postRepositori.countActualPosts(System.currentTimeMillis()));
         List<PostResponse> postResponseList = new ArrayList<>();
 
-        for (Post post : postService.getPosts(offset)) {
+        for (Post post : postService.getPosts(offset, mode)) {
             PostResponse postResponse = PostMapper.getPostResponse(post);
             postResponse.setAnnounce(Jsoup.parse(post.getText()).text().substring(0, 150) + "...");
             postResponseList.add(postResponse);
