@@ -6,14 +6,15 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.skillbox.diplom.entities.Comment;
 import ru.skillbox.diplom.entities.Post;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PostRepositori extends PagingAndSortingRepository<Post, Integer> {
     //TODO экранирование спец символов проверить и сделать
+    //1583250619160 время для теста
     @Query(nativeQuery = true,
             value = "SELECT COUNT(*) FROM posts WHERE moderation_status = 'ACCEPTED' and is_active = true " +
                     "and time <= (:currentTime);")
@@ -37,6 +38,14 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "and is_active = true and posts.time <= (:currentTime) " +
                     "group by posts.id ORDER BY count DESC LIMIT 10 OFFSET (:offset);")
     List<Post> getListBestPosts(@Param("currentTime") long currentTime, @Param("offset") int offset);
+
+    @Query(nativeQuery = true,
+            value = "select count(value) from new.post_votes where value = 1 and post_id = (:id) group by value;")
+    Optional<Integer> countLike(@Param("id") int id);
+
+    @Query(nativeQuery = true,
+            value = "select count(value) from new.post_votes where value = -1 and post_id = (:id) group by value;")
+    Optional<Integer> countDislike(@Param("id") int id);
 
     @Transactional
     @Modifying

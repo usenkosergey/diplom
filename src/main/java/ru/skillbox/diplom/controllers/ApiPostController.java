@@ -84,6 +84,8 @@ public class ApiPostController {
         for (Post post : postService.getPosts(offset, mode)) {
             PostResponse postResponse = PostMapper.getPostResponse(post);
             postResponse.setAnnounce(Jsoup.parse(post.getText()).text().substring(0, 150) + "...");
+            postResponse.setLikeCount(postRepositori.countLike(post.getId()).orElse(0));
+            postResponse.setDislikeCount(postRepositori.countDislike(post.getId()).orElse(0));
             postResponseList.add(postResponse);
         }
         postsResponseAll.setPosts(postResponseList);

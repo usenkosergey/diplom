@@ -7,7 +7,7 @@ VALUES
 INSERT INTO posts
 (is_active, moderation_status, moderator_id, user_id,
 time, title, text, view_count )
-VALUES ('true', 'ACCEPTED', 1, 1, 1579956779856, 'The canonical reference for building a production grade API with Spring.',
+VALUES ('true', 'ACCEPTED', 1, 1, 1579956779856, 'ID-1 The canonical reference for building a production grade API with Spring.',
 $$<h2 data-id=\"overview\"><strong>1. Overview</strong></h2>
  <div class=\"bd-anchor\" id=\"overview\"></div>
  <p><a href=\"https://www.baeldung.com/spring-boot\" rel=\"noopener noreferrer\">Spring Boot</a> and <a href=\"https://angular.io/\" rel=\"noopener noreferrer\">Angular</a> form a powerful tandem that works great for developing web applications with a minimal footprint.</p>
@@ -24,7 +24,7 @@ $$<h2 data-id=\"overview\"><strong>1. Overview</strong></h2>
 INSERT INTO posts
 (is_active, moderation_status, moderator_id, user_id,
 time, title, text, view_count )
-VALUES ('true', 'ACCEPTED', 1, 1, 1579956979856, 'Creating the Project',
+VALUES ('true', 'ACCEPTED', 1, 1, 1579956979856, 'ID-2 Creating the Project',
 $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaffolding-your-spring-boot-application/#spring-boot-cli\">Spring Boot CLI</a> by typing the following command in your terminal -</p>
  <pre><code class=\"language-bash\">spring init -n=jpa-many-to-many-demo -d=web,jpa,mysql --package-name=com.example.jpa jpa-many-to-many-demo
  </code></pre>
@@ -41,7 +41,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'ACCEPTED', 1, 1, 1579156739856, 'Configuring the Database and Hibernate Log levels',
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156739856, 'ID-3 Configuring the Database and Hibernate Log levels',
  $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
   <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
@@ -52,7 +52,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'NEW', 1, 1, 1579956039856, 'Скопируйте любой понравившийся статус и используйте его в ВК на своей стене.',
+ VALUES ('true', 'NEW', 1, 1, 1579956039856, 'ID-4 Скопируйте любой понравившийся статус и используйте его в ВК на своей стене.',
  $$<blockquote>Когда есть совесть - закон не нужен. </blockquote>
  <blockquote>— А… на что я тебе? - А на всю жизнь&#33; </blockquote>
  <blockquote>Работа свыше нам дана: замена счастию она. </blockquote>
@@ -61,14 +61,14 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
   INSERT INTO posts
   (is_active, moderation_status, moderator_id, user_id,
   time, title, text, view_count )
-  VALUES ('false', 'NEW', 1, 1, 1579956739856, 'Правильно подобранный статус на стену в ВК.',
+  VALUES ('false', 'NEW', 1, 1, 1579956739856, 'ID-5 Правильно подобранный статус на стену в ВК.',
   $$<blockquote>Не льсти себе, ты можешь лучше </blockquote><blockquote>Не сахарная, от красивых слов не таю...
      </blockquote><blockquote>Лучше семь раз покрыться потом, чем один раз инеем!  </blockquote>$$, 5);
 
    INSERT INTO posts
    (is_active, moderation_status, moderator_id, user_id,
    time, title, text, view_count )
-   VALUES ('true', 'NEW', 1, 1, 1579959939856, 'что можно потавить на статус',
+   VALUES ('true', 'NEW', 1, 1, 1579959939856, 'ID-6 что можно потавить на статус',
    $$<blockquote>Мужчина, как и машина, должен принадлежать только одной владелице.. Иначе это - общественный транспорт! </blockquote>
    <blockquote>смейся и весь мир будет смеяться вместе с тобой, плачь и ты будешь плакать в одиночестве </blockquote>$$, 6);
    
@@ -78,7 +78,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
     INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'ACCEPTED', 1, 1, 1579156739856, '1-Configuring the Database and Hibernate Log levels',
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156739856, 'ID-7 Configuring the Database and Hibernate Log levels',
  $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
   <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
@@ -90,7 +90,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'ACCEPTED', 1, 1, 1579156749856, '2-Configuring the Database and Hibernate Log levels',
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156749856, 'ID-8 Configuring the Database and Hibernate Log levels',
  $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
   <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
@@ -101,7 +101,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'ACCEPTED', 1, 1, 1579156759856, '3-Configuring the Database and Hibernate Log levels',
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156759856, 'ID-9 Configuring the Database and Hibernate Log levels',
  $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
   <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
@@ -112,7 +112,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'ACCEPTED', 1, 1, 1579156769856, '4-Configuring the Database and Hibernate Log levels',
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156769856, 'ID-10 Configuring the Database and Hibernate Log levels',
  $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
   <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
@@ -123,7 +123,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'ACCEPTED', 1, 1, 1579156779856, '4-Configuring the Database and Hibernate Log levels',
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156779856, 'ID-11 Configuring the Database and Hibernate Log levels',
  $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
   <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
@@ -134,7 +134,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'ACCEPTED', 1, 1, 1579156789856, '5-Configuring the Database and Hibernate Log levels',
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156789856, 'ID-12 Configuring the Database and Hibernate Log levels',
  $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
   <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
@@ -145,7 +145,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'ACCEPTED', 1, 1, 1579156799856, '6-Configuring the Database and Hibernate Log levels',
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156799856, 'ID-13 Configuring the Database and Hibernate Log levels',
  $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
   <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
@@ -156,7 +156,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'ACCEPTED', 1, 1, 1579156839856, '7-Configuring the Database and Hibernate Log levels',
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156839856, 'ID-14 Configuring the Database and Hibernate Log levels',
  $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
   <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
@@ -167,7 +167,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'ACCEPTED', 1, 1, 1579156939856, '8-Configuring the Database and Hibernate Log levels',
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579156939856, 'ID-15 Configuring the Database and Hibernate Log levels',
  $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
   <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
@@ -178,7 +178,7 @@ $$<p>You can create the project using <a href=\"https://www.callicoder.com/scaff
  INSERT INTO posts
  (is_active, moderation_status, moderator_id, user_id,
  time, title, text, view_count )
- VALUES ('true', 'ACCEPTED', 1, 1, 1579157739856, '9-Configuring the Database and Hibernate Log levels',
+ VALUES ('true', 'ACCEPTED', 1, 1, 1579157739856, 'ID-16 Configuring the Database and Hibernate Log levels',
  $$<p>Be sure to change the <code>spring.datasource.username</code> and <code>spring.datasource.password</code> properties as per your MySQL installation. Also, create a database named <code>jpa_many_to_many_demo</code>.</p>
   <p>The <code>spring.jpa.hibernate.ddl-auto = update</code> property makes sure that the database tables and the domain models in your application are in sync. Whenever you change the domain model, hibernate will automatically update the mapped table in the database when you restart the application.</p>
   <p>I have also specified the log levels for hibernate so that we can debug the SQL queries executed by hibernate.</p>
