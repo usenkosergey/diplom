@@ -68,10 +68,13 @@ public class ApiPostController {
 //        System.out.println("max --- " + max);
 //
 //        System.out.println("--------");
+        PostResponse postResponse = PostMapper.getPostResponse(postRepositori.findById(id).get());
+        postResponse.setLikeCount(postRepositori.countLike(id).orElse(0));
+        postResponse.setDislikeCount(postRepositori.countDislike(id).orElse(0));
         if (postRepositori.updateViewCount(id) != 1) {
             logger.error("Update количество просмотров не +1 :" + id);
         }
-        return PostMapper.getPostResponse(postRepositori.findById(id).get()); //TODO проверку на существование сделать
+        return postResponse; //TODO проверку на существование сделать
     }
 
     @GetMapping("/api/post")
