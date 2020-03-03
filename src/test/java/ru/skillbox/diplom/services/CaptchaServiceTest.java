@@ -43,7 +43,6 @@ public class CaptchaServiceTest {
 
         captchaRepositori.deleteOldCaptca(System.currentTimeMillis() - deltaTime);
 
-        captchaRepositori.count();
         Assert.assertEquals(1, captchaRepositori.count());
 
     }

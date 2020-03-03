@@ -11,6 +11,7 @@ import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.TagsRepositori;
 import ru.skillbox.diplom.repositories.UserRepositori;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -62,6 +63,8 @@ public class PostService {
             return postRepositori.getListRecentPosts(System.currentTimeMillis(), offset);
         } else if (mode.equals("early")) {
             return postRepositori.getListEarlyPosts(System.currentTimeMillis(), offset);
+        } else if (mode.equals("best")) {
+            return postRepositori.getListBestPosts(System.currentTimeMillis(),offset);
         }
 
 

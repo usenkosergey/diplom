@@ -1,6 +1,8 @@
 INSERT INTO users (is_moderator, reg_time, name, email, password)
 VALUES
-('true',1579956771856,'Sergey', 'wert@dfre.cf', '454545');
+('true',1579956771856,'1Sergey', 'wert@dfre.cf', '454545'),
+('true',1579956771856,'2Sergey', 'wert@dfre.cf', '454545'),
+('false',1579956771856,'3Sergey', 'wert@dfre.cf', '454545');
 ---------------
 INSERT INTO posts
 (is_active, moderation_status, moderator_id, user_id,
@@ -211,3 +213,18 @@ VALUES
 ('MULTIUSER_MODE', 'Многопользовательский режим', 'true'),
 ('POST_PREMODERATION', 'Премодерация постов', 'false'),
 ('STATISTICS_IS_PUBLIC', 'Показывать всем статистику блога', 'true');
+-----------------
+Insert Into post_votes
+(user_id, post_id, time, value)
+VALUES
+(1,1,1579157739856,1),
+(1,2,1579157739856,1),
+(1,3,1579157739856,-1),
+(1,4,1579157739856,-1),
+(1,5,1579157739856,-1),
+(2,3,1579157739856,1),
+(2,7,1579157739856,-1),
+(2,2,1579157739856,1),
+(2,3,1579157739856,-1),
+(2,2,1579157739856,-1),
+(3,3,1579157739856,-1);

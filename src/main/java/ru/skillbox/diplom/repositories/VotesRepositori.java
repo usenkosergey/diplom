@@ -10,11 +10,11 @@ import ru.skillbox.diplom.entities.PostVotes;
 public interface VotesRepositori extends JpaRepository<PostVotes, Integer> {
 
     @Query(nativeQuery = true,
-            value = "SELECT COUNT(*) FROM new.post_votes WHERE post_id = :post_id AND value = 1;")
+            value = "SELECT COUNT(*) FROM post_votes WHERE post_id = :post_id AND value = 1;")
     Integer likeCount(@Param("post_id") int post_id);
 
 
     @Query(nativeQuery = true,
-            value = "SELECT COUNT(*) FROM new.post_votes WHERE post_id = :post_id AND value = -1;")
+            value = "SELECT COUNT(*) FROM post_votes WHERE post_id = :post_id AND value = -1;")
     Integer dislikeCount(@Param("post_id") int post_id);
 }
