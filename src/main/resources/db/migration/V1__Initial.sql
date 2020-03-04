@@ -32,6 +32,7 @@ time BIGINT NOT NULL,
 value SMALLINT NOT NULL
 );
 CREATE INDEX value ON post_votes (value);
+CREATE INDEX user_id ON post_votes (user_id);
 
 CREATE TABLE tags
 (

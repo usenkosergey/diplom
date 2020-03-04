@@ -31,12 +31,12 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
     List<Post> getListEarlyPosts(@Param("currentTime") long currentTime, @Param("offset") int offset);
 
     @Query(nativeQuery = true,
-            value = "SELECT posts.*, count(posts.id) FROM posts left JOIN " +
+            value = "SELECT posts.*, count(post_votes.post_id) FROM posts left JOIN " +
                     "post_votes ON posts.id = post_votes.post_id where " +
                     "value = 1 or value isnull " +
                     "and moderation_status = 'ACCEPTED' " +
                     "and is_active = true and posts.time <= (:currentTime) " +
-                    "group by posts.id ORDER BY count DESC LIMIT 10 OFFSET (:offset);")
+                    "group by post_votes.post_id, posts.id ORDER BY count DESC LIMIT 10 OFFSET (:offset);")
     List<Post> getListBestPosts(@Param("currentTime") long currentTime, @Param("offset") int offset);
 
     @Query(nativeQuery = true,
