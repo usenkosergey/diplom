@@ -1,7 +1,5 @@
 package ru.skillbox.diplom.api.responses;
 
-import ru.skillbox.diplom.entities.Comment;
-
 import java.util.List;
 
 public class PostResponse {

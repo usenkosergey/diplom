@@ -40,12 +40,19 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
     List<Post> getListBestPosts(@Param("currentTime") long currentTime, @Param("offset") int offset);
 
     @Query(nativeQuery = true,
-            value = "select count(value) from new.post_votes where value = 1 and post_id = (:id) group by value;")
-    Optional<Integer> countLike(@Param("id") int id);
+            value = "select posts.*, count(post_comments.post_id) " +
+                    "FROM posts left JOIN post_comments " +
+                    "ON posts.id = post_comments.post_id " +
+                    "where moderation_status = 'ACCEPTED' " +
+                    "and is_active = true and posts.time <= (:currentTime) " +
+                    "group by post_comments.post_id, posts.id " +
+                    "ORDER BY count DESC LIMIT 10 OFFSET (:offset);")
+    List<Post> getListCommentPosts(@Param("currentTime") long currentTime, @Param("offset") int offset);
+
 
     @Query(nativeQuery = true,
-            value = "select count(value) from new.post_votes where value = -1 and post_id = (:id) group by value;")
-    Optional<Integer> countDislike(@Param("id") int id);
+            value = "select count(value) from post_votes where value = (:value) and post_id = (:id) group by value;")
+    Optional<Integer> countLike(@Param("id") int id, @Param("value") int value);
 
     @Transactional
     @Modifying

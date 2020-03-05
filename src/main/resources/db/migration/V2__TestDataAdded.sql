@@ -1,8 +1,8 @@
 INSERT INTO users (is_moderator, reg_time, name, email, password)
 VALUES
-('true',1579956771856,'1Sergey', 'wert@dfre.cf', '454545'),
-('true',1579956771856,'2Sergey', 'wert@dfre.cf', '454545'),
-('false',1579956771856,'3Sergey', 'wert@dfre.cf', '454545');
+('true',1579956771856,'Sergey-1', 'wert@dfre.cf', '454545'),
+('true',1579956771856,'Sergey-2', 'wert@dfre.cf', '454545'),
+('false',1579956771856,'Sergey-3', 'wert@dfre.cf', '454545');
 ---------------
 INSERT INTO posts
 (is_active, moderation_status, moderator_id, user_id,
@@ -242,10 +242,10 @@ VALUES
 Insert Into post_comments
 (parent_id, post_id, user_id, text, time)
 VALUES
-(0, 3, 1, 'К1 к посту 3', 1583250619160),
+(0, 3, 2, 'К1 к посту 3', 1583250619160),
 (0, 7, 1, 'К2 к посту 7', 1583250619160),
 (2, 7, 1, 'К3 к ком К2 к посту 7', 1583250619160),
-(0, 7, 1, 'К7 к посту 7', 1583250639160),
+(0, 7, 2, 'К7 к посту 7', 1583250639160),
 (0, 3, 1, 'К4 к посту 3', 1583250619160),
-(0, 3, 1, 'К6 к посту 3', 1583250629160),
+(0, 3, 2, 'К6 к посту 3', 1583250629160),
 (0, 2, 1, 'К5 к посту 2', 1583250619160);

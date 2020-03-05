@@ -63,8 +63,8 @@ public class ApiPostController {
 //
 //        System.out.println("--------");
         PostResponse postResponse = PostMapper.getPostResponse(postRepositori.findById(id).get(), commentRepositori.findByPostIdOrderByTimeDesc(id));
-        postResponse.setLikeCount(postRepositori.countLike(id).orElse(0));
-        postResponse.setDislikeCount(postRepositori.countDislike(id).orElse(0));
+        postResponse.setLikeCount(postRepositori.countLike(id, 1).orElse(0));
+        postResponse.setDislikeCount(postRepositori.countLike(id, -1).orElse(0));
         if (postRepositori.updateViewCount(id) != 1) {
             logger.error("Update количество просмотров не +1 :" + id);
         }
@@ -81,8 +81,8 @@ public class ApiPostController {
         for (Post post : postService.getPosts(offset, mode)) {
             PostResponse postResponse = PostMapper.getPostResponse(post, commentRepositori.findByPostIdOrderByTimeDesc(post.getId()));
             postResponse.setAnnounce(Jsoup.parse(post.getText()).text().substring(0, 150) + "...");
-            postResponse.setLikeCount(postRepositori.countLike(post.getId()).orElse(0));
-            postResponse.setDislikeCount(postRepositori.countDislike(post.getId()).orElse(0));
+            postResponse.setLikeCount(postRepositori.countLike(post.getId(), 1).orElse(0));
+            postResponse.setDislikeCount(postRepositori.countLike(post.getId(),-1).orElse(0));
             postResponseList.add(postResponse);
         }
         postsResponseAll.setPosts(postResponseList);

@@ -1,5 +1,7 @@
 package ru.skillbox.diplom.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,9 @@ import java.util.List;
 @Service
 @Transactional
 public class PostService {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private PostRepositori postRepositori;
 
@@ -67,8 +72,11 @@ public class PostService {
         } else if (mode.equals("best")) {
             System.out.println("сортировка Бест"); //TODO удалить позже
             return postRepositori.getListBestPosts(System.currentTimeMillis(),offset);
+        } else if (mode.equals("popular")) {
+            System.out.println("сортировка комментами"); //TODO удалить позже
+            return postRepositori.getListCommentPosts(System.currentTimeMillis(), offset);
         }
-
+        logger.error("не вернулась сортировка, никакая");
 
         return null;
     }
