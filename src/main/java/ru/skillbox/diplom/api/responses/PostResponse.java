@@ -15,7 +15,8 @@ public class PostResponse {
     private int likeCount;
     private int dislikeCount;
     private int viewCount;
-    private List<Comment> comments;
+    private int commentCount;
+    private List<CommentResponse> comments;
     private List<String> tags;
 
     public PostResponse() {
@@ -85,14 +86,6 @@ public class PostResponse {
         this.viewCount = viewCount;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
     public String getAnnounce() {
         return announce;
     }
@@ -107,5 +100,21 @@ public class PostResponse {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public List<CommentResponse> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentResponse> comments) {
+        this.comments = comments;
     }
 }

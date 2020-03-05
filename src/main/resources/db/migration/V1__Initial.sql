@@ -56,6 +56,7 @@ user_id INT NOT NULL REFERENCES users (id),
 text TEXT NOT NULL,
 time BIGINT NOT NULL
 );
+CREATE INDEX post_id ON post_comments (post_id);
 
 CREATE TABLE captcha_codes
 (

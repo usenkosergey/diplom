@@ -4,28 +4,19 @@ import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.skillbox.diplom.Mapper.PostMapper;
 import ru.skillbox.diplom.api.responses.PostResponse;
 import ru.skillbox.diplom.api.responses.PostsResponseAll;
 import ru.skillbox.diplom.entities.Post;
-import ru.skillbox.diplom.entities.Tag;
+import ru.skillbox.diplom.repositories.CommentRepositori;
 import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.TagsRepositori;
-import ru.skillbox.diplom.repositories.UserRepositori;
-import ru.skillbox.diplom.services.CommentService;
 import ru.skillbox.diplom.services.PostService;
-import ru.skillbox.diplom.services.UserService;
-import ru.skillbox.diplom.services.VotesService;
 
-import java.math.BigInteger;
-import java.nio.file.LinkOption;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/")
@@ -41,6 +32,9 @@ public class ApiPostController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private CommentRepositori commentRepositori;
 
 
     @GetMapping("/api/post/{id}") //Getting post by ID
@@ -68,7 +62,7 @@ public class ApiPostController {
 //        System.out.println("max --- " + max);
 //
 //        System.out.println("--------");
-        PostResponse postResponse = PostMapper.getPostResponse(postRepositori.findById(id).get());
+        PostResponse postResponse = PostMapper.getPostResponse(postRepositori.findById(id).get(), commentRepositori.findByPostIdOrderByTimeDesc(id));
         postResponse.setLikeCount(postRepositori.countLike(id).orElse(0));
         postResponse.setDislikeCount(postRepositori.countDislike(id).orElse(0));
         if (postRepositori.updateViewCount(id) != 1) {
@@ -85,7 +79,7 @@ public class ApiPostController {
         List<PostResponse> postResponseList = new ArrayList<>();
 
         for (Post post : postService.getPosts(offset, mode)) {
-            PostResponse postResponse = PostMapper.getPostResponse(post);
+            PostResponse postResponse = PostMapper.getPostResponse(post, commentRepositori.findByPostIdOrderByTimeDesc(post.getId()));
             postResponse.setAnnounce(Jsoup.parse(post.getText()).text().substring(0, 150) + "...");
             postResponse.setLikeCount(postRepositori.countLike(post.getId()).orElse(0));
             postResponse.setDislikeCount(postRepositori.countDislike(post.getId()).orElse(0));
