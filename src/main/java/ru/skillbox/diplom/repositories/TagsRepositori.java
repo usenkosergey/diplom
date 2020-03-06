@@ -21,7 +21,7 @@ public interface TagsRepositori extends JpaRepository<Tag, Integer> {
             "JOIN posts on posts.id = tag2post.post_id\n" +
             "JOIN tags on tag2post.tag_id = tags.id\n" +
             "WHERE moderation_status = 'ACCEPTED' and is_active = true\n" +
-            "and time <= (:currentTime) GROUP BY tags.name;")
+            "and time <= (:currentTime) GROUP BY tags.name ORDER BY count DESC LIMIT 20;")
     List<Object[]> tagsForTopic(@Param("currentTime") long currentTime);
 
     /*

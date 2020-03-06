@@ -205,6 +205,9 @@ Insert Into tag2post (post_id, tag_id) VALUES (4,2);
 Insert Into tag2post (post_id, tag_id) VALUES (5,5);
 Insert Into tag2post (post_id, tag_id) VALUES (5,1);
 Insert Into tag2post (post_id, tag_id) VALUES (6,2);
+Insert Into tag2post (post_id, tag_id) VALUES (7,4);
+Insert Into tag2post (post_id, tag_id) VALUES (8,4);
+Insert Into tag2post (post_id, tag_id) VALUES (9,4);
 
 -----------------
 Insert Into global_settings

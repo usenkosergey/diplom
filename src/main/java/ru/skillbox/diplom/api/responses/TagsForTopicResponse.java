@@ -3,16 +3,16 @@ package ru.skillbox.diplom.api.responses;
 import java.util.List;
 
 public class TagsForTopicResponse {
-    List<TagsForTopicOne> tags;
+    List<TagForTopicOne> tags;
 
     public TagsForTopicResponse() {
     }
 
-    public List<TagsForTopicOne> getTags() {
+    public List<TagForTopicOne> getTags() {
         return tags;
     }
 
-    public void setTags(List<TagsForTopicOne> tags) {
+    public void setTags(List<TagForTopicOne> tags) {
         this.tags = tags;
     }
 }

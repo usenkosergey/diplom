@@ -5,10 +5,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.skillbox.diplom.api.responses.TagsForTopicOne;
 import ru.skillbox.diplom.api.responses.TagsForTopicResponse;
 import ru.skillbox.diplom.entities.Settings;
 import ru.skillbox.diplom.repositories.SettingsRepositori;
+import ru.skillbox.diplom.services.TagService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +22,9 @@ public class ApiGeneralController {
 
     @Autowired
     private SettingsRepositori settingsRepositori;
+
+    @Autowired
+    private TagService tagService;
 
 //        @Autowired TODO это почту я проверял, удалить.
 //        EMailService eMailService;
@@ -67,25 +70,7 @@ public class ApiGeneralController {
 
     @GetMapping("api/tag")
     public TagsForTopicResponse getTagsForTopic() {
-        //TODO это тест как выводить теги на фронт
-        TagsForTopicResponse tagsForTopicResponse = new TagsForTopicResponse();
-
-        TagsForTopicOne tags1 = new TagsForTopicOne();
-        //tags1.setId(1);
-        tags1.setName("Tag_1");
-        tags1.setWeight(0.45);
-
-        TagsForTopicOne tags2 = new TagsForTopicOne();
-        //tags1.setId(2);
-        tags2.setName("Tag_2");
-        tags2.setWeight(0.91);
-
-        List<TagsForTopicOne> list = new ArrayList<>();
-        list.add(tags1);
-        list.add(tags2);
-        tagsForTopicResponse.setTags(list);
-
-        return tagsForTopicResponse;
+        return tagService.getTagsForTopic();
     }
 
     @GetMapping("api/auth/check")
