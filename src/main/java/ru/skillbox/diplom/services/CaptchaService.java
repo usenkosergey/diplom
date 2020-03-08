@@ -43,6 +43,8 @@ public class CaptchaService {
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             String decodeCode = EncoderHelper.getChallangeAndWriteImage(cs, "png", byteArrayOutputStream);
             String encodeCode = Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
+            //System.out.println("setCode(decodeCode) - " + decodeCode);
+            //System.out.println("setSecretCode(encodeCode) - " + encodeCode);
             captchaCode = new CaptchaCode();
             captchaCode.setCode(decodeCode);
             captchaCode.setSecretCode(encodeCode);
