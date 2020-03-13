@@ -4,15 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skillbox.diplom.api.responses.TagsForTopicResponse;
 import ru.skillbox.diplom.entities.Settings;
 import ru.skillbox.diplom.repositories.SettingsRepositori;
 import ru.skillbox.diplom.services.TagService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,8 +80,18 @@ public class ApiGeneralController {
 
     //TODO проверить что вышел юзер
     @PostMapping("/profile/my")
-    public String sss(){
+    public String sss(@RequestParam("photo") MultipartFile uploadfile,
+                      @RequestParam("name") String name) throws IOException {
         logger.info("/profile/my");
+        //TODO
+        //System.out.println("name - " + name);
+        //System.out.println(uploadfile.getOriginalFilename());
+        //System.out.println(uploadfile.getSize());
+
+        byte[] bytes = uploadfile.getBytes();
+        Path path = Paths.get("./src/main/resources/static/img/" + uploadfile.getOriginalFilename());
+        Files.write(path, bytes);
+
         return null;
     }
 
