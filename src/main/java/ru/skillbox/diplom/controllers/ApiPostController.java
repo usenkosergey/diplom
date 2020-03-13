@@ -15,11 +15,12 @@ import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.TagsRepositori;
 import ru.skillbox.diplom.services.PostService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api/post")
 public class ApiPostController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -36,8 +37,10 @@ public class ApiPostController {
     @Autowired
     private CommentRepositori commentRepositori;
 
+//    @Autowired
+//    private HttpServletRequest reg;
 
-    @GetMapping("/api/post/{id}") //Getting post by ID
+    @GetMapping("/{id}") //Getting post by ID
     public PostResponse getById(@PathVariable int id) {
         System.out.println("ApiPostController : getById : id - " + id); //TODO удалить позже
         //tagsRepositori.addNewTag("asdfg");
@@ -71,7 +74,7 @@ public class ApiPostController {
         return postResponse; //TODO проверку на существование сделать
     }
 
-    @GetMapping("/api/post")
+    @GetMapping("")
     public PostsResponseAll getPosts(@RequestParam int offset, @RequestParam int limit, @RequestParam String mode) {
         logger.info("Это ApiPostController метод /api/post");
         PostsResponseAll postsResponseAll = new PostsResponseAll();
@@ -87,14 +90,10 @@ public class ApiPostController {
         }
         postsResponseAll.setPosts(postResponseList);
 
+//        System.out.println("--- " + reg.getSession().getId());
+//        System.out.println("--- " + reg.getServletPath());
+
         return postsResponseAll;
     }
 
-    @GetMapping("/posts/{mode}")
-    public RedirectView redirect(@PathVariable String mode) {
-        logger.info("Это ApiPostController метод /posts/{mode}");
-        RedirectView rv = new RedirectView("/api/post?offset=0&limit=10&mode=recent");
-        rv.setExposeModelAttributes(false);
-        return rv;
-    }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api")
 @ConfigurationProperties(prefix = "my")
 public class ApiGeneralController {
 
@@ -35,7 +35,7 @@ public class ApiGeneralController {
         return this.initData;
     }
 
-    @GetMapping("/api/init")
+    @GetMapping("/init")
     public Map<String, String> getInit() {
         System.out.println("Это инит - я тут"); //TODO удалить позже
 
@@ -57,7 +57,7 @@ public class ApiGeneralController {
         return initDataResponse;
     }
 
-    @GetMapping("api/settings")
+    @GetMapping("/settings")
     public HashMap<String, Boolean> getGlobalSettings() {
         System.out.println("Это getGlobalSettings - я тут"); //TODO удалить позже
         List<Settings> tempSetting = settingsRepositori.findAll();
@@ -68,16 +68,9 @@ public class ApiGeneralController {
         return currentSettings;
     }
 
-    @GetMapping("api/tag")
+    @GetMapping("/tag")
     public TagsForTopicResponse getTagsForTopic() {
         return tagService.getTagsForTopic();
-    }
-
-    @GetMapping("api/auth/check")
-    public Map<String, Boolean> chek() {
-        HashMap<String, Boolean> temp = new HashMap<>();
-        temp.put("result", false);
-        return temp;
     }
 
 }

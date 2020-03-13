@@ -14,7 +14,7 @@ public class CommentMapper {
         commentResponse.setId(comment.getId());
         commentResponse.setParentId(comment.getParentId());
         commentResponse.setPostId(comment.getPostId());
-        commentResponse.setUser(UserIdNamePhotoMapper.getUser(comment.getUser()));
+        commentResponse.setUser(UserMapper.getUser(comment.getUser()));
         commentResponse.setText(comment.getText());
         commentResponse.setTime(Instant.ofEpochMilli(comment.getTime()).atZone(ZoneId.systemDefault())
                 .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));

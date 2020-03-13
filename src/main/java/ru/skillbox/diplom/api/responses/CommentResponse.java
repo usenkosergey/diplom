@@ -5,7 +5,7 @@ public class CommentResponse {
     private int id;
     private int parentId;
     private int postId;
-    private UserIdNamePhoto user;
+    private UserResponse user;
     private String text;
     private String time;
 
@@ -36,14 +36,6 @@ public class CommentResponse {
         this.postId = postId;
     }
 
-    public UserIdNamePhoto getUser() {
-        return user;
-    }
-
-    public void setUser(UserIdNamePhoto user) {
-        this.user = user;
-    }
-
     public String getText() {
         return text;
     }
@@ -58,5 +50,13 @@ public class CommentResponse {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public UserResponse getUser() {
+        return user;
+    }
+
+    public void setUser(UserResponse user) {
+        this.user = user;
     }
 }

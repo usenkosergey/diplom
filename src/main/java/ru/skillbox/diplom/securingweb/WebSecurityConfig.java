@@ -23,21 +23,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .formLogin()
 //                .loginPage("/login")
 //                .permitAll()
+//                .and()
+//                .logout()
+//                .permitAll()
+//                .and()
+//                .exceptionHandling()
+//                .accessDeniedPage("/403")
                 .and()
-                .logout()
-                .permitAll();
+                .csrf().disable()//TODO выключить не забыть
+        ;
     }
 
-    @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("user")
-                        .password("password")
-                        .roles("USER")
-                        .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }
+//    @Bean
+//    @Override
+//    public UserDetailsService userDetailsService() {
+//        UserDetails user =
+//                User.withDefaultPasswordEncoder()
+//                        .username("user")
+//                        .password("password")
+//                        .roles("USER")
+//                        .build();
+//
+//        return new InMemoryUserDetailsManager(user);
+//    }
 }

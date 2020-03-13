@@ -62,7 +62,7 @@ CREATE TABLE captcha_codes
 (
 id SERIAL PRIMARY KEY,
 time BIGINT NOT NULL,
-code TEXT NOT NULL,
+code TEXT UNIQUE NOT NULL,
 secret_code TEXT NOT NULL
 );
 

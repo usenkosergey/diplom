@@ -1,8 +1,8 @@
 INSERT INTO users (is_moderator, reg_time, name, email, password)
 VALUES
 ('true',1579956771856,'Sergey-1', 'wert@dfre.cf', '454545'),
-('true',1579956771856,'Sergey-2', 'wert@dfre.cf', '454545'),
-('false',1579956771856,'Sergey-3', 'wert@dfre.cf', '454545');
+('true',1579956771856,'Sergey-2', '2wert@dfre.cf', '454545'),
+('false',1579956771856,'Sergey-3', '3wert@dfre.cf', '454545');
 ---------------
 INSERT INTO posts
 (is_active, moderation_status, moderator_id, user_id,

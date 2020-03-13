@@ -23,7 +23,7 @@ public class PostMapper {
         postResponse.setText(post.getText());
         postResponse.setTime(Instant.ofEpochMilli(post.getTime()).atZone(ZoneId.systemDefault())
                 .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        postResponse.setUser(UserIdNameMapper.getUser(post));
+        postResponse.setUser(UserMapper.getUser(post.getUser()));
         postResponse.setAnnounce("");
         postResponse.setTitle(post.getTitle());
         postResponse.setViewCount(post.getViewCount());

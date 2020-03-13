@@ -1,17 +1,17 @@
-package ru.skillbox.diplom.api.reguests;
+package ru.skillbox.diplom.api.requests;
 
 public class Register {
-    private String email;
+    private String e_mail;
     private String password;
     private String captcha;
     private String captcha_secret;
 
-    public String getEmail() {
-        return email;
+    public String getE_mail() {
+        return e_mail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setE_mail(String e_mail) {
+        this.e_mail = e_mail;
     }
 
     public String getPassword() {
