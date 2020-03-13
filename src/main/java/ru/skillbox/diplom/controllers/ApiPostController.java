@@ -42,7 +42,7 @@ public class ApiPostController {
 
     @GetMapping("/{id}") //Getting post by ID
     public PostResponse getById(@PathVariable int id) {
-        System.out.println("ApiPostController : getById : id - " + id); //TODO удалить позже
+        //System.out.println("ApiPostController : getById : id - " + id); //TODO удалить позже
         //tagsRepositori.addNewTag("asdfg");
         //TODO удаление тегов
         //System.out.println(postRepositori.findById(2).get().getText().replaceAll("\\<.*?\\>", ""));

@@ -1,8 +1,11 @@
 package ru.skillbox.diplom.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.diplom.api.responses.TagsForTopicResponse;
@@ -17,9 +20,9 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@ConfigurationProperties(prefix = "my")
+@ConfigurationProperties(prefix = "mydata")
 public class ApiGeneralController {
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private SettingsRepositori settingsRepositori;
 
@@ -71,6 +74,13 @@ public class ApiGeneralController {
     @GetMapping("/tag")
     public TagsForTopicResponse getTagsForTopic() {
         return tagService.getTagsForTopic();
+    }
+
+    //TODO проверить что вышел юзер
+    @PostMapping("/profile/my")
+    public String sss(){
+        logger.info("/profile/my");
+        return null;
     }
 
 }

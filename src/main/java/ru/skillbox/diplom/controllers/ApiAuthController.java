@@ -10,7 +10,6 @@ import ru.skillbox.diplom.api.requests.Login;
 import ru.skillbox.diplom.api.requests.Register;
 import ru.skillbox.diplom.api.responses.CaptchaResponse;
 import ru.skillbox.diplom.api.responses.ResponseAll;
-import ru.skillbox.diplom.api.responses.UserResponse;
 import ru.skillbox.diplom.api.responses.UserResponseAuth;
 import ru.skillbox.diplom.entities.CaptchaCode;
 import ru.skillbox.diplom.entities.User;
@@ -37,7 +36,7 @@ public class ApiAuthController {
     @Autowired
     private HttpServletRequest reg;
 
-    private Map<String, UserResponse> auth = new HashMap<>();
+    private Map<String, Integer> auth = new HashMap<>();
 
     @PostMapping("/auth/login")
     public UserResponseAuth login(@RequestBody Login login) {
@@ -45,7 +44,7 @@ public class ApiAuthController {
 
         Optional<User> user = userRepositori.findByEmail(login.getE_mail());
         if (user.isPresent() && new BCryptPasswordEncoder().matches(login.getPassword(), user.get().getPassword())) {
-            auth.put(reg.getSession().getId(), UserMapper.getUser(user.get()));
+            auth.put(reg.getSession().getId(), user.get().getId());
             return new UserResponseAuth(true, UserMapper.getUser(user.get()));
         }
         return new UserResponseAuth(false);
@@ -59,24 +58,24 @@ public class ApiAuthController {
 
     @GetMapping("/auth/check")
     public UserResponseAuth check() {
-        logger.info("/auth/check");
         if (Objects.isNull(auth.get(reg.getSession().getId()))) {
+            logger.info("/auth/check : false");
             return new UserResponseAuth(false);
         }
-        return new UserResponseAuth(true, auth.get(reg.getSession().getId()));
+        logger.info("/auth/check : true");
+        return new UserResponseAuth(
+                true,
+                UserMapper.getUser(userRepositori.getOne(auth.get(reg.getSession().getId())))
+        );
     }
 
     @GetMapping(value = "/auth/captcha")
     public CaptchaResponse genCaptcha() {
+
         CaptchaResponse captchaResponse = new CaptchaResponse();
         CaptchaCode captchaCode = captchaService.genAndSaveCaptcha();
         captchaResponse.setImage("data:image/png;base64," + captchaCode.getSecretCode());
         captchaResponse.setSecret(Base64.getEncoder().encodeToString(captchaCode.getCode().getBytes()));
-
-        System.out.println("-- " + reg.getRequestURI());
-        System.out.println("--- " + reg.getSession().getId());
-//        System.out.println("SecurityContextHolder.getInitializeCount() - " + SecurityContextHolder.getInitializeCount());
-//        System.out.println("SecurityContextHolder - " + SecurityContextHolder.getContext().getAuthentication().getName());
 
         return captchaResponse;
     }
@@ -95,6 +94,7 @@ public class ApiAuthController {
             addUser.setRegTime(System.currentTimeMillis());
             addUser.setName("нЕкто");
             addUser.setEmail(register.getE_mail());
+            addUser.setPhoto("default.jpg");
             addUser.setPassword(new BCryptPasswordEncoder().encode(register.getPassword()));
             userRepositori.save(addUser);
             //TODO проверку тут сделать что юзер записался

@@ -64,20 +64,19 @@ public class PostService {
 
     public List<Post> getPosts(int offset, String mode) {
         if (mode.equals("recent")) {
-            System.out.println("сортировка в прямом порядке"); //TODO удалить позже
+            //System.out.println("сортировка в прямом порядке"); //TODO удалить позже
             return postRepositori.getListRecentPosts(System.currentTimeMillis(), offset);
         } else if (mode.equals("early")) {
-            System.out.println("сортировка в обратном порядке"); //TODO удалить позже
+            //System.out.println("сортировка в обратном порядке"); //TODO удалить позже
             return postRepositori.getListEarlyPosts(System.currentTimeMillis(), offset);
         } else if (mode.equals("best")) {
-            System.out.println("сортировка Бест"); //TODO удалить позже
+            //System.out.println("сортировка Бест"); //TODO удалить позже
             return postRepositori.getListBestPosts(System.currentTimeMillis(),offset);
         } else if (mode.equals("popular")) {
-            System.out.println("сортировка комментами"); //TODO удалить позже
+            //System.out.println("сортировка комментами"); //TODO удалить позже
             return postRepositori.getListCommentPosts(System.currentTimeMillis(), offset);
         }
         logger.error("не вернулась сортировка, никакая");
-
         return null;
     }
 }
