@@ -4,6 +4,8 @@ import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.Mapper.PostMapper;
@@ -90,7 +92,7 @@ public class ApiPostController {
     }
 
     @GetMapping("")
-    public PostsResponseAll getPosts(@RequestParam int offset, @RequestParam int limit, @RequestParam String mode) {
+    public ResponseEntity<PostsResponseAll> getPosts(@RequestParam int offset, @RequestParam int limit, @RequestParam String mode) {
         logger.info("Это ApiPostController метод /api/post");
         PostsResponseAll postsResponseAll = new PostsResponseAll();
         postsResponseAll.setCount(postRepositori.countActualPosts(System.currentTimeMillis()));
@@ -108,7 +110,7 @@ public class ApiPostController {
 //        System.out.println("--- " + reg.getSession().getId());
 //        System.out.println("--- " + reg.getServletPath());
 
-        return postsResponseAll;
+        return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
     }
 
     @PostMapping("")

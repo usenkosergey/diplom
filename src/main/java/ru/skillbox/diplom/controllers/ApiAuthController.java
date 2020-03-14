@@ -3,6 +3,8 @@ package ru.skillbox.diplom.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.diplom.Mapper.Constant;
@@ -19,7 +21,6 @@ import ru.skillbox.diplom.repositories.UserRepositori;
 import ru.skillbox.diplom.services.CaptchaService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @RestController
@@ -37,28 +38,24 @@ public class ApiAuthController {
 
     @Autowired
     private HttpServletRequest reg;
-    //private HttpServletResponse res;//TODO
-
-    //protected static Map<String, Integer> auth = new HashMap<>(); //TODO
 
     @PostMapping("/auth/login")
-    public UserResponseAuth login(@RequestBody Login login) {
+    public ResponseEntity<UserResponseAuth> login(@RequestBody Login login) {
         logger.info("/auth/login");
-
         Optional<User> user = userRepositori.findByEmail(login.getE_mail());
         if (user.isPresent() && new BCryptPasswordEncoder().matches(login.getPassword(), user.get().getPassword())) {
             Constant.auth.put(reg.getSession().getId(), user.get().getId());
-            return new UserResponseAuth(true, UserMapper.getUser(user.get()));
+            return new ResponseEntity<>(new UserResponseAuth(true, UserMapper.getUser(user.get())), HttpStatus.OK);
         }
-        return new UserResponseAuth(false);
+        return new ResponseEntity<>(new UserResponseAuth(false), HttpStatus.OK);
     }
 
-    //TODO косячно пока переделать
+    //TODO косячно пока, переделать
     @GetMapping("/auth/logout")
-    public ResponseAll logout() {
+    public ResponseEntity<Map> logout() {
         logger.info("/auth/logout");
         Constant.auth.clear();
-        return new ResponseAll(true);
+        return new ResponseEntity<>(Constant.responseTrue(), HttpStatus.OK);
     }
 
     @GetMapping("/auth/check")
@@ -75,25 +72,25 @@ public class ApiAuthController {
     }
 
     @GetMapping(value = "/auth/captcha")
-    public CaptchaResponse genCaptcha() {
+    public ResponseEntity<CaptchaResponse>  genCaptcha() {
 
         CaptchaResponse captchaResponse = new CaptchaResponse();
         CaptchaCode captchaCode = captchaService.genAndSaveCaptcha();
         captchaResponse.setImage("data:image/png;base64," + captchaCode.getSecretCode());
         captchaResponse.setSecret(Base64.getEncoder().encodeToString(captchaCode.getCode().getBytes()));
 
-        return captchaResponse;
+        return new ResponseEntity<>(captchaResponse, HttpStatus.OK);
     }
 
     @PostMapping(value = "/auth/register")
-    public ResponseAll register(@RequestBody Register register) {
+    public ResponseEntity<Map> register(@RequestBody Register register) {
         User addUser = new User();
         logger.info("/auth/register" + " -> email:" + register.getE_mail());
 
         if (captchaRepositori.findByCode(register.getCaptcha()).isEmpty()) {
-            return new ResponseAll(false, "captcha", "Код с картинки введён неверно");
+            return new ResponseEntity<>(Constant.responseError("captcha", "Код с картинки введён неверно"), HttpStatus.OK);
         } else if (userRepositori.findByEmail(register.getE_mail()).isPresent()) {
-            return new ResponseAll(false, "email", "Этот e-mail уже зарегистрирован");
+            return new ResponseEntity<>(Constant.responseError("email", "Этот e-mail уже зарегистрирован"), HttpStatus.OK);
         } else {
             addUser.setModerator(false);
             addUser.setRegTime(System.currentTimeMillis());
@@ -104,7 +101,7 @@ public class ApiAuthController {
             userRepositori.save(addUser);
             //TODO проверку тут сделать что юзер записался
 
-            return new ResponseAll(true);
+            return new ResponseEntity<>(Constant.responseTrue(), HttpStatus.OK);
         }
 
     }

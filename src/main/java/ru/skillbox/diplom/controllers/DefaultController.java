@@ -2,6 +2,8 @@ package ru.skillbox.diplom.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,8 +14,8 @@ public class DefaultController {
 
 
     @RequestMapping(method = {RequestMethod.OPTIONS, RequestMethod.GET}, value = "/**/{path:[^\\.]*}")
-    public String index() {
-        logger.info("Это дефолтный контроллер"); //TODO удалить позже
-        return "forward:/";
+    public ResponseEntity<String> index() {
+        logger.info("Дефолтный контроллер");
+        return new ResponseEntity<>("forward:/", HttpStatus.OK);
     }
 }

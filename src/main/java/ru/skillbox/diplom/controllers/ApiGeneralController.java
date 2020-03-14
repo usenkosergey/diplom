@@ -4,12 +4,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skillbox.diplom.Mapper.Constant;
+import ru.skillbox.diplom.api.requests.CommentRequest;
 import ru.skillbox.diplom.api.responses.ResponseAll;
 import ru.skillbox.diplom.api.responses.TagsForTopicResponse;
 import ru.skillbox.diplom.entities.Settings;
 import ru.skillbox.diplom.repositories.SettingsRepositori;
+import ru.skillbox.diplom.services.CommentService;
 import ru.skillbox.diplom.services.TagService;
 
 import java.io.IOException;
@@ -32,6 +36,9 @@ public class ApiGeneralController {
     @Autowired
     private TagService tagService;
 
+    @Autowired
+    private CommentService commentService;
+
 //        @Autowired TODO это почту я проверял, удалить.
 //        EMailService eMailService;
 
@@ -42,8 +49,8 @@ public class ApiGeneralController {
     }
 
     @GetMapping("/init")
-    public Map<String, String> getInit() {
-        System.out.println("Это инит - я тут"); //TODO удалить позже
+    public Map getInit() {
+        logger.info("/init");
 
         Map<String, String> initDataResponse = new HashMap<>();
         List<String> tempListInitData = initData;
@@ -64,10 +71,10 @@ public class ApiGeneralController {
     }
 
     @GetMapping("/settings")
-    public HashMap<String, Boolean> getGlobalSettings() {
-        System.out.println("Это getGlobalSettings - я тут"); //TODO удалить позже
+    public Map getGlobalSettings() {
+        logger.info("/settings");
         List<Settings> tempSetting = settingsRepositori.findAll();
-        HashMap<String, Boolean> currentSettings = new HashMap<>();
+        Map<String, Boolean> currentSettings = new HashMap<>();
         for (Settings temp : tempSetting) {
             currentSettings.put(temp.getCode(), temp.getValue().equals("true"));
         }
@@ -93,14 +100,21 @@ public class ApiGeneralController {
         return new ResponseAll(false, "photo", "Фото слишком большое, нужно не более 5 Мб");//TODO доделать
     }
 
-    @PostMapping("/image")
+    @PostMapping("/image")//TODO пока очень сыро
     public String uploadFile(@RequestParam(value = "image", required = false) MultipartFile uploadfile) throws IOException {
         logger.info("/api/image");
         byte[] bytes = uploadfile.getBytes();
         String aaa = "/upload/ab/cd/ef/";
         Path path = Paths.get("./src/main/resources/static" + aaa + uploadfile.getOriginalFilename());
         Files.write(path, bytes);
-        return aaa+uploadfile.getOriginalFilename();
+        return aaa + uploadfile.getOriginalFilename();
     }
+
+    @PostMapping("/comment")
+    public ResponseEntity<Map> comment(@RequestBody CommentRequest commentRequest) {
+        logger.info("/comment");
+        return commentService.addComment(commentRequest);
+    }
+
 
 }
