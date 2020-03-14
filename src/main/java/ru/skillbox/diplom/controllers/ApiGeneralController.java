@@ -7,7 +7,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.api.requests.CommentRequest;
 import ru.skillbox.diplom.api.responses.ResponseAll;
 import ru.skillbox.diplom.api.responses.TagsForTopicResponse;

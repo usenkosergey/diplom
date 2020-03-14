@@ -12,7 +12,6 @@ import ru.skillbox.diplom.Mapper.PostMapper;
 import ru.skillbox.diplom.api.requests.PostRequest;
 import ru.skillbox.diplom.api.responses.PostResponse;
 import ru.skillbox.diplom.api.responses.PostsResponseAll;
-import ru.skillbox.diplom.api.responses.ResponseAll;
 import ru.skillbox.diplom.entities.EModerationStatus;
 import ru.skillbox.diplom.entities.Post;
 import ru.skillbox.diplom.entities.Tag;
@@ -28,6 +27,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -114,15 +114,19 @@ public class ApiPostController {
     }
 
     @PostMapping("")
-    public ResponseAll addPost(@RequestBody PostRequest postRequest) throws ParseException {
+    public ResponseEntity<Map> addPost(@RequestBody PostRequest postRequest) throws ParseException {
         logger.info("add Post");
         Post newPost = new Post();
 
         newPost.setActive(postRequest.getActive() == 1);
         newPost.seteModerationStatus(EModerationStatus.NEW);
 
+        if (Constant.auth.size() == 0)
+            return new ResponseEntity<>(Constant.responseError("text", "пользователя нет"), HttpStatus.BAD_REQUEST);
         Optional<User> user = userRepositori.findById(Constant.auth.get(httpServletRequest.getSession().getId()));
-        if (user.isEmpty()) return new ResponseAll(false);
+        if (user.isEmpty()) {
+            logger.info("/addPost : пользователь не нашелся в базе - " + Constant.auth.get(httpServletRequest.getSession().getId()));
+        }
         newPost.setUser(user.get());
 
         String timeString = postRequest.getTime();
@@ -133,11 +137,13 @@ public class ApiPostController {
         newPost.setTime(timeLong);
 
         if (postRequest.getTitle().length() < 10)
-            return new ResponseAll(false, "title", "Заголовок не установлен или короткий (не менее 10 символов)");
+            return new ResponseEntity<>(Constant.responseError("title", "Заголовок не установлен или короткий (не менее 10 символов)"),
+                    HttpStatus.OK);
         newPost.setTitle(postRequest.getTitle());
 
         if (postRequest.getText().length() < 500)
-            return new ResponseAll(false, "text", "Текст публикации слишком короткий (не менее 500 символов)");
+            return new ResponseEntity<>(Constant.responseError("text", "Текст публикации слишком короткий (не менее 500 символов)"),
+                    HttpStatus.OK);
         newPost.setText(postRequest.getText());
         newPost.setViewCount(0);
 
@@ -146,7 +152,7 @@ public class ApiPostController {
 
         for (String tag : requestTags) {
             Optional<Tag> tempTag = tagsRepositori.findByText(tag);
-            if(tempTag.isPresent()) {
+            if (tempTag.isPresent()) {
                 addPostTag.add(tempTag.get());
             } else {
                 Tag tagNew = new Tag();
@@ -157,7 +163,7 @@ public class ApiPostController {
         newPost.setTags(addPostTag);
         postRepositori.save(newPost);
 
-        return new ResponseAll(true);
+        return new ResponseEntity<>(Constant.responseTrue(), HttpStatus.OK);
     }
 
 }
