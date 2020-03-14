@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skillbox.diplom.api.responses.ResponseAll;
 import ru.skillbox.diplom.api.responses.TagsForTopicResponse;
 import ru.skillbox.diplom.entities.Settings;
 import ru.skillbox.diplom.repositories.SettingsRepositori;
@@ -80,19 +81,16 @@ public class ApiGeneralController {
 
     //TODO проверить что вышел юзер
     @PostMapping("/profile/my")
-    public String sss(@RequestParam("photo") MultipartFile uploadfile,
-                      @RequestParam("name") String name) throws IOException {
+    public ResponseAll profile(@RequestParam(value = "photo", required = false) MultipartFile uploadfile,
+                           @RequestParam(value = "name", required = false) String name
+    ) throws IOException {
         logger.info("/profile/my");
-        //TODO
-        //System.out.println("name - " + name);
-        //System.out.println(uploadfile.getOriginalFilename());
-        //System.out.println(uploadfile.getSize());
 
-        byte[] bytes = uploadfile.getBytes();
-        Path path = Paths.get("./src/main/resources/static/img/" + uploadfile.getOriginalFilename());
-        Files.write(path, bytes);
+//        byte[] bytes = uploadfile.getBytes();
+//        Path path = Paths.get("./src/main/resources/static/img/" + uploadfile.getOriginalFilename());
+//        Files.write(path, bytes);
 
-        return null;
+        return new ResponseAll(false, "photo", "Фото слишком большое, нужно не более 5 Мб");//TODO доделать
     }
 
 }

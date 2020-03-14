@@ -5,19 +5,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
+import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.Mapper.PostMapper;
+import ru.skillbox.diplom.api.requests.PostRequest;
 import ru.skillbox.diplom.api.responses.PostResponse;
 import ru.skillbox.diplom.api.responses.PostsResponseAll;
+import ru.skillbox.diplom.api.responses.ResponseAll;
+import ru.skillbox.diplom.entities.EModerationStatus;
 import ru.skillbox.diplom.entities.Post;
+import ru.skillbox.diplom.entities.Tag;
+import ru.skillbox.diplom.entities.User;
 import ru.skillbox.diplom.repositories.CommentRepositori;
 import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.TagsRepositori;
+import ru.skillbox.diplom.repositories.UserRepositori;
 import ru.skillbox.diplom.services.PostService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/post")
@@ -29,7 +38,10 @@ public class ApiPostController {
     private PostRepositori postRepositori;
 
     @Autowired
-    TagsRepositori tagsRepositori;
+    private UserRepositori userRepositori;
+
+    @Autowired
+    private TagsRepositori tagsRepositori;
 
     @Autowired
     private PostService postService;
@@ -37,8 +49,11 @@ public class ApiPostController {
     @Autowired
     private CommentRepositori commentRepositori;
 
+    @Autowired
+    private HttpServletRequest httpServletRequest;
+
 //    @Autowired
-//    private HttpServletRequest reg;
+//    private HttpServletRequest reg;//TODO
 
     @GetMapping("/{id}") //Getting post by ID
     public PostResponse getById(@PathVariable int id) {
@@ -85,7 +100,7 @@ public class ApiPostController {
             PostResponse postResponse = PostMapper.getPostResponse(post, commentRepositori.findByPostIdOrderByTimeDesc(post.getId()));
             postResponse.setAnnounce(Jsoup.parse(post.getText()).text().substring(0, 150) + "...");
             postResponse.setLikeCount(postRepositori.countLike(post.getId(), 1).orElse(0));
-            postResponse.setDislikeCount(postRepositori.countLike(post.getId(),-1).orElse(0));
+            postResponse.setDislikeCount(postRepositori.countLike(post.getId(), -1).orElse(0));
             postResponseList.add(postResponse);
         }
         postsResponseAll.setPosts(postResponseList);
@@ -94,6 +109,53 @@ public class ApiPostController {
 //        System.out.println("--- " + reg.getServletPath());
 
         return postsResponseAll;
+    }
+
+    @PostMapping("")
+    public ResponseAll addPost(@RequestBody PostRequest postRequest) throws ParseException {
+        logger.info("add Post");
+        Post newPost = new Post();
+
+        newPost.setActive(postRequest.getActive() == 1);
+        newPost.seteModerationStatus(EModerationStatus.NEW);
+
+        Optional<User> user = userRepositori.findById(Constant.auth.get(httpServletRequest.getSession().getId()));
+        if (user.isEmpty()) return new ResponseAll(false);
+        newPost.setUser(user.get());
+
+        String timeString = postRequest.getTime();
+        timeString = timeString.replace('T', ' ');
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        long timeLong = simpleDateFormat.parse(timeString).getTime();
+        if (timeLong < System.currentTimeMillis()) timeLong = System.currentTimeMillis();
+        newPost.setTime(timeLong);
+
+        if (postRequest.getTitle().length() < 10)
+            return new ResponseAll(false, "title", "Заголовок не установлен или короткий (не менее 10 символов)");
+        newPost.setTitle(postRequest.getTitle());
+
+        if (postRequest.getText().length() < 500)
+            return new ResponseAll(false, "text", "Текст публикации слишком короткий (не менее 500 символов)");
+        newPost.setText(postRequest.getText());
+        newPost.setViewCount(0);
+
+        ArrayList<String> requestTags = postRequest.getTags();
+        ArrayList<Tag> addPostTag = new ArrayList<>();
+
+        for (String tag : requestTags) {
+            Optional<Tag> tempTag = tagsRepositori.findByText(tag);
+            if(tempTag.isPresent()) {
+                addPostTag.add(tempTag.get());
+            } else {
+                Tag tagNew = new Tag();
+                tagNew.setText(tag);
+                addPostTag.add(tagsRepositori.save(tagNew));
+            }
+        }
+        newPost.setTags(addPostTag);
+        postRepositori.save(newPost);
+
+        return new ResponseAll(true);
     }
 
 }

@@ -12,16 +12,16 @@ import java.util.Optional;
 @Repository
 public interface TagsRepositori extends JpaRepository<Tag, Integer> {
 
-    @Query(nativeQuery = true,
-            value = "INSERT INTO tags (name) values (:tagNew) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id;")
-    Integer addNewTag(@Param("tagNew") String tag);
+//    @Query(nativeQuery = true,
+//            value = "INSERT INTO tags (name) values (:tagNew) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id, name;")
+//    Optional<Tag> addNewTag(@Param("tagNew") String tag);
 
     @Query(nativeQuery = true,
-    value = "select tags.name, count(*) from tag2post\n" +
-            "JOIN posts on posts.id = tag2post.post_id\n" +
-            "JOIN tags on tag2post.tag_id = tags.id\n" +
-            "WHERE moderation_status = 'ACCEPTED' and is_active = true\n" +
-            "and time <= (:currentTime) GROUP BY tags.name ORDER BY count DESC LIMIT 20;")
+            value = "select tags.name, count(*) from tag2post\n" +
+                    "JOIN posts on posts.id = tag2post.post_id\n" +
+                    "JOIN tags on tag2post.tag_id = tags.id\n" +
+                    "WHERE moderation_status = 'ACCEPTED' and is_active = true\n" +
+                    "and time <= (:currentTime) GROUP BY tags.name ORDER BY count DESC LIMIT 20;")
     List<Object[]> tagsForTopic(@Param("currentTime") long currentTime);
 
     /*
@@ -37,5 +37,5 @@ WHERE moderation_status = 'ACCEPTED' and is_active = true
 and time <= 1580392831678 GROUP BY new.tags.name //TODO текущее время
 
  */
-    Optional<Tag> findByText(String text);
+    Optional<Tag> findByText(String name);
 }

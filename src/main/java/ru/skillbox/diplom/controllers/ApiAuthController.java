@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.Mapper.UserMapper;
 import ru.skillbox.diplom.api.requests.Login;
 import ru.skillbox.diplom.api.requests.Register;
@@ -18,6 +19,7 @@ import ru.skillbox.diplom.repositories.UserRepositori;
 import ru.skillbox.diplom.services.CaptchaService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @RestController
@@ -35,8 +37,9 @@ public class ApiAuthController {
 
     @Autowired
     private HttpServletRequest reg;
+    //private HttpServletResponse res;//TODO
 
-    private Map<String, Integer> auth = new HashMap<>();
+    //protected static Map<String, Integer> auth = new HashMap<>(); //TODO
 
     @PostMapping("/auth/login")
     public UserResponseAuth login(@RequestBody Login login) {
@@ -44,28 +47,30 @@ public class ApiAuthController {
 
         Optional<User> user = userRepositori.findByEmail(login.getE_mail());
         if (user.isPresent() && new BCryptPasswordEncoder().matches(login.getPassword(), user.get().getPassword())) {
-            auth.put(reg.getSession().getId(), user.get().getId());
+            Constant.auth.put(reg.getSession().getId(), user.get().getId());
             return new UserResponseAuth(true, UserMapper.getUser(user.get()));
         }
         return new UserResponseAuth(false);
     }
 
+    //TODO косячно пока переделать
     @GetMapping("/auth/logout")
     public ResponseAll logout() {
-        auth.clear();
+        logger.info("/auth/logout");
+        Constant.auth.clear();
         return new ResponseAll(true);
     }
 
     @GetMapping("/auth/check")
     public UserResponseAuth check() {
-        if (Objects.isNull(auth.get(reg.getSession().getId()))) {
+        if (Objects.isNull(Constant.auth.get(reg.getSession().getId()))) {
             logger.info("/auth/check : false");
             return new UserResponseAuth(false);
         }
         logger.info("/auth/check : true");
         return new UserResponseAuth(
                 true,
-                UserMapper.getUser(userRepositori.getOne(auth.get(reg.getSession().getId())))
+                UserMapper.getUser(userRepositori.getOne(Constant.auth.get(reg.getSession().getId())))
         );
     }
 
