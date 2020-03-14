@@ -82,7 +82,7 @@ public class ApiGeneralController {
     //TODO проверить что вышел юзер
     @PostMapping("/profile/my")
     public ResponseAll profile(@RequestParam(value = "photo", required = false) MultipartFile uploadfile,
-                           @RequestParam(value = "name", required = false) String name
+                               @RequestParam(value = "name", required = false) String name
     ) throws IOException {
         logger.info("/profile/my");
 
@@ -91,6 +91,16 @@ public class ApiGeneralController {
 //        Files.write(path, bytes);
 
         return new ResponseAll(false, "photo", "Фото слишком большое, нужно не более 5 Мб");//TODO доделать
+    }
+
+    @PostMapping("/image")
+    public String uploadFile(@RequestParam(value = "image", required = false) MultipartFile uploadfile) throws IOException {
+        logger.info("/api/image");
+        byte[] bytes = uploadfile.getBytes();
+        String aaa = "/upload/ab/cd/ef/";
+        Path path = Paths.get("./src/main/resources/static" + aaa + uploadfile.getOriginalFilename());
+        Files.write(path, bytes);
+        return aaa+uploadfile.getOriginalFilename();
     }
 
 }
