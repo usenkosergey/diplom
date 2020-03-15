@@ -13,6 +13,12 @@ public class Constant {
         return responseTrue;
     }
 
+    public static Map responseFalse(){
+        Map<String, Boolean> responseFalse = new HashMap<>();
+        responseFalse.put("result", false);
+        return responseFalse;
+    }
+
     public static Map responseId(int id) {
         Map<String, Integer> responseId = new HashMap<>();
         responseId.put("id", id);

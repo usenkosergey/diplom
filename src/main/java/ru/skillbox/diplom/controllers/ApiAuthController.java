@@ -12,7 +12,6 @@ import ru.skillbox.diplom.Mapper.UserMapper;
 import ru.skillbox.diplom.api.requests.Login;
 import ru.skillbox.diplom.api.requests.Register;
 import ru.skillbox.diplom.api.responses.CaptchaResponse;
-import ru.skillbox.diplom.api.responses.ResponseAll;
 import ru.skillbox.diplom.api.responses.UserResponseAuth;
 import ru.skillbox.diplom.entities.CaptchaCode;
 import ru.skillbox.diplom.entities.User;

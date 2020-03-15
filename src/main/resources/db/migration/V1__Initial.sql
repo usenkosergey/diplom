@@ -29,10 +29,11 @@ id SERIAL PRIMARY KEY,
 user_id INT NOT NULL,
 post_id INT NOT NULL,
 time BIGINT NOT NULL,
-value SMALLINT NOT NULL
+value INT NOT NULL
 );
 CREATE INDEX value ON post_votes (value);
 CREATE INDEX user_id ON post_votes (user_id);
+CREATE INDEX user_post_id ON post_votes (user_id, post_id);
 
 CREATE TABLE tags
 (

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.Mapper.PostMapper;
+import ru.skillbox.diplom.api.requests.LikeRequest;
 import ru.skillbox.diplom.api.requests.PostRequest;
 import ru.skillbox.diplom.api.responses.PostResponse;
 import ru.skillbox.diplom.api.responses.PostsResponseAll;
@@ -20,6 +21,7 @@ import ru.skillbox.diplom.repositories.CommentRepositori;
 import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.TagsRepositori;
 import ru.skillbox.diplom.repositories.UserRepositori;
+import ru.skillbox.diplom.services.LikeService;
 import ru.skillbox.diplom.services.PostService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +52,9 @@ public class ApiPostController {
 
     @Autowired
     private CommentRepositori commentRepositori;
+
+    @Autowired
+    private LikeService likeService;
 
     @Autowired
     private HttpServletRequest httpServletRequest;
@@ -164,6 +169,16 @@ public class ApiPostController {
         postRepositori.save(newPost);
 
         return new ResponseEntity<>(Constant.responseTrue(), HttpStatus.OK);
+    }
+
+    @PostMapping("/like")
+    public ResponseEntity<Map> like(@RequestBody LikeRequest likeRequest) {
+        return likeService.like(likeRequest);
+    }
+
+    @PostMapping("/dislike")
+    public ResponseEntity<Map> dislike(@RequestBody LikeRequest likeRequest) {
+        return likeService.dislike(likeRequest);
     }
 
 }

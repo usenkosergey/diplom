@@ -17,7 +17,7 @@ public class PostVotes {
 
     private long time;
 
-    private byte value;
+    private int value;
 
     public PostVotes() {
     }
@@ -54,11 +54,11 @@ public class PostVotes {
         this.time = time;
     }
 
-    public byte getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(byte value) {
+    public void setValue(int value) {
         this.value = value;
     }
 }
