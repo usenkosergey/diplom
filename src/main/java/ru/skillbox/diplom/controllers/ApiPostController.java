@@ -112,9 +112,6 @@ public class ApiPostController {
         }
         postsResponseAll.setPosts(postResponseList);
 
-//        System.out.println("--- " + reg.getSession().getId());
-//        System.out.println("--- " + reg.getServletPath());
-
         return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
     }
 

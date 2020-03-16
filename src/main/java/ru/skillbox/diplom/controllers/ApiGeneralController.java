@@ -28,7 +28,9 @@ import java.util.Map;
 @RequestMapping("/api")
 @ConfigurationProperties(prefix = "mydata")
 public class ApiGeneralController {
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private SettingsRepositori settingsRepositori;
 
@@ -38,11 +40,7 @@ public class ApiGeneralController {
     @Autowired
     private CommentService commentService;
 
-//        @Autowired TODO это почту я проверял, удалить.
-//        EMailService eMailService;
-
     private List<String> initData = new ArrayList<String>();
-
     public List<String> getinitData() {
         return this.initData;
     }
@@ -50,22 +48,12 @@ public class ApiGeneralController {
     @GetMapping("/init")
     public Map getInit() {
         logger.info("/init");
-
         Map<String, String> initDataResponse = new HashMap<>();
         List<String> tempListInitData = initData;
         for (String data : tempListInitData) {
             String[] tempData = data.split(":");
             initDataResponse.put(tempData[0], tempData[1]);
         }
-
-//        try { //TODO это почту я проверял, удалить.
-//            eMailService.sendEmail();
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-
         return initDataResponse;
     }
 

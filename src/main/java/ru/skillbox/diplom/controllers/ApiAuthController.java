@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.Mapper.UserMapper;
+import ru.skillbox.diplom.api.requests.EmailRequest;
 import ru.skillbox.diplom.api.requests.Login;
 import ru.skillbox.diplom.api.requests.Register;
 import ru.skillbox.diplom.api.responses.CaptchaResponse;
@@ -18,8 +19,12 @@ import ru.skillbox.diplom.entities.User;
 import ru.skillbox.diplom.repositories.CaptchaRepositori;
 import ru.skillbox.diplom.repositories.UserRepositori;
 import ru.skillbox.diplom.services.CaptchaService;
+import ru.skillbox.diplom.services.EMailService;
+import ru.skillbox.diplom.services.PasswordService;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 @RestController
@@ -34,6 +39,12 @@ public class ApiAuthController {
 
     @Autowired
     private CaptchaService captchaService;
+
+    @Autowired
+    private EMailService eMailService;
+
+    @Autowired
+    private PasswordService passwordService;
 
     @Autowired
     private HttpServletRequest reg;
@@ -71,7 +82,7 @@ public class ApiAuthController {
     }
 
     @GetMapping(value = "/auth/captcha")
-    public ResponseEntity<CaptchaResponse>  genCaptcha() {
+    public ResponseEntity<CaptchaResponse> genCaptcha() {
 
         CaptchaResponse captchaResponse = new CaptchaResponse();
         CaptchaCode captchaCode = captchaService.genAndSaveCaptcha();
@@ -103,5 +114,24 @@ public class ApiAuthController {
             return new ResponseEntity<>(Constant.responseTrue(), HttpStatus.OK);
         }
 
+    }
+
+    @PostMapping("/auth/restore")
+    public ResponseEntity<Map> restorePassword(@RequestBody EmailRequest email) throws UnsupportedEncodingException, MessagingException {
+        logger.info("/auth/restore");
+        Optional<User> currentUser = userRepositori.findByEmail(email.getEmail());
+        if (currentUser.isEmpty()) return new ResponseEntity<>(Constant.responseFalse(), HttpStatus.OK);
+        String code = Constant.codeGenerator();
+        User userWithNewCode = currentUser.get();
+        userWithNewCode.setCode(code);
+        userRepositori.save(userWithNewCode);
+        if (passwordService.passwordRecovery(email.getEmail(), code))
+            return new ResponseEntity<>(Constant.responseTrue(), HttpStatus.OK);
+        return new ResponseEntity<>(Constant.responseFalse(), HttpStatus.OK);
+    }
+
+    @PostMapping("auth/password")
+    public ResponseEntity<Map> newPassword() {
+        return null;
     }
 }

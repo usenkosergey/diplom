@@ -1,5 +1,7 @@
 package ru.skillbox.diplom.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,21 +25,22 @@ public class EMailService {
     @Value("${email.password}")
     private String mailServerPassword;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private Properties emailProperties = new Properties();
 
-   {
+    {
         emailProperties.put("mail.transport.protocol", "smtp");
         emailProperties.put("mail.smtp.auth", "true");
         emailProperties.put("mail.smtp.starttls.enable", "true");
         emailProperties.put("mail.smtp.starttls.required", "true");
     }
 
-    public boolean sendEmail() throws MessagingException, UnsupportedEncodingException {
-        String recipientEmail = "q1122333@yandex.ru";//TODO переделать
-        String subject = "Это тема письма, заголовок";//TODO переделать
+    public boolean sendEmail(String email, String subjectEmail, String messageHtml) throws MessagingException, UnsupportedEncodingException {
+        String recipientEmail = email;//TODO переделать
+        String subject = subjectEmail;//TODO переделать
         String messageTextBody = "";
-        String messageHtmlBody = "А это и есть само письмо, " +//TODO переделать
-                "само тело письма.";//TODO переделать
+        String messageHtmlBody = messageHtml;//TODO переделать
         Session mailSession = Session.getInstance(emailProperties);
         Transport transport = null;
 
@@ -65,14 +68,14 @@ public class EMailService {
             transport.connect(mailServerHostName, mailServerPort, mailServerUsername, mailServerPassword);
             transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
         } catch (MessagingException e) {
-            System.out.println("Ошибка");
+            logger.error("Ошибка -> " + email);
             result = false;
         } finally {
             if (transport != null) {
                 try {
                     transport.close();
                 } catch (MessagingException e) {
-                    System.out.println("Ошибка при закрытии transport " + e.toString());
+                    logger.error("Ошибка при закрытии transport " + e.toString());
                     result = false;
                 }
             }
