@@ -11,6 +11,7 @@ import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.Mapper.UserMapper;
 import ru.skillbox.diplom.api.requests.EmailRequest;
 import ru.skillbox.diplom.api.requests.Login;
+import ru.skillbox.diplom.api.requests.PasswordRequest;
 import ru.skillbox.diplom.api.requests.Register;
 import ru.skillbox.diplom.api.responses.CaptchaResponse;
 import ru.skillbox.diplom.api.responses.UserResponseAuth;
@@ -131,7 +132,19 @@ public class ApiAuthController {
     }
 
     @PostMapping("auth/password")
-    public ResponseEntity<Map> newPassword() {
-        return null;
+    public ResponseEntity<Map> newPassword(@RequestBody PasswordRequest passwordRequest) {
+        logger.info("auth/password");
+        if (captchaRepositori.findByCode(passwordRequest.getCaptcha()).isEmpty()) {
+            return new ResponseEntity<>(Constant.responseError("captcha", "Код с картинки введён неверно"), HttpStatus.OK);
+        } else if (userRepositori.findByCode(passwordRequest.getCode()).isEmpty()) {
+            return new ResponseEntity<>(Constant.responseError("code","Ссылка для восстановления пароля устарела.\n" +
+                    "<a href=”/auth/restore”>Запросить ссылку снова</a>"), HttpStatus.OK);
+        } else {
+            Optional<User> newPasswordUser = userRepositori.findByCode(passwordRequest.getCode());
+            User user = newPasswordUser.get();
+            user.setPassword(new BCryptPasswordEncoder().encode(passwordRequest.getPassword()));
+            userRepositori.save(user);
+            return new ResponseEntity<>(Constant.responseTrue(), HttpStatus.OK);
+        }
     }
 }
