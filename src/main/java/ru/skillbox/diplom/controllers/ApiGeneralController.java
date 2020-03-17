@@ -120,8 +120,9 @@ public class ApiGeneralController {
 
     @GetMapping("/statistics/all")
     public ResponseEntity<Map> statisticsAll() {
+        logger.info("/statistics/all");
         Optional<Settings> settings = settingsRepositori.findById(3);
-        if (!settings.isPresent() && !settings.get().getValue().equals(true) && Constant.auth.isEmpty()) {
+        if (settings.isEmpty() && !settings.get().getValue().equals(true) && Constant.auth.isEmpty()) {
             return new ResponseEntity<>(Constant.responseFalse(), HttpStatus.BAD_REQUEST);
         }
 

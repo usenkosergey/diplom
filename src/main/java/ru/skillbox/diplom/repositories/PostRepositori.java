@@ -65,6 +65,17 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
     long sumByViewCount();
 
     @Query(nativeQuery = true,
-    value = "SELECT * FROM posts ORDER BY id ASC LIMIT 1;")
+            value = "SELECT * FROM posts ORDER BY id ASC LIMIT 1;")
     Optional<Post> firstPublication();
+
+    @Query(nativeQuery = true,
+            value = "SELECT posts.* FROM tags " +
+                    "JOIN tag2post ON tags.id = tag2post.tag_id " +
+                    "JOIN posts ON posts.id=tag2post.post_id WHERE name = (:tag) " +
+                    "AND moderation_status = 'ACCEPTED' AND is_active = true " +
+                    "AND posts.time <= (:currentTime) " +
+                    "ORDER BY id DESC LIMIT 10 OFFSET (:offset);")
+    List<Post> allPostsByTag(@Param("tag") String tag,
+                                 @Param("currentTime") long currentTime,
+                                 @Param("offset") int offset);
 }

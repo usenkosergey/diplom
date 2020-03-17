@@ -98,19 +98,10 @@ public class ApiPostController {
 
     @GetMapping("")
     public ResponseEntity<PostsResponseAll> getPosts(@RequestParam int offset, @RequestParam int limit, @RequestParam String mode) {
-        logger.info("Это ApiPostController метод /api/post");
+        logger.info("/api/post");
         PostsResponseAll postsResponseAll = new PostsResponseAll();
         postsResponseAll.setCount(postRepositori.countActualPosts(System.currentTimeMillis()));
-        List<PostResponse> postResponseList = new ArrayList<>();
-
-        for (Post post : postService.getPosts(offset, mode)) {
-            PostResponse postResponse = PostMapper.getPostResponse(post, commentRepositori.findByPostIdOrderByTimeDesc(post.getId()));
-            postResponse.setAnnounce(Jsoup.parse(post.getText()).text().substring(0, 150) + "...");
-            postResponse.setLikeCount(postRepositori.countLike(post.getId(), 1).orElse(0));
-            postResponse.setDislikeCount(postRepositori.countLike(post.getId(), -1).orElse(0));
-            postResponseList.add(postResponse);
-        }
-        postsResponseAll.setPosts(postResponseList);
+        postsResponseAll.setPosts(listPostToResponse(postService.getPosts(offset, mode)));
 
         return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
     }
@@ -178,4 +169,25 @@ public class ApiPostController {
         return likeService.dislike(likeRequest);
     }
 
+    @GetMapping("/byTag")
+    public ResponseEntity<PostsResponseAll> getPostsByTags(@RequestParam int offset, @RequestParam int limit, @RequestParam String tag) {
+        logger.info("/api/post/byTag -> " + tag);
+        PostsResponseAll postsResponseAll = new PostsResponseAll();
+        postsResponseAll.setCount(tagsRepositori.findByText(tag).get().getPosts().size());
+        postsResponseAll.setPosts(listPostToResponse(postRepositori.allPostsByTag(tag, System.currentTimeMillis(), offset)));
+
+        return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
+    }
+
+    public List<PostResponse> listPostToResponse(List<Post> posts) {
+        List<PostResponse> postResponseList = new ArrayList<>();
+        for (Post post : posts) {
+            PostResponse postResponse = PostMapper.getPostResponse(post, commentRepositori.findByPostIdOrderByTimeDesc(post.getId()));
+            postResponse.setAnnounce(Jsoup.parse(post.getText()).text().substring(0, 100) + "...");
+            postResponse.setLikeCount(postRepositori.countLike(post.getId(), 1).orElse(0));
+            postResponse.setDislikeCount(postRepositori.countLike(post.getId(), -1).orElse(0));
+            postResponseList.add(postResponse);
+        }
+        return postResponseList;
+    }
 }
