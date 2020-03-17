@@ -59,4 +59,12 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
     @Query(nativeQuery = true,
             value = "UPDATE posts SET view_count = view_count + 1 WHERE id = (:id);")
     Integer updateViewCount(@Param("id") int id);
+
+    @Query(nativeQuery = true,
+            value = "SELECT SUM(view_count) FROM posts;")
+    long sumByViewCount();
+
+    @Query(nativeQuery = true,
+    value = "SELECT * FROM posts ORDER BY id ASC LIMIT 1;")
+    Optional<Post> firstPublication();
 }

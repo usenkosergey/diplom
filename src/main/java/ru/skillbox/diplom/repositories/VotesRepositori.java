@@ -25,4 +25,6 @@ public interface VotesRepositori extends JpaRepository<PostVotes, Integer> {
     Optional<PostVotes> likeForPost(@Param("post_id") int post_id,
                                     @Param("user_id") int user_id);
 
+    long countByValue (Integer value);
+
 }

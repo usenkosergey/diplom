@@ -4,25 +4,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.api.requests.CommentRequest;
 import ru.skillbox.diplom.api.responses.ResponseAll;
 import ru.skillbox.diplom.api.responses.TagsForTopicResponse;
 import ru.skillbox.diplom.entities.Settings;
+import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.SettingsRepositori;
+import ru.skillbox.diplom.repositories.VotesRepositori;
 import ru.skillbox.diplom.services.CommentService;
 import ru.skillbox.diplom.services.TagService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -40,7 +45,17 @@ public class ApiGeneralController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private HttpServletRequest httpServletRequest;
+
+    @Autowired
+    private PostRepositori postRepositori;
+
+    @Autowired
+    private VotesRepositori votesRepositori;
+
     private List<String> initData = new ArrayList<String>();
+
     public List<String> getinitData() {
         return this.initData;
     }
@@ -101,6 +116,25 @@ public class ApiGeneralController {
     public ResponseEntity<Map> comment(@RequestBody CommentRequest commentRequest) {
         logger.info("/comment");
         return commentService.addComment(commentRequest);
+    }
+
+    @GetMapping("/statistics/all")
+    public ResponseEntity<Map> statisticsAll() {
+        Optional<Settings> settings = settingsRepositori.findById(3);
+        if (!settings.isPresent() && !settings.get().getValue().equals(true) && Constant.auth.isEmpty()) {
+            return new ResponseEntity<>(Constant.responseFalse(), HttpStatus.BAD_REQUEST);
+        }
+
+        Map<String, Object> statistics = new HashMap<>();
+        statistics.put("postsCount", postRepositori.count());
+        statistics.put("likesCount", votesRepositori.countByValue(1));
+        statistics.put("dislikesCount", votesRepositori.countByValue(-1));
+        statistics.put("viewsCount", postRepositori.sumByViewCount());
+        statistics.put("firstPublication",
+                Instant.ofEpochMilli(postRepositori.firstPublication().get().getTime()).atZone(ZoneId.systemDefault())
+                .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        return new ResponseEntity<>(statistics, HttpStatus.OK);
+
     }
 
 
