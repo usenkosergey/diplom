@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.api.requests.CommentRequest;
+import ru.skillbox.diplom.api.responses.CalendarResponse;
 import ru.skillbox.diplom.api.responses.ResponseAll;
 import ru.skillbox.diplom.api.responses.TagsForTopicResponse;
 import ru.skillbox.diplom.entities.Settings;
@@ -21,6 +22,7 @@ import ru.skillbox.diplom.services.TagService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -133,10 +135,29 @@ public class ApiGeneralController {
         statistics.put("viewsCount", postRepositori.sumByViewCount());
         statistics.put("firstPublication",
                 Instant.ofEpochMilli(postRepositori.firstPublication().get().getTime()).atZone(ZoneId.systemDefault())
-                .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+                        .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         return new ResponseEntity<>(statistics, HttpStatus.OK);
 
     }
 
-
+    @GetMapping("/calendar")
+    public ResponseEntity<CalendarResponse> calendar(@RequestParam Integer year) {
+        logger.info("/calendar ->" + year);
+        CalendarResponse calendarResponse = new CalendarResponse();
+        List<String> yearListString = postRepositori.getYearToCalendar(System.currentTimeMillis());
+        ArrayList<Integer> yearListInteger = new ArrayList<>();
+        for (String yearStr : yearListString) {
+            yearListInteger.add(Integer.parseInt(yearStr));
+        }
+        calendarResponse.setYears(yearListInteger);
+        List<Object[]> postForYears = postRepositori.listPostForYears(System.currentTimeMillis(), year);
+        Map<String, Integer> tempMap = new HashMap<>();
+        for(Object[] obj: postForYears){
+            String objString = (String)obj[0];
+            BigInteger objBigInteger = (BigInteger)obj[1];
+            tempMap.put(objString, objBigInteger.intValue());
+        }
+        calendarResponse.setPosts(tempMap);
+        return new ResponseEntity<>(calendarResponse, HttpStatus.OK);
+    }
 }

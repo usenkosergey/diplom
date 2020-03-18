@@ -15,8 +15,7 @@ public interface CaptchaRepositori extends JpaRepository<CaptchaCode, Integer> {
     @Modifying
     @Query(nativeQuery = true,
             value = "DELETE FROM captcha_codes WHERE time < (:currentTime);")
-    void deleteOldCaptca(
-            @Param("currentTime") long currentTime);
+    void deleteOldCaptca(@Param("currentTime") long currentTime);
 
     @Transactional
     @Query(nativeQuery = true,

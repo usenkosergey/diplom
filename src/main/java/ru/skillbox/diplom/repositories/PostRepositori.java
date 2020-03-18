@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.diplom.entities.Post;
 
+import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -76,6 +78,28 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "AND posts.time <= (:currentTime) " +
                     "ORDER BY id DESC LIMIT 10 OFFSET (:offset);")
     List<Post> allPostsByTag(@Param("tag") String tag,
-                                 @Param("currentTime") long currentTime,
-                                 @Param("offset") int offset);
+                             @Param("currentTime") long currentTime,
+                             @Param("offset") int offset);
+
+    @Query(nativeQuery = true,
+            value = "select to_char(date_trunc('year', to_timestamp(div(time,1000))), 'YYYY') " +
+                    "from posts " +
+                    "WHERE is_active = true " +
+                    "AND moderation_status = 'ACCEPTED' " +
+                    "AND posts.time <= (:currentTime) " +
+                    "group by date_trunc('year', to_timestamp(div(time,1000)))" +
+                    "ORDER BY to_char DESC;")
+    List<String> getYearToCalendar(@Param("currentTime") long currentTime);
+
+    @Query(nativeQuery = true,
+            value = "select to_char(date_trunc('day', to_timestamp(div(time,1000))), 'YYYY-MM-DD'), count(*) " +
+                    "from posts " +
+                    "WHERE is_active = true " +
+                    "and moderation_status = 'ACCEPTED' " +
+                    "AND posts.time <= (:currentTime) " +
+                    "and Extract(year FROM  date_trunc('day', to_timestamp(div(time,1000)))) = (:year) " +
+                    "group by date_trunc('day', to_timestamp(div(time,1000))) " +
+                    "ORDER BY to_char ASC;")
+    List<Object[]> listPostForYears(@Param("currentTime") long currentTime,
+                                    @Param("year") int year);
 }
