@@ -39,7 +39,7 @@ public class PostService {
     public List<Post> getPosts(int offset, String mode) {
         if (mode.equals("recent")) {
             //System.out.println("сортировка в прямом порядке"); //TODO удалить позже
-            return postRepositori.getListRecentPosts(System.currentTimeMillis(), offset);
+            return postRepositori.getListRecentPosts(offset);
         } else if (mode.equals("early")) {
             //System.out.println("сортировка в обратном порядке"); //TODO удалить позже
             return postRepositori.getListEarlyPosts(System.currentTimeMillis(), offset);

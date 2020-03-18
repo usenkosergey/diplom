@@ -17,29 +17,47 @@ import java.util.Optional;
 public interface PostRepositori extends PagingAndSortingRepository<Post, Integer> {
     //TODO экранирование спец символов проверить и сделать
     //1583250619160 время для теста
-    @Query(nativeQuery = true,
-            value = "SELECT COUNT(*) FROM posts WHERE moderation_status = 'ACCEPTED' and is_active = true " +
-                    "and time <= (:currentTime);")
-    Integer countActualPosts(@Param("currentTime") long currentTime);
+
+    String is_active = "is_active = true ";
+    String moderation_status = "moderation_status = 'ACCEPTED'";
+    String current_timestamp = "time <= ROUND(EXTRACT(epoch FROM current_timestamp)*1000)";
+    String limit = "LIMIT 10 OFFSET (:offset)";
 
     @Query(nativeQuery = true,
-            value = "SELECT * FROM posts WHERE moderation_status = 'ACCEPTED' and is_active = true " +
-                    "and time <= (:currentTime) ORDER BY time DESC LIMIT 10 OFFSET (:offset);")
-    List<Post> getListRecentPosts(@Param("currentTime") long currentTime, @Param("offset") int offset);
+            value = "SELECT COUNT(*) " +
+                    "FROM posts " +
+                    "WHERE " + moderation_status +
+                    "AND " + is_active +
+                    "AND " + current_timestamp + " ;")
+    Integer countActualPosts();
+
 
     @Query(nativeQuery = true,
-            value = "SELECT * FROM posts " +
+            value = "SELECT * " +
+                    "FROM posts " +
+                    "WHERE " + moderation_status +
+                    "AND " + is_active +
+                    "AND " + current_timestamp +
+                    "ORDER BY time DESC " +
+                    limit + " ;")
+    List<Post> getListRecentPosts(@Param("offset") int offset);
+
+    @Query(nativeQuery = true,
+            value = "SELECT * " +
+                    "FROM posts " +
                     "WHERE moderation_status = 'ACCEPTED' " +
                     "and is_active = true " +
                     "and time >= (:startTime) " +
                     "and time <= (:endTime)" +
-                    "ORDER BY time DESC LIMIT 10 OFFSET (:offset);")
+                    "ORDER BY time DESC " +
+                    "LIMIT 10 OFFSET (:offset);")
     List<Post> getPostByDate(@Param("startTime") long startTime,
                              @Param("endTime") long engTime,
                              @Param("offset") int offset);
 
     @Query(nativeQuery = true,
-            value = "SELECT count(*) FROM posts " +
+            value = "SELECT count(*) " +
+                    "FROM posts " +
                     "WHERE moderation_status = 'ACCEPTED' " +
                     "and is_active = true " +
                     "and time >= (:startTime) " +
@@ -48,55 +66,85 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                                @Param("endTime") long engTime);
 
     @Query(nativeQuery = true,
-            value = "SELECT * FROM posts WHERE moderation_status = 'ACCEPTED' and is_active = true " +
-                    "and time <= (:currentTime) ORDER BY time ASC LIMIT 10 OFFSET (:offset);")
-    List<Post> getListEarlyPosts(@Param("currentTime") long currentTime, @Param("offset") int offset);
+            value = "SELECT * " +
+                    "FROM posts " +
+                    "WHERE moderation_status = 'ACCEPTED' " +
+                    "and is_active = true " +
+                    "and time <= (:currentTime) " +
+                    "ORDER BY time ASC " +
+                    "LIMIT 10 OFFSET (:offset);")
+    List<Post> getListEarlyPosts(@Param("currentTime") long currentTime,
+                                 @Param("offset") int offset);
 
     @Query(nativeQuery = true,
-            value = "SELECT posts.*, count(post_votes.post_id) FROM posts left JOIN " +
-                    "post_votes ON posts.id = post_votes.post_id where " +
-                    "value = 1 or value isnull " +
+            value = "SELECT posts.*, count(post_votes.post_id) " +
+                    "FROM posts " +
+                    "left JOIN post_votes " +
+                    "ON posts.id = post_votes.post_id " +
+                    "where value = 1 or value isnull " +
                     "and moderation_status = 'ACCEPTED' " +
-                    "and is_active = true and posts.time <= (:currentTime) " +
-                    "group by post_votes.post_id, posts.id ORDER BY count DESC LIMIT 10 OFFSET (:offset);")
-    List<Post> getListBestPosts(@Param("currentTime") long currentTime, @Param("offset") int offset);
+                    "and is_active = true " +
+                    "and posts.time <= (:currentTime) " +
+                    "group by post_votes.post_id, posts.id " +
+                    "ORDER BY count DESC " +
+                    "LIMIT 10 OFFSET (:offset);")
+    List<Post> getListBestPosts(@Param("currentTime") long currentTime,
+                                @Param("offset") int offset);
 
     @Query(nativeQuery = true,
             value = "select posts.*, count(post_comments.post_id) " +
-                    "FROM posts left JOIN post_comments " +
+                    "FROM posts " +
+                    "left JOIN post_comments " +
                     "ON posts.id = post_comments.post_id " +
                     "where moderation_status = 'ACCEPTED' " +
-                    "and is_active = true and posts.time <= (:currentTime) " +
+                    "and is_active = true " +
+                    "and posts.time <= (:currentTime) " +
                     "group by post_comments.post_id, posts.id " +
-                    "ORDER BY count DESC LIMIT 10 OFFSET (:offset);")
-    List<Post> getListCommentPosts(@Param("currentTime") long currentTime, @Param("offset") int offset);
+                    "ORDER BY count DESC " +
+                    "LIMIT 10 OFFSET (:offset);")
+    List<Post> getListCommentPosts(@Param("currentTime") long currentTime,
+                                   @Param("offset") int offset);
 
 
     @Query(nativeQuery = true,
-            value = "select count(value) from post_votes where value = (:value) and post_id = (:id) group by value;")
-    Optional<Integer> countLike(@Param("id") int id, @Param("value") int value);
+            value = "select count(value) " +
+                    "from post_votes " +
+                    "where value = (:value) " +
+                    "and post_id = (:id) group by value;")
+    Optional<Integer> countLike(@Param("id") int id,
+                                @Param("value") int value);
 
     @Transactional
     @Modifying
     @Query(nativeQuery = true,
-            value = "UPDATE posts SET view_count = view_count + 1 WHERE id = (:id);")
+            value = "UPDATE posts " +
+                    "SET view_count = view_count + 1 " +
+                    "WHERE id = (:id);")
     Integer updateViewCount(@Param("id") int id);
 
     @Query(nativeQuery = true,
-            value = "SELECT SUM(view_count) FROM posts;")
+            value = "SELECT SUM(view_count) " +
+                    "FROM posts;")
     long sumByViewCount();
 
     @Query(nativeQuery = true,
-            value = "SELECT * FROM posts ORDER BY id ASC LIMIT 1;")
+            value = "SELECT * " +
+                    "FROM posts " +
+                    "ORDER BY id ASC " +
+                    "LIMIT 1;")
     Optional<Post> firstPublication();
 
     @Query(nativeQuery = true,
-            value = "SELECT posts.* FROM tags " +
+            value = "SELECT posts.* " +
+                    "FROM tags " +
                     "JOIN tag2post ON tags.id = tag2post.tag_id " +
-                    "JOIN posts ON posts.id=tag2post.post_id WHERE name = (:tag) " +
-                    "AND moderation_status = 'ACCEPTED' AND is_active = true " +
+                    "JOIN posts ON posts.id=tag2post.post_id " +
+                    "WHERE name = (:tag) " +
+                    "AND moderation_status = 'ACCEPTED' " +
+                    "AND is_active = true " +
                     "AND posts.time <= (:currentTime) " +
-                    "ORDER BY id DESC LIMIT 10 OFFSET (:offset);")
+                    "ORDER BY id DESC " +
+                    "LIMIT 10 OFFSET (:offset);")
     List<Post> allPostsByTag(@Param("tag") String tag,
                              @Param("currentTime") long currentTime,
                              @Param("offset") int offset);

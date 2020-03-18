@@ -87,7 +87,7 @@ public class ApiPostController {
     public ResponseEntity<PostsResponseAll> getPosts(@RequestParam int offset, @RequestParam int limit, @RequestParam String mode) {
         logger.info("/api/post");
         PostsResponseAll postsResponseAll = new PostsResponseAll();
-        postsResponseAll.setCount(postRepositori.countActualPosts(System.currentTimeMillis()));
+        postsResponseAll.setCount(postRepositori.countActualPosts());
         postsResponseAll.setPosts(listPostToResponse(postService.getPosts(offset, mode)));
 
         return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
