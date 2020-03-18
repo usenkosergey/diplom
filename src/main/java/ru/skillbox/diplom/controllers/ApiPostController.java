@@ -60,21 +60,8 @@ public class ApiPostController {
     @Autowired
     private HttpServletRequest httpServletRequest;
 
-//    @Autowired
-//    private HttpServletRequest reg;//TODO
-
     @GetMapping("/{id}") //Getting post by ID
     public PostResponse getById(@PathVariable int id) {
-        //System.out.println("ApiPostController : getById : id - " + id); //TODO удалить позже
-        //tagsRepositori.addNewTag("asdfg");
-        //TODO удаление тегов
-        //System.out.println(postRepositori.findById(2).get().getText().replaceAll("\\<.*?\\>", ""));
-//        //TODO добавление лайка или дизлайка к записи, потом убиру от сюда
-//        //TODO нужно еще как то обыграть ошибку вставки лайка
-//        //TODO и -1 заменить в зависимости лайк это или нет
-//        if (!votesService.addVote(1, (byte) -1))
-//            votesService.addVote(1, (byte) -1);
-
 
 //        List<Object[]> test = tagsRepositori.tagsForTopic(System.currentTimeMillis());
 //        Map<String, Integer> testMap = new HashMap<>();
@@ -86,8 +73,7 @@ public class ApiPostController {
 //            testMap.put(a, b.intValue());
 //        }
 //        System.out.println("max --- " + max);
-//
-//        System.out.println("--------");
+
         PostResponse postResponse = PostMapper.getPostResponse(postRepositori.findById(id).get(), commentRepositori.findByPostIdOrderByTimeDesc(id));
         postResponse.setLikeCount(postRepositori.countLike(id, 1).orElse(0));
         postResponse.setDislikeCount(postRepositori.countLike(id, -1).orElse(0));
@@ -203,6 +189,16 @@ public class ApiPostController {
         postsResponseAll.setPosts(listPostToResponse(postRepositori.getPostByDate(startTime, endTime, offset)));
 
         return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
-
     }
+//TODO не работает ссылка с фронта для поиска
+//    @GetMapping("/search")
+//    public ResponseEntity<PostsResponseAll> getPostBySearch(@RequestParam int offset, @RequestParam int limit, @RequestParam String search) {
+//        logger.info("/search -> " + search);
+//        PostsResponseAll postsResponseAll = new PostsResponseAll();
+//        postsResponseAll.setCount(postRepositori.countPostsBySearch(System.currentTimeMillis(), search));
+//        postsResponseAll.setPosts(listPostToResponse(postRepositori.getPostBySearch(System.currentTimeMillis(), search)));
+//
+//        return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
+//    }
+//TODO не работает ссылка с фронта для поиска
 }

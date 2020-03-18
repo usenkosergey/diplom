@@ -122,4 +122,25 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "ORDER BY to_char ASC;")
     List<Object[]> listPostForYears(@Param("currentTime") long currentTime,
                                     @Param("year") int year);
+//    TODO не работает ссылка с фронта для поиска
+//    @Query(nativeQuery = true,
+//            value = "SELECT COUNT(*) " +
+//                    "FROM posts " +
+//                    "WHERE moderation_status = 'ACCEPTED' " +
+//                    "and is_active = true " +
+//                    "and time <= (:currentTime)" +
+//                    "and text like '%(:searchString)%';")
+//    Integer countPostsBySearch(@Param("currentTime") long currentTime,
+//                               @Param("searchString") String searchString);
+//
+//    @Query(nativeQuery = true,
+//            value = "SELECT * FROM posts " +
+//                    "WHERE moderation_status = 'ACCEPTED' " +
+//                    "and is_active = true " +
+//                    "and text like '%(:searchString)%' " +
+//                    "and time <= (:currentTime) " +
+//                    "ORDER BY time DESC LIMIT 10 OFFSET (:offset);")
+//    List<Post> getPostBySearch(@Param("currentTime") long currentTime,
+//                               @Param("searchString") String searchString);
+//TODO не работает ссылка с фронта для поиска
 }
