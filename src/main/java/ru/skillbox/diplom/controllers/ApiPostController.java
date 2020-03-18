@@ -191,4 +191,18 @@ public class ApiPostController {
         }
         return postResponseList;
     }
+
+    @GetMapping("/byDate")
+    public ResponseEntity<PostsResponseAll> getPostByDate(@RequestParam int offset, @RequestParam int limit, @RequestParam String date) throws ParseException {
+        logger.info("/byDate");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        long startTime = simpleDateFormat.parse(date).getTime();
+        long endTime = simpleDateFormat.parse(date).getTime() + 24 * 60 * 60 * 1000;
+        PostsResponseAll postsResponseAll = new PostsResponseAll();
+        postsResponseAll.setCount(postRepositori.getCountPostByDate(startTime,endTime));
+        postsResponseAll.setPosts(listPostToResponse(postRepositori.getPostByDate(startTime, endTime, offset)));
+
+        return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
+
+    }
 }

@@ -28,6 +28,26 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
     List<Post> getListRecentPosts(@Param("currentTime") long currentTime, @Param("offset") int offset);
 
     @Query(nativeQuery = true,
+            value = "SELECT * FROM posts " +
+                    "WHERE moderation_status = 'ACCEPTED' " +
+                    "and is_active = true " +
+                    "and time >= (:startTime) " +
+                    "and time <= (:endTime)" +
+                    "ORDER BY time DESC LIMIT 10 OFFSET (:offset);")
+    List<Post> getPostByDate(@Param("startTime") long startTime,
+                             @Param("endTime") long engTime,
+                             @Param("offset") int offset);
+
+    @Query(nativeQuery = true,
+            value = "SELECT count(*) FROM posts " +
+                    "WHERE moderation_status = 'ACCEPTED' " +
+                    "and is_active = true " +
+                    "and time >= (:startTime) " +
+                    "and time <= (:endTime);")
+    Integer getCountPostByDate(@Param("startTime") long startTime,
+                               @Param("endTime") long engTime);
+
+    @Query(nativeQuery = true,
             value = "SELECT * FROM posts WHERE moderation_status = 'ACCEPTED' and is_active = true " +
                     "and time <= (:currentTime) ORDER BY time ASC LIMIT 10 OFFSET (:offset);")
     List<Post> getListEarlyPosts(@Param("currentTime") long currentTime, @Param("offset") int offset);
