@@ -20,7 +20,7 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
 
     String is_active = "is_active = true ";
     String moderation_status = "moderation_status = 'ACCEPTED'";
-    String current_timestamp = "time <= ROUND(EXTRACT(epoch FROM current_timestamp)*1000)";
+    String current_timestamp = "ROUND(EXTRACT(epoch FROM current_timestamp)*1000)";
     String limit = "LIMIT 10 OFFSET (:offset)";
 
     @Query(nativeQuery = true,
@@ -28,7 +28,7 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "FROM posts " +
                     "WHERE " + moderation_status +
                     "AND " + is_active +
-                    "AND " + current_timestamp + " ;")
+                    "AND time <= " + current_timestamp + " ;")
     Integer countActualPosts();
 
 
@@ -37,7 +37,7 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "FROM posts " +
                     "WHERE " + moderation_status +
                     "AND " + is_active +
-                    "AND " + current_timestamp +
+                    "AND time <= " + current_timestamp +
                     "ORDER BY time DESC " +
                     limit + " ;")
     List<Post> getListRecentPosts(@Param("offset") int offset);

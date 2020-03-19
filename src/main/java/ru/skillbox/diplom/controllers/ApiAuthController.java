@@ -122,7 +122,7 @@ public class ApiAuthController {
         logger.info("/auth/restore");
         Optional<User> currentUser = userRepositori.findByEmail(email.getEmail());
         if (currentUser.isEmpty()) return new ResponseEntity<>(Constant.responseFalse(), HttpStatus.OK);
-        String code = Constant.codeGenerator();
+        String code = Constant.codeGenerator(10);
         User userWithNewCode = currentUser.get();
         userWithNewCode.setCode(code);
         userRepositori.save(userWithNewCode);

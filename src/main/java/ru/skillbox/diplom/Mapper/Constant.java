@@ -36,8 +36,7 @@ public class Constant {
         return responseError;
     }
 
-    public static String codeGenerator(){
-        int length = 10;
+    public static String codeGenerator(int length){
         Random r = new Random();
         String s = r.ints(48, 122)
                 .filter(i -> (i < 57 || i > 65) && (i < 90 || i > 97))

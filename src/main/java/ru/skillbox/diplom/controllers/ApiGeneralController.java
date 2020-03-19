@@ -104,14 +104,16 @@ public class ApiGeneralController {
         return new ResponseAll(false, "photo", "Фото слишком большое, нужно не более 5 Мб");//TODO доделать
     }
 
-    @PostMapping("/image")//TODO пока очень сыро
+    @PostMapping("/image")
     public String uploadFile(@RequestParam(value = "image", required = false) MultipartFile uploadfile) throws IOException {
         logger.info("/api/image");
+        if (uploadfile.isEmpty()) return null;
         byte[] bytes = uploadfile.getBytes();
-        String aaa = "/upload/ab/cd/ef/";
-        Path path = Paths.get("./src/main/resources/static" + aaa + uploadfile.getOriginalFilename());
+        String[] uploadName = Objects.requireNonNull(uploadfile.getOriginalFilename()).split("\\.");
+        String newFileName = Constant.codeGenerator(10) + "." + uploadName[uploadName.length - 1];
+        Path path = Paths.get("./src/main/resources/static/upload/" + newFileName);
         Files.write(path, bytes);
-        return aaa + uploadfile.getOriginalFilename();
+        return "upload/" + newFileName;
     }
 
     @PostMapping("/comment")
@@ -152,9 +154,9 @@ public class ApiGeneralController {
         calendarResponse.setYears(yearListInteger);
         List<Object[]> postForYears = postRepositori.listPostForYears(System.currentTimeMillis(), year);
         Map<String, Integer> tempMap = new HashMap<>();
-        for(Object[] obj: postForYears){
-            String objString = (String)obj[0];
-            BigInteger objBigInteger = (BigInteger)obj[1];
+        for (Object[] obj : postForYears) {
+            String objString = (String) obj[0];
+            BigInteger objBigInteger = (BigInteger) obj[1];
             tempMap.put(objString, objBigInteger.intValue());
         }
         calendarResponse.setPosts(tempMap);
