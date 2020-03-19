@@ -9,6 +9,16 @@ public class Constant {
 
     public static Map<String, Integer> auth = new HashMap<>();
 
+//    public static Integer userId(String sessionId){
+//        Integer userId;
+//        if (Constant.auth.isEmpty()) {
+//            userId = 0;
+//        } else {
+//            userId = Constant.auth.get(sessionId);
+//        }
+//        return userId;
+//    }
+
     public static Map responseTrue(){
         Map<String, Boolean> responseTrue = new HashMap<>();
         responseTrue.put("result", true);

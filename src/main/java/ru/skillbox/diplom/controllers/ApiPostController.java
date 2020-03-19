@@ -185,7 +185,7 @@ public class ApiPostController {
         long startTime = simpleDateFormat.parse(date).getTime();
         long endTime = simpleDateFormat.parse(date).getTime() + 24 * 60 * 60 * 1000;
         PostsResponseAll postsResponseAll = new PostsResponseAll();
-        postsResponseAll.setCount(postRepositori.getCountPostByDate(startTime,endTime));
+        postsResponseAll.setCount(postRepositori.getCountPostByDate(startTime, endTime));
         postsResponseAll.setPosts(listPostToResponse(postRepositori.getPostByDate(startTime, endTime, offset)));
 
         return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
@@ -201,4 +201,42 @@ public class ApiPostController {
 //        return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
 //    }
 //TODO не работает ссылка с фронта для поиска
+
+    @GetMapping("/my")
+    public ResponseEntity<PostsResponseAll> getMyPosts(@RequestParam int offset,
+                                                       @RequestParam int limit,
+                                                       @RequestParam String status) {
+        int userId = Constant.auth.get(httpServletRequest.getSession().getId());
+        Optional<Integer> countMyPosts = Optional.empty();
+        String moderationStatus = "";
+        logger.info("/my -> userId " + userId + " -> " + status);
+        PostsResponseAll postsResponseAll = new PostsResponseAll();
+        if (status.equals("inactive")) {
+            countMyPosts = postRepositori.countMyPostsInactive(offset, userId);
+            if (countMyPosts.isPresent()) {
+                postsResponseAll.setCount(countMyPosts.get());
+                postsResponseAll.setPosts(listPostToResponse(postRepositori.getMyPostsInactive(offset, userId)));
+                return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
+            } else {
+                return null;
+            }
+        } else if (status.equals("pending")) {
+            moderationStatus = "NEW";
+        } else if (status.equals("declined")) {
+            moderationStatus = "DECLINED";
+        } else if (status.equals("published")) {
+            moderationStatus = "ACCEPTED";
+        }
+
+        countMyPosts = postRepositori.countMyPostsActive(offset, userId, moderationStatus);
+        if (countMyPosts.isPresent()) {
+            postsResponseAll.setCount(countMyPosts.get());
+            postsResponseAll.setPosts(listPostToResponse(postRepositori.getMyPostsActive(offset, userId, moderationStatus)));
+            return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
+        } else {
+            return null;
+        }
+    }
+
+
 }

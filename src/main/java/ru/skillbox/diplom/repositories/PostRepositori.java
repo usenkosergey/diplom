@@ -191,4 +191,44 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
 //    List<Post> getPostBySearch(@Param("currentTime") long currentTime,
 //                               @Param("searchString") String searchString);
 //TODO не работает ссылка с фронта для поиска
+
+    @Query(nativeQuery = true,
+            value = "SELECT * " +
+                    "FROM posts " +
+                    "WHERE user_id = (:userId) " +
+                    "AND is_active = false " +
+                    limit + ";")
+    List<Post> getMyPostsInactive(@Param("offset") int offset,
+                                  @Param("userId") int userId);
+
+    @Query(nativeQuery = true,
+            value = "SELECT COUNT(*) " +
+                    "FROM posts " +
+                    "WHERE user_id = (:userId) " +
+                    "AND is_active = false " +
+                    limit + ";")
+    Optional<Integer> countMyPostsInactive(@Param("offset") int offset,
+                                           @Param("userId") int userId);
+
+    @Query(nativeQuery = true,
+            value = "SELECT COUNT(*) " +
+                    "FROM posts " +
+                    "WHERE user_id = (:userId) " +
+                    "AND " + is_active +
+                    "AND moderation_status = (:status) " +
+                    limit + ";")
+    Optional<Integer> countMyPostsActive(@Param("offset") int offset,
+                                          @Param("userId") int userId,
+                                          @Param("status") String status);
+
+    @Query(nativeQuery = true,
+            value = "SELECT * " +
+                    "FROM posts " +
+                    "WHERE user_id = (:userId) " +
+                    "AND " + is_active +
+                    "AND moderation_status = (:status) " +
+                    limit + ";")
+    List<Post> getMyPostsActive(@Param("offset") int offset,
+                                 @Param("userId") int userId,
+                                 @Param("status") String status);
 }
