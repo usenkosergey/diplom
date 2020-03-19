@@ -11,7 +11,6 @@ import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.Mapper.PostMapper;
 import ru.skillbox.diplom.api.requests.LikeRequest;
 import ru.skillbox.diplom.api.requests.PostRequest;
-import ru.skillbox.diplom.api.responses.CalendarResponse;
 import ru.skillbox.diplom.api.responses.PostResponse;
 import ru.skillbox.diplom.api.responses.PostsResponseAll;
 import ru.skillbox.diplom.entities.EModerationStatus;
@@ -60,7 +59,7 @@ public class ApiPostController {
     @Autowired
     private HttpServletRequest httpServletRequest;
 
-    @GetMapping("/{id}") //Getting post by ID
+    @GetMapping("/{id}")
     public PostResponse getById(@PathVariable int id) {
 
 //        List<Object[]> test = tagsRepositori.tagsForTopic(System.currentTimeMillis());
@@ -72,7 +71,6 @@ public class ApiPostController {
 //            if (max < b.intValue()) max = b.intValue();
 //            testMap.put(a, b.intValue());
 //        }
-//        System.out.println("max --- " + max);
 
         PostResponse postResponse = PostMapper.getPostResponse(postRepositori.findById(id).get(), commentRepositori.findByPostIdOrderByTimeDesc(id));
         postResponse.setLikeCount(postRepositori.countLike(id, 1).orElse(0));
@@ -94,19 +92,21 @@ public class ApiPostController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Map> addPost(@RequestBody PostRequest postRequest) throws ParseException {
-        logger.info("add Post");
-        Post newPost = new Post();
+    public ResponseEntity<Map> addPost(@RequestBody(required = false) PostRequest postRequest) throws ParseException {
+        logger.info("/add_Post");
 
+        int userId = Constant.userId(httpServletRequest.getSession().getId());
+        if (userId == 0) return new ResponseEntity<>(Constant.responseFalse(), HttpStatus.OK);
+
+        Post newPost = new Post();
         newPost.setActive(postRequest.getActive() == 1);
         newPost.seteModerationStatus(EModerationStatus.NEW);
-
-        if (Constant.auth.size() == 0)
-            return new ResponseEntity<>(Constant.responseError("text", "пользователя нет"), HttpStatus.BAD_REQUEST);
-        Optional<User> user = userRepositori.findById(Constant.auth.get(httpServletRequest.getSession().getId()));
+        Optional<User> user = userRepositori.findById(userId);
         if (user.isEmpty()) {
-            logger.info("/addPost : пользователь не нашелся в базе - " + Constant.auth.get(httpServletRequest.getSession().getId()));
+            logger.info("/addPost : пользователь не нашелся в базе - " + userId);
+            return new ResponseEntity<>(Constant.responseFalse(), HttpStatus.OK);
         }
+
         newPost.setUser(user.get());
 
         String timeString = postRequest.getTime();
@@ -207,6 +207,7 @@ public class ApiPostController {
                                                        @RequestParam int limit,
                                                        @RequestParam String status) {
         int userId = Constant.userId(httpServletRequest.getSession().getId());
+        if (userId == 0) return null;
         Optional<Integer> countMyPosts = Optional.empty();
         String moderationStatus = "";
         logger.info("/my -> userId " + userId + " -> " + status);
