@@ -9,23 +9,21 @@ public class Constant {
 
     public static Map<String, Integer> auth = new HashMap<>();
 
-//    public static Integer userId(String sessionId){
-//        Integer userId;
-//        if (Constant.auth.isEmpty()) {
-//            userId = 0;
-//        } else {
-//            userId = Constant.auth.get(sessionId);
-//        }
-//        return userId;
-//    }
+    public static Integer userId(String sessionId) {
+        Integer userId = Constant.auth.get(sessionId);
+        if (userId == null) {
+            userId = 0;
+        }
+        return userId;
+    }
 
-    public static Map responseTrue(){
+    public static Map responseTrue() {
         Map<String, Boolean> responseTrue = new HashMap<>();
         responseTrue.put("result", true);
         return responseTrue;
     }
 
-    public static Map responseFalse(){
+    public static Map responseFalse() {
         Map<String, Boolean> responseFalse = new HashMap<>();
         responseFalse.put("result", false);
         return responseFalse;
@@ -37,16 +35,16 @@ public class Constant {
         return responseId;
     }
 
-    public static Map responseError(String nameError, String descriptionError){
+    public static Map responseError(String nameError, String descriptionError) {
         Map<String, Object> responseError = new HashMap<>();
         responseError.put("result", false);
         Map<String, String> error = new TreeMap<String, String>();
-        error.put(nameError,descriptionError);
+        error.put(nameError, descriptionError);
         responseError.put("errors", error);
         return responseError;
     }
 
-    public static String codeGenerator(int length){
+    public static String codeGenerator(int length) {
         Random r = new Random();
         String s = r.ints(48, 122)
                 .filter(i -> (i < 57 || i > 65) && (i < 90 || i > 97))
