@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.api.requests.CommentRequest;
+import ru.skillbox.diplom.api.requests.SettingsRequest;
 import ru.skillbox.diplom.api.responses.CalendarResponse;
 import ru.skillbox.diplom.api.responses.ResponseAll;
 import ru.skillbox.diplom.api.responses.TagsForTopicResponse;
@@ -57,6 +58,7 @@ public class ApiGeneralController {
     private VotesRepositori votesRepositori;
 
     private List<String> initData = new ArrayList<String>();
+
     public List<String> getInitData() {
         return this.initData;
     }
@@ -76,11 +78,12 @@ public class ApiGeneralController {
     @GetMapping("/settings")
     public Map<String, Boolean> getGlobalSettings() {
         logger.info("/settings");
-        List<Settings> tempSetting = settingsRepositori.findAll();
+
         Map<String, Boolean> currentSettings = new HashMap<>();
-        for (Settings temp : tempSetting) {
+        for (Settings temp : settingsRepositori.findAll()) {
             currentSettings.put(temp.getCode(), temp.getValue().equals("true"));
         }
+
         return currentSettings;
     }
 
@@ -122,13 +125,13 @@ public class ApiGeneralController {
     }
 
     @GetMapping("/statistics/all")
-    public ResponseEntity<Map<String, Object>> statisticsAll() {
+    public ResponseEntity<Map> statisticsAll() {
         logger.info("/statistics/all");
         Optional<Settings> settings = settingsRepositori.findById(3);
-        if (settings.isEmpty() && !settings.get().getValue().equals(true) && Constant.auth.isEmpty()) {
+        if (settings.get().getValue().equals("false") && Constant.auth.isEmpty()) {
             return new ResponseEntity<>(Constant.responseFalse(), HttpStatus.BAD_REQUEST);
         }
-
+        System.out.println("можно всем");
         Map<String, Object> statistics = new HashMap<>();
         statistics.put("postsCount", postRepositori.count());
         statistics.put("likesCount", votesRepositori.countByValue(1));
@@ -163,7 +166,7 @@ public class ApiGeneralController {
     }
 
     @GetMapping("/statistics/my")
-    public ResponseEntity<Map<String, Object>> statisticsMy(){
+    public ResponseEntity<Map<String, Object>> statisticsMy() {
         logger.info("/statistics/my");
         int userId = Constant.userId(httpServletRequest.getSession().getId());
         if (userId == 0) return null;
@@ -180,6 +183,19 @@ public class ApiGeneralController {
                             .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         }
         return new ResponseEntity<>(myStatistics, HttpStatus.OK);
+    }
 
+    @PutMapping("/settings")
+    public void settings(@RequestBody(required = false) SettingsRequest settingsRequest) {
+        logger.info("/settings");
+        int userId = Constant.userId(httpServletRequest.getSession().getId());
+        if (userId != 0) {
+            settingsRepositori.updateSettings("STATISTICS_IS_PUBLIC",
+                    String.valueOf(settingsRequest.isSTATISTICS_IS_PUBLIC()));
+            settingsRepositori.updateSettings("POST_PREMODERATION",
+                    String.valueOf(settingsRequest.isPOST_PREMODERATION()));
+            settingsRepositori.updateSettings("MULTIUSER_MODE",
+                    String.valueOf(settingsRequest.isMULTIUSER_MODE()));
+        }
     }
 }
