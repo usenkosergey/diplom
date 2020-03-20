@@ -218,8 +218,8 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "AND moderation_status = (:status) " +
                     limit + ";")
     Optional<Integer> countMyPostsActive(@Param("offset") int offset,
-                                          @Param("userId") int userId,
-                                          @Param("status") String status);
+                                         @Param("userId") int userId,
+                                         @Param("status") String status);
 
     @Query(nativeQuery = true,
             value = "SELECT * " +
@@ -229,6 +229,23 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "AND moderation_status = (:status) " +
                     limit + ";")
     List<Post> getMyPostsActive(@Param("offset") int offset,
-                                 @Param("userId") int userId,
-                                 @Param("status") String status);
+                                @Param("userId") int userId,
+                                @Param("status") String status);
+
+    @Query(nativeQuery = true,
+            value = "SELECT COUNT(*) FROM posts WHERE user_id = (:userId);")
+    Optional<Integer> countByUser(@Param("userId") int userId);
+
+    @Query(nativeQuery = true,
+            value = "SELECT SUM(view_count) FROM posts WHERE user_id = (:user_id);")
+    long sumMyViewCount(@Param("user_id") int user_id);
+
+    @Query(nativeQuery = true,
+            value = "SELECT * " +
+                    "FROM posts WHERE user_id = (:userId)" +
+                    "ORDER BY id ASC " +
+                    "LIMIT 1;")
+    Optional<Post> firstMyPublication(@Param("userId") int userId);
+
+
 }

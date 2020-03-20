@@ -202,9 +202,9 @@ public class ApiPostController {
 //TODO не работает ссылка с фронта для поиска
 
     @GetMapping("/my")
-    public ResponseEntity<PostsResponseAll> getMyPosts(@RequestParam int offset,
-                                                       @RequestParam int limit,
-                                                       @RequestParam String status) {
+    public ResponseEntity<PostsResponseAll> getMyPosts(@RequestParam(required = false) int offset,
+                                                       @RequestParam(required = false) int limit,
+                                                       @RequestParam(required = false) String status) {
         int userId = Constant.userId(httpServletRequest.getSession().getId());
         if (userId == 0) return null;
         Optional<Integer> countMyPosts = Optional.empty();
@@ -244,7 +244,7 @@ public class ApiPostController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Map> putPost(@RequestBody(required = false) PostRequest postRequest,
-                                                    @PathVariable int id){
+                                                    @PathVariable(required = false) int id){
 
         int userId = Constant.userId(httpServletRequest.getSession().getId());
         if (userId == 0) return null;

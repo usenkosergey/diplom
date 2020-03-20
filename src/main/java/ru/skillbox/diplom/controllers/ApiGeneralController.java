@@ -162,4 +162,23 @@ public class ApiGeneralController {
         calendarResponse.setPosts(tempMap);
         return new ResponseEntity<>(calendarResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/statistics/my")
+    public ResponseEntity<Map> statisticsMy(){
+        logger.info("/statistics/my");
+        int userId = Constant.userId(httpServletRequest.getSession().getId());
+        if (userId == 0) return null;
+
+        Map<String, Object> myStatistics = new HashMap<>();
+
+        myStatistics.put("postsCount", postRepositori.countByUser(userId));
+        myStatistics.put("likesCount", votesRepositori.countByValueAndUserId(1, userId));
+        myStatistics.put("dislikesCount", votesRepositori.countByValueAndUserId(-1, userId));
+        myStatistics.put("viewsCount", postRepositori.sumMyViewCount(userId));
+        myStatistics.put("firstPublication",
+                Instant.ofEpochMilli(postRepositori.firstMyPublication(userId).get().getTime()).atZone(ZoneId.systemDefault())
+                        .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        return new ResponseEntity<>(myStatistics, HttpStatus.OK);
+
+    }
 }
