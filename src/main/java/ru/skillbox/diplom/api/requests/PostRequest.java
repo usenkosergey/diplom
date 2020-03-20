@@ -1,23 +1,16 @@
 package ru.skillbox.diplom.api.requests;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class PostRequest {
-    private String time;
+    private LocalDateTime time;
     private int active;
     private String title;
     private String text;
     private ArrayList<String> tags;
 
     public PostRequest() {
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public int getActive() {
@@ -50,5 +43,13 @@ public class PostRequest {
 
     public void setTags(ArrayList<String> tags) {
         this.tags = tags;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time;
     }
 }

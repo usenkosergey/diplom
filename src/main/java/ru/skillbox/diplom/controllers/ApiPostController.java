@@ -25,8 +25,10 @@ import ru.skillbox.diplom.services.LikeService;
 import ru.skillbox.diplom.services.PostService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -109,10 +111,7 @@ public class ApiPostController {
 
         newPost.setUser(user.get());
 
-        String timeString = postRequest.getTime();
-        timeString = timeString.replace('T', ' ');
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        long timeLong = simpleDateFormat.parse(timeString).getTime();
+        long timeLong = Timestamp.valueOf(postRequest.getTime()).getTime();
         if (timeLong < System.currentTimeMillis()) timeLong = System.currentTimeMillis();
         newPost.setTime(timeLong);
 
@@ -241,6 +240,55 @@ public class ApiPostController {
         } else {
             return null;
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Map> putPost(@RequestBody(required = false) PostRequest postRequest,
+                                                    @PathVariable int id){
+
+        int userId = Constant.userId(httpServletRequest.getSession().getId());
+        if (userId == 0) return null;
+
+        Post putPost = postRepositori.findById(id).get();
+
+        putPost.setActive(postRequest.getActive() == 1);
+        User user = userRepositori.findById(userId).get();
+        if (!user.getModerator()) {
+            putPost.seteModerationStatus(EModerationStatus.NEW);
+        }
+
+        long timeLong = Timestamp.valueOf(postRequest.getTime()).getTime();
+        if (timeLong < System.currentTimeMillis()) timeLong = System.currentTimeMillis();
+        putPost.setTime(timeLong);
+
+
+        if (postRequest.getTitle().length() < 10)
+            return new ResponseEntity<>(Constant.responseError("title", "Заголовок не установлен или короткий (не менее 10 символов)"),
+                    HttpStatus.OK);
+        putPost.setTitle(postRequest.getTitle());
+
+        if (postRequest.getText().length() < 500)
+            return new ResponseEntity<>(Constant.responseError("text", "Текст публикации слишком короткий (не менее 500 символов)"),
+                    HttpStatus.OK);
+        putPost.setText(postRequest.getText());
+
+        ArrayList<String> requestTags = postRequest.getTags();
+        ArrayList<Tag> addPostTag = new ArrayList<>();
+
+        for (String tag : requestTags) {
+            Optional<Tag> tempTag = tagsRepositori.findByText(tag);
+            if (tempTag.isPresent()) {
+                addPostTag.add(tempTag.get());
+            } else {
+                Tag tagNew = new Tag();
+                tagNew.setText(tag);
+                addPostTag.add(tagsRepositori.save(tagNew));
+            }
+        }
+        putPost.setTags(addPostTag);
+        postRepositori.save(putPost);
+
+        return new ResponseEntity<>(Constant.responseTrue(), HttpStatus.OK);
     }
 
 
