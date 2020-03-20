@@ -62,7 +62,7 @@ public class ApiPostController {
     private HttpServletRequest httpServletRequest;
 
     @GetMapping("/{id}")
-    public PostResponse getById(@PathVariable int id) {
+    public PostResponse getById(@PathVariable(required = false) int id) {
 
 //        List<Object[]> test = tagsRepositori.tagsForTopic(System.currentTimeMillis());
 //        Map<String, Integer> testMap = new HashMap<>();
@@ -84,7 +84,9 @@ public class ApiPostController {
     }
 
     @GetMapping("")
-    public ResponseEntity<PostsResponseAll> getPosts(@RequestParam int offset, @RequestParam int limit, @RequestParam String mode) {
+    public ResponseEntity<PostsResponseAll> getPosts(@RequestParam(required = false) int offset,
+                                                     @RequestParam(required = false) int limit,
+                                                     @RequestParam(required = false) String mode) {
         logger.info("/api/post");
         PostsResponseAll postsResponseAll = new PostsResponseAll();
         postsResponseAll.setCount(postRepositori.countActualPosts());
@@ -146,17 +148,19 @@ public class ApiPostController {
     }
 
     @PostMapping("/like")
-    public ResponseEntity<Map> like(@RequestBody LikeRequest likeRequest) {
+    public ResponseEntity<Map> like(@RequestBody(required = false) LikeRequest likeRequest) {
         return likeService.like(likeRequest);
     }
 
     @PostMapping("/dislike")
-    public ResponseEntity<Map> dislike(@RequestBody LikeRequest likeRequest) {
+    public ResponseEntity<Map> dislike(@RequestBody(required = false) LikeRequest likeRequest) {
         return likeService.dislike(likeRequest);
     }
 
     @GetMapping("/byTag")
-    public ResponseEntity<PostsResponseAll> getPostsByTags(@RequestParam int offset, @RequestParam int limit, @RequestParam String tag) {
+    public ResponseEntity<PostsResponseAll> getPostsByTags(@RequestParam(required = false) int offset,
+                                                           @RequestParam(required = false) int limit,
+                                                           @RequestParam(required = false) String tag) {
         logger.info("/api/post/byTag -> " + tag);
         PostsResponseAll postsResponseAll = new PostsResponseAll();
         postsResponseAll.setCount(tagsRepositori.findByText(tag).get().getPosts().size());
@@ -178,7 +182,9 @@ public class ApiPostController {
     }
 
     @GetMapping("/byDate")
-    public ResponseEntity<PostsResponseAll> getPostByDate(@RequestParam int offset, @RequestParam int limit, @RequestParam String date) throws ParseException {
+    public ResponseEntity<PostsResponseAll> getPostByDate(@RequestParam(required = false) int offset,
+                                                          @RequestParam(required = false) int limit,
+                                                          @RequestParam(required = false) String date) throws ParseException {
         logger.info("/byDate");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         long startTime = simpleDateFormat.parse(date).getTime();

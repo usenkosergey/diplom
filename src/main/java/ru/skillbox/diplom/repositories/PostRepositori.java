@@ -6,6 +6,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.skillbox.diplom.entities.EModerationStatus;
 import ru.skillbox.diplom.entities.Post;
 
 import java.math.BigInteger;
@@ -238,7 +239,7 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
 
     @Query(nativeQuery = true,
             value = "SELECT SUM(view_count) FROM posts WHERE user_id = (:user_id);")
-    long sumMyViewCount(@Param("user_id") int user_id);
+    Optional<Integer> sumMyViewCount(@Param("user_id") int user_id);
 
     @Query(nativeQuery = true,
             value = "SELECT * " +
@@ -246,6 +247,8 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "ORDER BY id ASC " +
                     "LIMIT 1;")
     Optional<Post> firstMyPublication(@Param("userId") int userId);
+
+    int countByeModerationStatus(EModerationStatus eModerationStatus);
 
 
 }

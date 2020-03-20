@@ -57,13 +57,12 @@ public class ApiGeneralController {
     private VotesRepositori votesRepositori;
 
     private List<String> initData = new ArrayList<String>();
-
-    public List<String> getinitData() {
+    public List<String> getInitData() {
         return this.initData;
     }
 
     @GetMapping("/init")
-    public Map getInit() {
+    public Map<String, String> getInit() {
         logger.info("/init");
         Map<String, String> initDataResponse = new HashMap<>();
         List<String> tempListInitData = initData;
@@ -75,7 +74,7 @@ public class ApiGeneralController {
     }
 
     @GetMapping("/settings")
-    public Map getGlobalSettings() {
+    public Map<String, Boolean> getGlobalSettings() {
         logger.info("/settings");
         List<Settings> tempSetting = settingsRepositori.findAll();
         Map<String, Boolean> currentSettings = new HashMap<>();
@@ -117,13 +116,13 @@ public class ApiGeneralController {
     }
 
     @PostMapping("/comment")
-    public ResponseEntity<Map> comment(@RequestBody CommentRequest commentRequest) {
+    public ResponseEntity<Map> comment(@RequestBody(required = false) CommentRequest commentRequest) {
         logger.info("/comment");
         return commentService.addComment(commentRequest);
     }
 
     @GetMapping("/statistics/all")
-    public ResponseEntity<Map> statisticsAll() {
+    public ResponseEntity<Map<String, Object>> statisticsAll() {
         logger.info("/statistics/all");
         Optional<Settings> settings = settingsRepositori.findById(3);
         if (settings.isEmpty() && !settings.get().getValue().equals(true) && Constant.auth.isEmpty()) {
@@ -143,7 +142,7 @@ public class ApiGeneralController {
     }
 
     @GetMapping("/calendar")
-    public ResponseEntity<CalendarResponse> calendar(@RequestParam Integer year) {
+    public ResponseEntity<CalendarResponse> calendar(@RequestParam(required = false) Integer year) {
         logger.info("/calendar ->" + year);
         CalendarResponse calendarResponse = new CalendarResponse();
         List<String> yearListString = postRepositori.getYearToCalendar(System.currentTimeMillis());
@@ -164,20 +163,22 @@ public class ApiGeneralController {
     }
 
     @GetMapping("/statistics/my")
-    public ResponseEntity<Map> statisticsMy(){
+    public ResponseEntity<Map<String, Object>> statisticsMy(){
         logger.info("/statistics/my");
         int userId = Constant.userId(httpServletRequest.getSession().getId());
         if (userId == 0) return null;
 
         Map<String, Object> myStatistics = new HashMap<>();
-
-        myStatistics.put("postsCount", postRepositori.countByUser(userId));
-        myStatistics.put("likesCount", votesRepositori.countByValueAndUserId(1, userId));
-        myStatistics.put("dislikesCount", votesRepositori.countByValueAndUserId(-1, userId));
-        myStatistics.put("viewsCount", postRepositori.sumMyViewCount(userId));
-        myStatistics.put("firstPublication",
-                Instant.ofEpochMilli(postRepositori.firstMyPublication(userId).get().getTime()).atZone(ZoneId.systemDefault())
-                        .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        Integer postsCount = postRepositori.countByUser(userId).orElse(0);
+        if (postsCount != 0) {
+            myStatistics.put("postsCount", postsCount);
+            myStatistics.put("likesCount", votesRepositori.countByValueAndUserId(1, userId).orElse(0));
+            myStatistics.put("dislikesCount", votesRepositori.countByValueAndUserId(-1, userId).orElse(0));
+            myStatistics.put("viewsCount", postRepositori.sumMyViewCount(userId).orElse(0));
+            myStatistics.put("firstPublication",
+                    Instant.ofEpochMilli(postRepositori.firstMyPublication(userId).get().getTime()).atZone(ZoneId.systemDefault())
+                            .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        }
         return new ResponseEntity<>(myStatistics, HttpStatus.OK);
 
     }

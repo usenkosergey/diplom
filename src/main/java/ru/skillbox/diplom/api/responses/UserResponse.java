@@ -1,13 +1,18 @@
 package ru.skillbox.diplom.api.responses;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 public class UserResponse {
 
     private int id;
     private String name;
     private String photo;
     private String email;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private boolean moderation;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private int moderationCount;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private boolean settings;
 
     public UserResponse() {

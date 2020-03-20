@@ -27,6 +27,6 @@ public interface VotesRepositori extends JpaRepository<PostVotes, Integer> {
 
     long countByValue (Integer value);
 
-    long countByValueAndUserId (Integer value, Integer id);
+    Optional<Integer> countByValueAndUserId (Integer value, Integer id);
 
 }

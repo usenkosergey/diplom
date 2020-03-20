@@ -14,10 +14,13 @@ import ru.skillbox.diplom.api.requests.Login;
 import ru.skillbox.diplom.api.requests.PasswordRequest;
 import ru.skillbox.diplom.api.requests.Register;
 import ru.skillbox.diplom.api.responses.CaptchaResponse;
+import ru.skillbox.diplom.api.responses.UserResponse;
 import ru.skillbox.diplom.api.responses.UserResponseAuth;
 import ru.skillbox.diplom.entities.CaptchaCode;
+import ru.skillbox.diplom.entities.EModerationStatus;
 import ru.skillbox.diplom.entities.User;
 import ru.skillbox.diplom.repositories.CaptchaRepositori;
+import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.UserRepositori;
 import ru.skillbox.diplom.services.CaptchaService;
 import ru.skillbox.diplom.services.EMailService;
@@ -48,6 +51,9 @@ public class ApiAuthController {
     private PasswordService passwordService;
 
     @Autowired
+    private PostRepositori postRepositori;
+
+    @Autowired
     private HttpServletRequest reg;
 
     @PostMapping("/auth/login")
@@ -56,7 +62,10 @@ public class ApiAuthController {
         Optional<User> user = userRepositori.findByEmail(login.getE_mail());
         if (user.isPresent() && new BCryptPasswordEncoder().matches(login.getPassword(), user.get().getPassword())) {
             Constant.auth.put(reg.getSession().getId(), user.get().getId());
-            return new ResponseEntity<>(new UserResponseAuth(true, UserMapper.getUser(user.get())), HttpStatus.OK);
+            UserResponse userResponse = UserMapper.getUser(userRepositori.getOne(Constant.auth.get(reg.getSession().getId())));
+            if (userResponse.isModeration())
+                userResponse.setModerationCount(postRepositori.countByeModerationStatus(EModerationStatus.NEW));
+            return new ResponseEntity<>(new UserResponseAuth(true, userResponse), HttpStatus.OK);
         }
         return new ResponseEntity<>(new UserResponseAuth(false), HttpStatus.OK);
     }
@@ -76,10 +85,10 @@ public class ApiAuthController {
             return new UserResponseAuth(false);
         }
         logger.info("/auth/check : true");
-        return new UserResponseAuth(
-                true,
-                UserMapper.getUser(userRepositori.getOne(Constant.auth.get(reg.getSession().getId())))
-        );
+        UserResponse userResponse = UserMapper.getUser(userRepositori.getOne(Constant.auth.get(reg.getSession().getId())));
+        if (userResponse.isModeration())
+            userResponse.setModerationCount(postRepositori.countByeModerationStatus(EModerationStatus.NEW));
+        return new UserResponseAuth(true, userResponse);
     }
 
     @GetMapping(value = "/auth/captcha")
@@ -137,7 +146,7 @@ public class ApiAuthController {
         if (captchaRepositori.findByCode(passwordRequest.getCaptcha()).isEmpty()) {
             return new ResponseEntity<>(Constant.responseError("captcha", "Код с картинки введён неверно"), HttpStatus.OK);
         } else if (userRepositori.findByCode(passwordRequest.getCode()).isEmpty()) {
-            return new ResponseEntity<>(Constant.responseError("code","Ссылка для восстановления пароля устарела.\n" +
+            return new ResponseEntity<>(Constant.responseError("code", "Ссылка для восстановления пароля устарела.\n" +
                     "<a href=”/auth/restore”>Запросить ссылку снова</a>"), HttpStatus.OK);
         } else {
             Optional<User> newPasswordUser = userRepositori.findByCode(passwordRequest.getCode());
