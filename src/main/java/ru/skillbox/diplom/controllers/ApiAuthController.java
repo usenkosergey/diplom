@@ -57,7 +57,7 @@ public class ApiAuthController {
     private HttpServletRequest reg;
 
     @PostMapping("/auth/login")
-    public ResponseEntity<UserResponseAuth> login(@RequestBody Login login) {
+    public ResponseEntity<UserResponseAuth> login(@RequestBody(required = false) Login login) {
         logger.info("/auth/login");
         Optional<User> user = userRepositori.findByEmail(login.getE_mail());
         if (user.isPresent() && new BCryptPasswordEncoder().matches(login.getPassword(), user.get().getPassword())) {
@@ -103,7 +103,7 @@ public class ApiAuthController {
     }
 
     @PostMapping(value = "/auth/register")
-    public ResponseEntity<Map> register(@RequestBody Register register) {
+    public ResponseEntity<Map> register(@RequestBody(required = false) Register register) {
         User addUser = new User();
         logger.info("/auth/register" + " -> email:" + register.getE_mail());
 
@@ -115,7 +115,7 @@ public class ApiAuthController {
             addUser.setModerator(false);
             addUser.setRegTime(System.currentTimeMillis());
             addUser.setName("нЕкто");
-            addUser.setEmail(register.getE_mail());
+            addUser.setEmail(register.getE_mail().toLowerCase());
             addUser.setPhoto("default.jpg");
             addUser.setPassword(new BCryptPasswordEncoder().encode(register.getPassword()));
             userRepositori.save(addUser);
@@ -127,9 +127,9 @@ public class ApiAuthController {
     }
 
     @PostMapping("/auth/restore")
-    public ResponseEntity<Map> restorePassword(@RequestBody EmailRequest email) throws UnsupportedEncodingException, MessagingException {
+    public ResponseEntity<Map> restorePassword(@RequestBody(required = false) EmailRequest email) throws UnsupportedEncodingException, MessagingException {
         logger.info("/auth/restore");
-        Optional<User> currentUser = userRepositori.findByEmail(email.getEmail());
+        Optional<User> currentUser = userRepositori.findByEmail(email.getEmail().toLowerCase());
         if (currentUser.isEmpty()) return new ResponseEntity<>(Constant.responseFalse(), HttpStatus.OK);
         String code = Constant.codeGenerator(10);
         User userWithNewCode = currentUser.get();
@@ -141,7 +141,7 @@ public class ApiAuthController {
     }
 
     @PostMapping("auth/password")
-    public ResponseEntity<Map> newPassword(@RequestBody PasswordRequest passwordRequest) {
+    public ResponseEntity<Map> newPassword(@RequestBody(required = false) PasswordRequest passwordRequest) {
         logger.info("auth/password");
         if (captchaRepositori.findByCode(passwordRequest.getCaptcha()).isEmpty()) {
             return new ResponseEntity<>(Constant.responseError("captcha", "Код с картинки введён неверно"), HttpStatus.OK);

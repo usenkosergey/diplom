@@ -1,7 +1,10 @@
 package ru.skillbox.diplom.api.responses;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 public class UserResponseAuth {
     private Boolean result;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private UserResponse user;
 
     public UserResponseAuth(Boolean result) {

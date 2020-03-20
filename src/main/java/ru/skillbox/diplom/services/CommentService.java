@@ -42,9 +42,9 @@ public class CommentService {
         if (commentRequest.getPost_id() == 0 || postRepositori.findById(commentRequest.getPost_id()).isEmpty()) {
             return new ResponseEntity<>(Constant.responseError("text", "нет такого поста"), HttpStatus.BAD_REQUEST);
         }
-        if (commentRequest.getText().length() < 10) {
-            return new ResponseEntity<>(Constant.responseError("text", "Текст комментария не задан или слишком короткий (не менее 10 символов).")
-                    , HttpStatus.OK);
+        if (commentRequest.getText().length() < 5) {
+            return new ResponseEntity<>(Constant.responseError("text", "Текст комментария не задан или слишком короткий (не менее 5 символов).")
+                    , HttpStatus.BAD_REQUEST);
         }
 
         Comment newComment = new Comment();
