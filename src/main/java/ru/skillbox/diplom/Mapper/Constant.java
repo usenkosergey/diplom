@@ -17,25 +17,25 @@ public class Constant {
         return userId;
     }
 
-    public static Map responseTrue() {
+    public static Map<String, Boolean> responseTrue() {
         Map<String, Boolean> responseTrue = new HashMap<>();
         responseTrue.put("result", true);
         return responseTrue;
     }
 
-    public static Map responseFalse() {
+    public static Map<String, Boolean> responseFalse() {
         Map<String, Boolean> responseFalse = new HashMap<>();
         responseFalse.put("result", false);
         return responseFalse;
     }
 
-    public static Map responseId(int id) {
+    public static Map<String, Integer> responseId(int id) {
         Map<String, Integer> responseId = new HashMap<>();
         responseId.put("id", id);
         return responseId;
     }
 
-    public static Map responseError(String nameError, String descriptionError) {
+    public static Map<String, Object> responseError(String nameError, String descriptionError) {
         Map<String, Object> responseError = new HashMap<>();
         responseError.put("result", false);
         Map<String, String> error = new TreeMap<String, String>();
