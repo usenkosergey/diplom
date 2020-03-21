@@ -19,6 +19,7 @@ import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.SettingsRepositori;
 import ru.skillbox.diplom.repositories.VotesRepositori;
 import ru.skillbox.diplom.services.CommentService;
+import ru.skillbox.diplom.services.SettingsService;
 import ru.skillbox.diplom.services.TagService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,6 +58,9 @@ public class ApiGeneralController {
     @Autowired
     private VotesRepositori votesRepositori;
 
+    @Autowired
+    private SettingsService settingsService;
+
     private List<String> initData = new ArrayList<String>();
 
     public List<String> getInitData() {
@@ -81,7 +85,7 @@ public class ApiGeneralController {
 
         Map<String, Boolean> currentSettings = new HashMap<>();
         for (Settings temp : settingsRepositori.findAll()) {
-            currentSettings.put(temp.getCode(), temp.getValue().equals("true"));
+            currentSettings.put(temp.getCode(), temp.getValue());
         }
 
         return currentSettings;
@@ -128,7 +132,7 @@ public class ApiGeneralController {
     public ResponseEntity<Map> statisticsAll() {
         logger.info("/statistics/all");
         Optional<Settings> settings = settingsRepositori.findById(3);
-        if (settings.get().getValue().equals("false") && Constant.auth.isEmpty()) {
+        if (settings.get().getValue() && Constant.auth.isEmpty()) {
             return new ResponseEntity<>(Constant.responseFalse(), HttpStatus.BAD_REQUEST);
         }
         System.out.println("можно всем");
@@ -190,12 +194,8 @@ public class ApiGeneralController {
         logger.info("/settings");
         int userId = Constant.userId(httpServletRequest.getSession().getId());
         if (userId != 0) {
-            settingsRepositori.updateSettings("STATISTICS_IS_PUBLIC",
-                    String.valueOf(settingsRequest.isSTATISTICS_IS_PUBLIC()));
-            settingsRepositori.updateSettings("POST_PREMODERATION",
-                    String.valueOf(settingsRequest.isPOST_PREMODERATION()));
-            settingsRepositori.updateSettings("MULTIUSER_MODE",
-                    String.valueOf(settingsRequest.isMULTIUSER_MODE()));
+            logger.info("/settings -> " + userId);
+            settingsService.changeSettings(settingsRequest);
         }
     }
 }

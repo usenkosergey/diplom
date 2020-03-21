@@ -72,5 +72,5 @@ CREATE TABLE global_settings
 id SERIAL PRIMARY KEY,
 code VARCHAR(255) NOT NULL,
 name VARCHAR(255) NOT NULL,
-value VARCHAR(255) NOT NULL
+value boolean NOT NULL
 );

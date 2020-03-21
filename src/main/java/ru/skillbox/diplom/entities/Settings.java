@@ -11,7 +11,7 @@ public class Settings {
 
     private String code;
     private String name;
-    private String value;
+    private Boolean value;
 
     public Settings() {
     }
@@ -40,11 +40,11 @@ public class Settings {
         this.name = name;
     }
 
-    public String getValue() {
+    public Boolean getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Boolean value) {
         this.value = value;
     }
 }

@@ -16,5 +16,5 @@ public interface SettingsRepositori extends JpaRepository<Settings, Integer> {
                     "SET value = (:value) " +
                     "WHERE code = (:code);")
     Integer updateSettings(@Param("code") String code,
-                           @Param("value") String value);
+                           @Param("value") Boolean value);
 }
