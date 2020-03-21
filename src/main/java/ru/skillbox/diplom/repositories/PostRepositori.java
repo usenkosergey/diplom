@@ -264,5 +264,18 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "AND " + is_active + limit + ";")
     List<Post> getNewPostsForModeration(@Param("offset") int offset);
 
+    @Query(nativeQuery = true,
+            value = "SELECT COUNT(*) " +
+                    "FROM posts WHERE " + is_active + " " +
+                    "AND moderation_status = (:status) " +
+                    "AND moderator_id = (:moderatorId);")
+    Optional<Long> countModerationPosts(String status, int moderatorId);
 
+    @Query(nativeQuery = true,
+            value = "SELECT * " +
+                    "FROM posts " +
+                    "WHERE " + is_active +
+                    "AND moderation_status = (:status)" +
+                    "AND moderator_id = (:moderatorId) " + limit + ";")
+    List<Post> getModerationPosts(String status, int moderatorId, int offset);
 }

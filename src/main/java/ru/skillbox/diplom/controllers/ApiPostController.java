@@ -305,24 +305,33 @@ public class ApiPostController {
         int userId = Constant.userId(httpServletRequest.getSession().getId());
         if (userId == 0) return null;
         Optional<User> currentUser = userRepositori.findById(userId);
-        if (currentUser.isEmpty() && currentUser.get().getModerator()) return null;
+        if (!currentUser.get().getModerator()) return null;
 
         logger.info("/moderation -> " + userId + ", status -> " + status);
         String moderationStatus = "";
-        Optional<Long> countNewPosts = Optional.empty();
+        Optional<Long> countPosts = Optional.empty();
         PostsResponseAll postsResponseAll = new PostsResponseAll();
 
         switch (status) {
             case "new":
-                countNewPosts = postRepositori.countNewPosts();
-                if (countNewPosts.isPresent()) {
-                    postsResponseAll.setCount(countNewPosts.orElse(0L));
+                countPosts = postRepositori.countNewPosts();
+                if (countPosts.isPresent()) {
+                    postsResponseAll.setCount(countPosts.orElse(0L));
                     postsResponseAll.setPosts(listPostToResponse(postRepositori.getNewPostsForModeration(offset)));
                     return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
                 }
+            case "declined":
+                moderationStatus = "DECLINED";
+                break;
+            case "accepted":
+                moderationStatus = "ACCEPTED";
+                break;
         }
 
-        return null;
+        countPosts = postRepositori.countModerationPosts(moderationStatus, userId);
+        postsResponseAll.setCount(countPosts.orElse(0L));
+        postsResponseAll.setPosts(listPostToResponse(postRepositori.getModerationPosts(moderationStatus, userId, offset)));
+        return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
     }
 
 }

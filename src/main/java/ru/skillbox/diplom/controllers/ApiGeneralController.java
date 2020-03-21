@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skillbox.diplom.Mapper.Constant;
@@ -122,7 +123,7 @@ public class ApiGeneralController {
         String newFileName = Constant.codeGenerator(10) + "." + uploadName[uploadName.length - 1];
         Path path = Paths.get("./src/main/resources/static/upload/" + newFileName);
         Files.write(path, bytes);
-        return "upload/" + newFileName;
+        return "/upload/" + newFileName;
     }
 
     @PostMapping("/comment")
@@ -189,6 +190,12 @@ public class ApiGeneralController {
             myStatistics.put("firstPublication",
                     Instant.ofEpochMilli(postRepositori.firstMyPublication(userId).get().getTime()).atZone(ZoneId.systemDefault())
                             .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        } else {
+            myStatistics.put("postsCount", 0);
+            myStatistics.put("likesCount", 0);
+            myStatistics.put("dislikesCount", 0);
+            myStatistics.put("viewsCount", 0);
+            myStatistics.put("firstPublication", "все впереди!");
         }
         return new ResponseEntity<>(myStatistics, HttpStatus.OK);
     }
