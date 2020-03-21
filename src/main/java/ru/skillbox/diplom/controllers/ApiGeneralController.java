@@ -135,20 +135,21 @@ public class ApiGeneralController {
     public ResponseEntity<Map> statisticsAll() {
         logger.info("/statistics/all");
         Optional<Settings> settings = settingsRepositori.findById(3);
-        if (settings.get().getValue() && Constant.auth.isEmpty()) {
-            return new ResponseEntity<>(Constant.responseFalse(), HttpStatus.BAD_REQUEST);
-        }
-        System.out.println("можно всем");
-        Map<String, Object> statistics = new HashMap<>();
-        statistics.put("postsCount", postRepositori.count());
-        statistics.put("likesCount", votesRepositori.countByValue(1));
-        statistics.put("dislikesCount", votesRepositori.countByValue(-1));
-        statistics.put("viewsCount", postRepositori.sumByViewCount());
-        statistics.put("firstPublication",
-                Instant.ofEpochMilli(postRepositori.firstPublication().get().getTime()).atZone(ZoneId.systemDefault())
-                        .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        return new ResponseEntity<>(statistics, HttpStatus.OK);
+        if (settings.get().getValue() | !Constant.auth.isEmpty()) {
 
+            logger.info("statistics for all");
+            Map<String, Object> statistics = new HashMap<>();
+            statistics.put("postsCount", postRepositori.count());
+            statistics.put("likesCount", votesRepositori.countByValue(1));
+            statistics.put("dislikesCount", votesRepositori.countByValue(-1));
+            statistics.put("viewsCount", postRepositori.sumByViewCount());
+            statistics.put("firstPublication",
+                    Instant.ofEpochMilli(postRepositori.firstPublication().get().getTime()).atZone(ZoneId.systemDefault())
+                            .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            return new ResponseEntity<>(statistics, HttpStatus.OK);
+        }
+        logger.info("statistics NOT for all");
+        return new ResponseEntity<>(Constant.responseFalse(), HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/calendar")
