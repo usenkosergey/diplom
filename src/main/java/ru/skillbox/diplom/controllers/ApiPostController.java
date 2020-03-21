@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.Mapper.PostMapper;
+import ru.skillbox.diplom.Mapper.UserMapper;
 import ru.skillbox.diplom.api.requests.LikeRequest;
 import ru.skillbox.diplom.api.requests.PostRequest;
 import ru.skillbox.diplom.api.responses.PostResponse;
@@ -250,7 +251,7 @@ public class ApiPostController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Map> putPost(@RequestBody(required = false) PostRequest postRequest,
-                                                    @PathVariable(required = false) int id){
+                                       @PathVariable(required = false) int id) {
 
         int userId = Constant.userId(httpServletRequest.getSession().getId());
         if (userId == 0) return null;
@@ -297,5 +298,31 @@ public class ApiPostController {
         return new ResponseEntity<>(Constant.responseTrue(), HttpStatus.OK);
     }
 
+    @GetMapping("/moderation")
+    public ResponseEntity<PostsResponseAll> getModerationPosts(@RequestParam(required = false) int offset,
+                                                               @RequestParam(required = false) int limit,
+                                                               @RequestParam(required = false) String status) {
+        int userId = Constant.userId(httpServletRequest.getSession().getId());
+        if (userId == 0) return null;
+        Optional<User> currentUser = userRepositori.findById(userId);
+        if (currentUser.isEmpty() && currentUser.get().getModerator()) return null;
+
+        logger.info("/moderation -> " + userId + ", status -> " + status);
+        String moderationStatus = "";
+        Optional<Long> countNewPosts = Optional.empty();
+        PostsResponseAll postsResponseAll = new PostsResponseAll();
+
+        switch (status) {
+            case "new":
+                countNewPosts = postRepositori.countNewPosts();
+                if (countNewPosts.isPresent()) {
+                    postsResponseAll.setCount(countNewPosts.orElse(0L));
+                    postsResponseAll.setPosts(listPostToResponse(postRepositori.getNewPostsForModeration(offset)));
+                    return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
+                }
+        }
+
+        return null;
+    }
 
 }

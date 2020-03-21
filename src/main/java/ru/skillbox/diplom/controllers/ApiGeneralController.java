@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.api.requests.CommentRequest;
+import ru.skillbox.diplom.api.requests.PostStatusRequest;
 import ru.skillbox.diplom.api.requests.SettingsRequest;
 import ru.skillbox.diplom.api.responses.CalendarResponse;
 import ru.skillbox.diplom.api.responses.ResponseAll;
 import ru.skillbox.diplom.api.responses.TagsForTopicResponse;
+import ru.skillbox.diplom.entities.EModerationStatus;
+import ru.skillbox.diplom.entities.Post;
 import ru.skillbox.diplom.entities.Settings;
 import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.SettingsRepositori;
@@ -196,6 +199,25 @@ public class ApiGeneralController {
         if (userId != 0) {
             logger.info("/settings -> " + userId);
             settingsService.changeSettings(settingsRequest);
+        }
+    }
+
+    @PostMapping("/moderation")
+    public void postStatusChange(@RequestBody(required = false) PostStatusRequest postStatusRequest) {
+        logger.info("/moderation - start, postID " + postStatusRequest.getPost_id());
+        if (!Constant.auth.isEmpty()) {
+            int userId = Constant.userId(httpServletRequest.getSession().getId());
+            Post post = postRepositori.findById(postStatusRequest.getPost_id()).orElse(new Post());
+            logger.info("postId - " + post.getId() + ", start status - " + post.geteModerationStatus().toString());
+            if (postStatusRequest.getDecision().equals("decline")) {
+                post.seteModerationStatus(EModerationStatus.DECLINED);
+            } else {
+                post.seteModerationStatus(EModerationStatus.ACCEPTED);
+            }
+            post.setModeratorId(userId);
+            post = postRepositori.save(post);
+            logger.info("postId - " + post.getId() + ", end status - " + post.geteModerationStatus().toString());
+            logger.info("/moderation - end, postId " + postStatusRequest.getPost_id());
         }
     }
 }

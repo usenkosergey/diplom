@@ -64,7 +64,7 @@ public class ApiAuthController {
             Constant.auth.put(reg.getSession().getId(), user.get().getId());
             UserResponse userResponse = UserMapper.getUser(userRepositori.getOne(Constant.auth.get(reg.getSession().getId())));
             if (userResponse.isModeration())
-                userResponse.setModerationCount(postRepositori.countByeModerationStatus(EModerationStatus.NEW));
+                userResponse.setModerationCount(postRepositori.countByeModerationStatusAndIsActive(EModerationStatus.NEW, true));
             return new ResponseEntity<>(new UserResponseAuth(true, userResponse), HttpStatus.OK);
         }
         return new ResponseEntity<>(new UserResponseAuth(false), HttpStatus.OK);
@@ -87,7 +87,7 @@ public class ApiAuthController {
         logger.info("/auth/check : true");
         UserResponse userResponse = UserMapper.getUser(userRepositori.getOne(Constant.auth.get(reg.getSession().getId())));
         if (userResponse.isModeration())
-            userResponse.setModerationCount(postRepositori.countByeModerationStatus(EModerationStatus.NEW));
+            userResponse.setModerationCount(postRepositori.countByeModerationStatusAndIsActive(EModerationStatus.NEW, true));
         return new UserResponseAuth(true, userResponse);
     }
 

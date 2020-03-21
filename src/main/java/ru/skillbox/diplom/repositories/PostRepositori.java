@@ -248,7 +248,21 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "LIMIT 1;")
     Optional<Post> firstMyPublication(@Param("userId") int userId);
 
-    int countByeModerationStatus(EModerationStatus eModerationStatus);
+    int countByeModerationStatusAndIsActive(EModerationStatus eModerationStatus, Boolean status);
+
+    @Query(nativeQuery = true,
+            value = "SELECT COUNT(*)" +
+                    "FROM posts " +
+                    "WHERE moderation_status = 'NEW' " +
+                    "AND is_active = true ;")
+    Optional<Long> countNewPosts();
+
+    @Query(nativeQuery = true,
+            value = "SELECT * " +
+                    "FROM posts " +
+                    "WHERE moderation_status = 'NEW'" +
+                    "AND " + is_active + limit + ";")
+    List<Post> getNewPostsForModeration(@Param("offset") int offset);
 
 
 }
