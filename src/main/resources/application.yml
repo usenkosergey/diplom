@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    driver-class-name:  org.postgresql.Driver
+    url:  jdbc:postgresql://localhost:5432/diplom?currentSchema=new
+    username: postgres
+    password: 1111
+
+  jpa:
+    show-sql: false
+    hibernate.ddl-auto: validate
+
+email:
+  host: smtp.mail.ru
+  username: autootvet@list.ru
+  password: 27012020auto
+  port: 587
+
+mydata:
+  initData[0]:  title:title
+  initData[1]:  subtitle:subtitle
+  initData[2]:  phone:+7 913 712 xx xx
+  initData[3]:  email:Q1122333@yandex.ru
+  initData[4]:  copyright:copyright
+  initData[5]:  copyrightFrom:2020
