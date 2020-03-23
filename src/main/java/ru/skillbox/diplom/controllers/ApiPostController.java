@@ -89,11 +89,17 @@ public class ApiPostController {
                                                      @RequestParam(required = false) int limit,
                                                      @RequestParam(required = false) String mode) {
         logger.info("/api/post");
-        PostsResponseAll postsResponseAll = new PostsResponseAll();
-        postsResponseAll.setCount(postRepositori.countActualPosts());
-        postsResponseAll.setPosts(listPostToResponse(postService.getPosts(offset, mode)));
 
-        return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
+        PostsResponseAll postsResponseAll = new PostsResponseAll();
+        if (mode.equals("recent") ||
+                mode.equals("popular") ||
+                mode.equals("best") ||
+                mode.equals("early")) {
+            postsResponseAll.setCount(postRepositori.countActualPosts());
+            postsResponseAll.setPosts(listPostToResponse(postService.getPosts(offset, mode)));
+            return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(postsResponseAll, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("")
