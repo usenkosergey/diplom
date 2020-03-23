@@ -7,11 +7,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.api.requests.CommentRequest;
 import ru.skillbox.diplom.api.requests.PostStatusRequest;
+import ru.skillbox.diplom.api.requests.ProfileRequest;
 import ru.skillbox.diplom.api.requests.SettingsRequest;
 import ru.skillbox.diplom.api.responses.CalendarResponse;
 import ru.skillbox.diplom.api.responses.ResponseAll;
@@ -19,8 +21,10 @@ import ru.skillbox.diplom.api.responses.TagsForTopicResponse;
 import ru.skillbox.diplom.entities.EModerationStatus;
 import ru.skillbox.diplom.entities.Post;
 import ru.skillbox.diplom.entities.Settings;
+import ru.skillbox.diplom.entities.User;
 import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.SettingsRepositori;
+import ru.skillbox.diplom.repositories.UserRepositori;
 import ru.skillbox.diplom.repositories.VotesRepositori;
 import ru.skillbox.diplom.services.CommentService;
 import ru.skillbox.diplom.services.SettingsService;
@@ -65,6 +69,9 @@ public class ApiGeneralController {
     @Autowired
     private SettingsService settingsService;
 
+    @Autowired
+    private UserRepositori userRepositori;
+
     private List<String> initData = new ArrayList<String>();
 
     public List<String> getInitData() {
@@ -103,10 +110,26 @@ public class ApiGeneralController {
     //TODO проверить что вышел юзер
     @PostMapping("/profile/my")
     public ResponseAll profile(@RequestParam(value = "photo", required = false) MultipartFile uploadfile,
-                               @RequestParam(value = "name", required = false) String name
-    ) throws IOException {
+                               @RequestBody(required = false) ProfileRequest profileRequest) throws IOException {
         logger.info("/profile/my");
 
+        int userId = Constant.userId(httpServletRequest.getSession().getId());
+        if (userId == 0) return null;
+        Optional<User> currentUser = userRepositori.findById(userId);
+        if(currentUser.isEmpty()) return null;
+
+        if (profileRequest.getRemovePhoto() == 1) currentUser.get().setPhoto("default.jpg");
+        if (!profileRequest.getName().equals(currentUser.get().getName())) currentUser.get().setName(profileRequest.getName());
+        if (!profileRequest.getPassword().isEmpty()) currentUser.get().setPassword(new BCryptPasswordEncoder().encode(profileRequest.getPassword()));
+
+        if (!profileRequest.getEmail().equals(currentUser.get().getEmail()) &&
+        userRepositori.findByEmail(profileRequest.getEmail()).isEmpty()) {
+            currentUser.get().setEmail(profileRequest.getEmail());
+        } else {
+            return new ResponseAll(false, "email", "Этот e-mail уже зарегистрирован");
+        }
+
+        if (userRepositori.save(currentUser.get()).getId() == userId) return new ResponseAll(true);
 //        byte[] bytes = uploadfile.getBytes();
 //        Path path = Paths.get("./src/main/resources/static/img/" + uploadfile.getOriginalFilename());
 //        Files.write(path, bytes);

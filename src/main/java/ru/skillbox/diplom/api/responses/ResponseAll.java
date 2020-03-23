@@ -1,11 +1,14 @@
 package ru.skillbox.diplom.api.responses;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Map;
 import java.util.TreeMap;
 
 public class ResponseAll {
 
     private Boolean result;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String, String> errors;
 
     public ResponseAll(Boolean result){
