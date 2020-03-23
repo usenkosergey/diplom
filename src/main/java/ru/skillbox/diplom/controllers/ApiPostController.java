@@ -65,16 +65,6 @@ public class ApiPostController {
     @GetMapping("/{id}")
     public PostResponse getById(@PathVariable(required = false) int id) {
 
-//        List<Object[]> test = tagsRepositori.tagsForTopic(System.currentTimeMillis());
-//        Map<String, Integer> testMap = new HashMap<>();
-//        int max = 0;
-//        for (Object[] obj : test) {
-//            String a = (String) obj[0];
-//            BigInteger b = (BigInteger) obj[1];
-//            if (max < b.intValue()) max = b.intValue();
-//            testMap.put(a, b.intValue());
-//        }
-
         PostResponse postResponse = PostMapper.getPostResponse(postRepositori.findById(id).get(), commentRepositori.findByPostIdOrderByTimeDesc(id));
         postResponse.setLikeCount(postRepositori.countLike(id, 1).orElse(0));
         postResponse.setDislikeCount(postRepositori.countLike(id, -1).orElse(0));
