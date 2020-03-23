@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class UserResponseAuth {
     private Boolean result;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private UserFullResponse user;
+    private UserResponse user;
 
     public UserResponseAuth(Boolean result) {
         this.result = result;
     }
 
-    public UserResponseAuth(Boolean result, UserFullResponse user) {
+    public UserResponseAuth(Boolean result, UserResponse user) {
         this.result = result;
         this.user = user;
     }
@@ -24,11 +24,11 @@ public class UserResponseAuth {
         this.result = result;
     }
 
-    public UserFullResponse getUser() {
+    public UserResponse getUser() {
         return user;
     }
 
-    public void setUser(UserFullResponse user) {
+    public void setUser(UserResponse user) {
         this.user = user;
     }
 }
