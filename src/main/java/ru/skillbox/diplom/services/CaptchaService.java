@@ -59,7 +59,7 @@ public class CaptchaService {
             }
         }
 
-        captchaRepositori.deleteOldCaptca(System.currentTimeMillis() - deltaTime);
+        captchaRepositori.deleteOldCaptcha(System.currentTimeMillis() - deltaTime);
 
         return captchaCode;
     }

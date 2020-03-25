@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.Mapper.PostMapper;
-import ru.skillbox.diplom.Mapper.UserMapper;
 import ru.skillbox.diplom.api.requests.LikeRequest;
 import ru.skillbox.diplom.api.requests.PostRequest;
 import ru.skillbox.diplom.api.responses.PostResponse;
@@ -29,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -85,8 +83,8 @@ public class ApiPostController {
                 mode.equals("popular") ||
                 mode.equals("best") ||
                 mode.equals("early")) {
-            postsResponseAll.setCount(postRepositori.countActualPosts());
-            postsResponseAll.setPosts(listPostToResponse(postService.getPosts(offset, mode)));
+            postsResponseAll.setCount(postRepositori.countActualPosts(System.currentTimeMillis()));
+            postsResponseAll.setPosts(listPostToResponse(postService.getPosts(offset, mode, limit)));
             return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
         }
         return new ResponseEntity<>(postsResponseAll, HttpStatus.BAD_REQUEST);
@@ -187,7 +185,7 @@ public class ApiPostController {
         long startTime = simpleDateFormat.parse(date).getTime();
         long endTime = simpleDateFormat.parse(date).getTime() + 24 * 60 * 60 * 1000;
         PostsResponseAll postsResponseAll = new PostsResponseAll();
-        postsResponseAll.setCount(postRepositori.getCountPostByDate(startTime, endTime));
+        postsResponseAll.setCount(postRepositori.countPostByDate(startTime, endTime));
         postsResponseAll.setPosts(listPostToResponse(postRepositori.getPostByDate(startTime, endTime, offset)));
 
         return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);

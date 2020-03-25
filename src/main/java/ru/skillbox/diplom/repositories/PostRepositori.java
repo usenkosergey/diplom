@@ -1,5 +1,6 @@
 package ru.skillbox.diplom.repositories;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -24,24 +25,19 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
     String current_timestamp = "ROUND(EXTRACT(epoch FROM current_timestamp)*1000)";
     String limit = "LIMIT 10 OFFSET (:offset)";
 
-    @Query(nativeQuery = true,
-            value = "SELECT COUNT(*) " +
-                    "FROM posts " +
-                    "WHERE " + moderation_status +
-                    "AND " + is_active +
-                    "AND time <= " + current_timestamp + " ;")
-    Integer countActualPosts();
+    @Query(value = "SELECT COUNT(*) " +
+            "FROM Post " +
+            "WHERE eModerationStatus = 'ACCEPTED' " +
+            "AND isActive = true " +
+            "AND time <= :currentTime ")
+    Integer countActualPosts(long currentTime);
 
-
-    @Query(nativeQuery = true,
-            value = "SELECT * " +
-                    "FROM posts " +
-                    "WHERE " + moderation_status +
-                    "AND " + is_active +
-                    "AND time <= " + current_timestamp +
-                    "ORDER BY time DESC " +
-                    limit + " ;")
-    List<Post> getListRecentPosts(@Param("offset") int offset);
+    @Query("FROM Post " +
+            "WHERE isActive = true " +
+            "AND eModerationStatus = 'ACCEPTED' " +
+            "AND time <= :currentTime " +
+            "ORDER BY time DESC")
+    List<Post> getListRecentPosts(Pageable pageable, long currentTime);
 
     @Query(nativeQuery = true,
             value = "SELECT * " +
@@ -63,8 +59,8 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "and is_active = true " +
                     "and time >= (:startTime) " +
                     "and time <= (:endTime);")
-    Integer getCountPostByDate(@Param("startTime") long startTime,
-                               @Param("endTime") long engTime);
+    Integer countPostByDate(@Param("startTime") long startTime,
+                            @Param("endTime") long engTime);
 
     @Query(nativeQuery = true,
             value = "SELECT * " +
