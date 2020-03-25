@@ -9,10 +9,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.diplom.entities.EModerationStatus;
 import ru.skillbox.diplom.entities.Post;
+import ru.skillbox.diplom.entities.User;
 
-import java.math.BigInteger;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -22,56 +21,41 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
 
     String is_active = "is_active = true ";
     String moderation_status = "moderation_status = 'ACCEPTED'";
-    String current_timestamp = "ROUND(EXTRACT(epoch FROM current_timestamp)*1000)";
     String limit = "LIMIT 10 OFFSET (:offset)";
 
-    @Query(value = "SELECT COUNT(*) " +
-            "FROM Post " +
-            "WHERE eModerationStatus = 'ACCEPTED' " +
-            "AND isActive = true " +
-            "AND time <= :currentTime ")
+    @Query("SELECT COUNT(*) " +
+            "FROM Post AS p " +
+            "WHERE p.eModerationStatus = 'ACCEPTED' " +
+            "AND p.isActive = true " +
+            "AND p.time <= :currentTime ")
     Integer countActualPosts(long currentTime);
 
-    @Query("FROM Post " +
-            "WHERE isActive = true " +
-            "AND eModerationStatus = 'ACCEPTED' " +
-            "AND time <= :currentTime " +
-            "ORDER BY time DESC")
-    List<Post> getListRecentPosts(Pageable pageable, long currentTime);
+    @Query("FROM Post AS p " +
+            "WHERE p.isActive = true " +
+            "AND p.eModerationStatus = 'ACCEPTED' " +
+            "AND p.time <= :currentTime")
+    List<Post> getListPostsRecentOrEarly(Pageable pageable,
+                                         long currentTime);
 
-    @Query(nativeQuery = true,
-            value = "SELECT * " +
-                    "FROM posts " +
-                    "WHERE moderation_status = 'ACCEPTED' " +
-                    "and is_active = true " +
-                    "and time >= (:startTime) " +
-                    "and time <= (:endTime)" +
-                    "ORDER BY time DESC " +
-                    "LIMIT 10 OFFSET (:offset);")
-    List<Post> getPostByDate(@Param("startTime") long startTime,
-                             @Param("endTime") long engTime,
-                             @Param("offset") int offset);
+    @Query("FROM Post AS p " +
+            "WHERE p.eModerationStatus = 'ACCEPTED' " +
+            "and p.isActive = true " +
+            "and p.time >= :startTime " +
+            "and p.time <= :endTime " +
+            "ORDER BY p.time DESC")
+    List<Post> getPostByDate(Pageable pageable,
+                             long startTime,
+                             long endTime);
 
-    @Query(nativeQuery = true,
-            value = "SELECT count(*) " +
-                    "FROM posts " +
-                    "WHERE moderation_status = 'ACCEPTED' " +
-                    "and is_active = true " +
-                    "and time >= (:startTime) " +
-                    "and time <= (:endTime);")
-    Integer countPostByDate(@Param("startTime") long startTime,
-                            @Param("endTime") long engTime);
+    @Query("SELECT COUNT(*) " +
+            "FROM Post AS p " +
+            "WHERE p.eModerationStatus = 'ACCEPTED' " +
+            "and p.isActive = true " +
+            "and p.time >= :startTime " +
+            "and p.time <= :endTime")
+    Integer countPostByDate(long startTime,
+                            long endTime);
 
-    @Query(nativeQuery = true,
-            value = "SELECT * " +
-                    "FROM posts " +
-                    "WHERE moderation_status = 'ACCEPTED' " +
-                    "and is_active = true " +
-                    "and time <= (:currentTime) " +
-                    "ORDER BY time ASC " +
-                    "LIMIT 10 OFFSET (:offset);")
-    List<Post> getListEarlyPosts(@Param("currentTime") long currentTime,
-                                 @Param("offset") int offset);
 
     @Query(nativeQuery = true,
             value = "SELECT posts.*, count(post_votes.post_id) " +
@@ -103,13 +87,13 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                                    @Param("offset") int offset);
 
 
-    @Query(nativeQuery = true,
-            value = "select count(value) " +
-                    "from post_votes " +
-                    "where value = (:value) " +
-                    "and post_id = (:id) group by value;")
-    Optional<Integer> countLike(@Param("id") int id,
-                                @Param("value") int value);
+    @Query("SELECT COUNT(value) " +
+            "FROM PostVotes AS p " +
+            "WHERE p.value = :value " +
+            "AND p.postId = :id " +
+            "GROUP BY p.value")
+    Optional<Integer> countLike(int id,
+                                int value);
 
     @Transactional
     @Modifying
@@ -229,20 +213,12 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                                 @Param("userId") int userId,
                                 @Param("status") String status);
 
-    @Query(nativeQuery = true,
-            value = "SELECT COUNT(*) FROM posts WHERE user_id = (:userId);")
-    Optional<Integer> countByUser(@Param("userId") int userId);
+    Optional<Integer> countByUser(User user);
 
-    @Query(nativeQuery = true,
-            value = "SELECT SUM(view_count) FROM posts WHERE user_id = (:user_id);")
-    Optional<Integer> sumMyViewCount(@Param("user_id") int user_id);
+    @Query("SELECT SUM(p.viewCount) FROM Post AS p WHERE p.user = :user")
+    Optional<Integer> sumMyViewCount(User user);
 
-    @Query(nativeQuery = true,
-            value = "SELECT * " +
-                    "FROM posts WHERE user_id = (:userId)" +
-                    "ORDER BY id ASC " +
-                    "LIMIT 1;")
-    Optional<Post> firstMyPublication(@Param("userId") int userId);
+    Optional<Post> findFirstByUserOrderByIdAsc(User user);
 
     int countByeModerationStatusAndIsActive(EModerationStatus eModerationStatus, Boolean status);
 

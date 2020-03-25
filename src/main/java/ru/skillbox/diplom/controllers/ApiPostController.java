@@ -24,6 +24,9 @@ import ru.skillbox.diplom.repositories.UserRepositori;
 import ru.skillbox.diplom.services.LikeService;
 import ru.skillbox.diplom.services.PostService;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -181,12 +184,13 @@ public class ApiPostController {
                                                           @RequestParam(required = false) int limit,
                                                           @RequestParam(required = false) String date) throws ParseException {
         logger.info("/byDate");
+        Pageable pageable = PageRequest.of(offset / limit, limit);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         long startTime = simpleDateFormat.parse(date).getTime();
         long endTime = simpleDateFormat.parse(date).getTime() + 24 * 60 * 60 * 1000;
         PostsResponseAll postsResponseAll = new PostsResponseAll();
         postsResponseAll.setCount(postRepositori.countPostByDate(startTime, endTime));
-        postsResponseAll.setPosts(listPostToResponse(postRepositori.getPostByDate(startTime, endTime, offset)));
+        postsResponseAll.setPosts(listPostToResponse(postRepositori.getPostByDate(pageable, startTime, endTime)));
 
         return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
     }

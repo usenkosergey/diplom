@@ -116,14 +116,16 @@ public class ApiGeneralController {
         int userId = Constant.userId(httpServletRequest.getSession().getId());
         if (userId == 0) return null;
         Optional<User> currentUser = userRepositori.findById(userId);
-        if(currentUser.isEmpty()) return null;
+        if (currentUser.isEmpty()) return null;
 
         if (profileRequest.getRemovePhoto() == 1) currentUser.get().setPhoto("default.jpg");
-        if (!profileRequest.getName().equals(currentUser.get().getName())) currentUser.get().setName(profileRequest.getName());
-        if (!profileRequest.getPassword().isEmpty()) currentUser.get().setPassword(new BCryptPasswordEncoder().encode(profileRequest.getPassword()));
+        if (!profileRequest.getName().equals(currentUser.get().getName()))
+            currentUser.get().setName(profileRequest.getName());
+        if (!profileRequest.getPassword().isEmpty())
+            currentUser.get().setPassword(new BCryptPasswordEncoder().encode(profileRequest.getPassword()));
 
         if (!profileRequest.getEmail().equals(currentUser.get().getEmail()) &&
-        userRepositori.findByEmail(profileRequest.getEmail()).isEmpty()) {
+                userRepositori.findByEmail(profileRequest.getEmail()).isEmpty()) {
             currentUser.get().setEmail(profileRequest.getEmail());
         } else {
             return new ResponseAll(false, "email", "Этот e-mail уже зарегистрирован");
@@ -203,15 +205,19 @@ public class ApiGeneralController {
         int userId = Constant.userId(httpServletRequest.getSession().getId());
         if (userId == 0) return null;
 
+        User user = new User();
+        user.setId(userId);
+
         Map<String, Object> myStatistics = new HashMap<>();
-        Integer postsCount = postRepositori.countByUser(userId).orElse(0);
+        Integer postsCount = postRepositori.countByUser(user).orElse(0);
         if (postsCount != 0) {
             myStatistics.put("postsCount", postsCount);
             myStatistics.put("likesCount", votesRepositori.countByValueAndUserId(1, userId).orElse(0));
             myStatistics.put("dislikesCount", votesRepositori.countByValueAndUserId(-1, userId).orElse(0));
-            myStatistics.put("viewsCount", postRepositori.sumMyViewCount(userId).orElse(0));
+            myStatistics.put("viewsCount", postRepositori.sumMyViewCount(user).orElse(0));
+
             myStatistics.put("firstPublication",
-                    Instant.ofEpochMilli(postRepositori.firstMyPublication(userId).get().getTime()).atZone(ZoneId.systemDefault())
+                    Instant.ofEpochMilli(postRepositori.findFirstByUserOrderByIdAsc(user).get().getTime()).atZone(ZoneId.systemDefault())
                             .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         } else {
             myStatistics.put("postsCount", 0);

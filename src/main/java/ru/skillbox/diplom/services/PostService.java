@@ -3,15 +3,12 @@ package ru.skillbox.diplom.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.skillbox.diplom.entities.EModerationStatus;
 import ru.skillbox.diplom.entities.Post;
-import ru.skillbox.diplom.entities.Tag;
-import ru.skillbox.diplom.entities.User;
 import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.TagsRepositori;
 import ru.skillbox.diplom.repositories.UserRepositori;
@@ -41,13 +38,13 @@ public class PostService {
     }
 
     public List<Post> getPosts(int offset, String mode, int limit) {
-        Pageable pageable = PageRequest.of(offset / limit, limit);
+        Pageable pageable = null;
         if (mode.equals("recent")) {
-            //System.out.println("сортировка в прямом порядке"); //TODO удалить позже
-            return postRepositori.getListRecentPosts(pageable, System.currentTimeMillis());
+            pageable = PageRequest.of(offset / limit, limit, Sort.Direction.DESC, "time");
+            return postRepositori.getListPostsRecentOrEarly(pageable, System.currentTimeMillis());
         } else if (mode.equals("early")) {
-            //System.out.println("сортировка в обратном порядке"); //TODO удалить позже
-            return postRepositori.getListEarlyPosts(System.currentTimeMillis(), offset);
+            pageable = PageRequest.of(offset / limit, limit, Sort.Direction.ASC, "time");
+            return postRepositori.getListPostsRecentOrEarly(pageable, System.currentTimeMillis());
         } else if (mode.equals("best")) {
             //System.out.println("сортировка Бест"); //TODO удалить позже
             return postRepositori.getListBestPosts(System.currentTimeMillis(), offset);
