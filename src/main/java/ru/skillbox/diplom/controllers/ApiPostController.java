@@ -13,10 +13,7 @@ import ru.skillbox.diplom.api.requests.LikeRequest;
 import ru.skillbox.diplom.api.requests.PostRequest;
 import ru.skillbox.diplom.api.responses.PostResponse;
 import ru.skillbox.diplom.api.responses.PostsResponseAll;
-import ru.skillbox.diplom.entities.EModerationStatus;
-import ru.skillbox.diplom.entities.Post;
-import ru.skillbox.diplom.entities.Tag;
-import ru.skillbox.diplom.entities.User;
+import ru.skillbox.diplom.entities.*;
 import ru.skillbox.diplom.repositories.CommentRepositori;
 import ru.skillbox.diplom.repositories.PostRepositori;
 import ru.skillbox.diplom.repositories.TagsRepositori;
@@ -220,7 +217,6 @@ public class ApiPostController {
 
         Optional<Integer> countMyPosts = Optional.empty();
         EModerationStatus eModerationStatus = null;
-        //String moderationStatus = "";
         logger.info("/my -> userId " + userId + " -> " + status);
         PostsResponseAll postsResponseAll = new PostsResponseAll();
         switch (status) {

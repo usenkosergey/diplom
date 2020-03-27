@@ -46,11 +46,12 @@ public class PostService {
             pageable = PageRequest.of(offset / limit, limit, Sort.Direction.ASC, "time");
             return postRepositori.getListPostsRecentOrEarly(pageable, System.currentTimeMillis());
         } else if (mode.equals("best")) {
-            //System.out.println("сортировка Бест"); //TODO удалить позже
-            return postRepositori.getListBestPosts(System.currentTimeMillis(), offset);
+            pageable = PageRequest.of(offset / limit, limit, Sort.Direction.DESC, "countLike");
+            return postRepositori.getListBestPosts(pageable, System.currentTimeMillis());
         } else if (mode.equals("popular")) {
+            pageable = PageRequest.of(offset / limit, limit, Sort.Direction.DESC, "countComm");
             //System.out.println("сортировка комментами"); //TODO удалить позже
-            return postRepositori.getListCommentPosts(System.currentTimeMillis(), offset);
+            return postRepositori.getListCommentPosts(pageable, System.currentTimeMillis());
         }
         logger.error("не вернулась сортировка, никакая");
         return null;

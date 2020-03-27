@@ -17,7 +17,7 @@ import java.util.Optional;
 @Repository
 public interface PostRepositori extends PagingAndSortingRepository<Post, Integer> {
     //TODO экранирование спец символов проверить и сделать
-    //1583250619160 время для теста
+    //1585297244748 время для теста
 
     String is_active = "is_active = true ";
     String moderation_status = "moderation_status = 'ACCEPTED'";
@@ -56,44 +56,37 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
     Integer countPostByDate(long startTime,
                             long endTime);
 
-
-    @Query(nativeQuery = true,
-            value = "SELECT posts.*, count(post_votes.post_id) " +
-                    "FROM posts " +
-                    "left JOIN post_votes " +
-                    "ON posts.id = post_votes.post_id " +
-                    "where value = 1 or value isnull " +
-                    "and moderation_status = 'ACCEPTED' " +
-                    "and is_active = true " +
-                    "and posts.time <= (:currentTime) " +
-                    "group by post_votes.post_id, posts.id " +
-                    "ORDER BY count DESC " +
-                    "LIMIT 10 OFFSET (:offset);")
-    List<Post> getListBestPosts(@Param("currentTime") long currentTime,
-                                @Param("offset") int offset);
-
-    @Query(nativeQuery = true,
-            value = "select posts.*, count(post_comments.post_id) " +
-                    "FROM posts " +
-                    "left JOIN post_comments " +
-                    "ON posts.id = post_comments.post_id " +
-                    "where moderation_status = 'ACCEPTED' " +
-                    "and is_active = true " +
-                    "and posts.time <= (:currentTime) " +
-                    "group by post_comments.post_id, posts.id " +
-                    "ORDER BY count DESC " +
-                    "LIMIT 10 OFFSET (:offset);")
-    List<Post> getListCommentPosts(@Param("currentTime") long currentTime,
-                                   @Param("offset") int offset);
-
-
-    @Query("SELECT COUNT(value) " +
+    @Query("SELECT COUNT(p.value) " +
             "FROM PostVotes AS p " +
             "WHERE p.value = :value " +
             "AND p.postId = :id " +
             "GROUP BY p.value")
     Optional<Integer> countLike(int id,
                                 int value);
+
+    @Query("SELECT p, COUNT(pv.postId) AS countLike " +
+            "FROM Post AS p " +
+            "LEFT JOIN PostVotes AS pv " +
+            "ON p.id = pv.postId " +
+            "WHERE p.eModerationStatus = 'ACCEPTED' " +
+            "AND p.isActive = true " +
+            "AND p.time <= :currentTime " +
+            "AND pv.value = 1 " +
+            "OR pv.value IS NULL " +
+            "GROUP BY pv.postId, p.id ")
+    List<Post> getListBestPosts(Pageable pageable,
+                                long currentTime);
+
+    @Query("SELECT p, COUNT(c.postId) AS countComm " +
+            "FROM Post AS p " +
+            "LEFT JOIN Comment AS c " +
+            "ON p.id = c.postId " +
+            "WHERE p.eModerationStatus = 'ACCEPTED' " +
+            "AND p.isActive = true " +
+            "AND p.time <= :currentTime " +
+            "GROUP BY c.postId, p.id ")
+    List<Post> getListCommentPosts(Pageable pageable,
+                                   long currentTime);
 
     @Transactional
     @Modifying
@@ -125,7 +118,7 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                              @Param("currentTime") long currentTime,
                              @Param("offset") int offset);
 
-    @Query(nativeQuery = true,
+    @Query(nativeQuery = true, //Оставлю в таком виде
             value = "select to_char(date_trunc('year', to_timestamp(div(time,1000))), 'YYYY') " +
                     "from posts " +
                     "WHERE is_active = true " +
@@ -135,7 +128,7 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "ORDER BY to_char DESC;")
     List<String> getYearToCalendar(@Param("currentTime") long currentTime);
 
-    @Query(nativeQuery = true,
+    @Query(nativeQuery = true, //Оставлю в таком виде
             value = "select to_char(date_trunc('day', to_timestamp(div(time,1000))), 'YYYY-MM-DD'), count(*) " +
                     "from posts " +
                     "WHERE is_active = true " +
@@ -146,6 +139,7 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "ORDER BY to_char ASC;")
     List<Object[]> listPostForYears(@Param("currentTime") long currentTime,
                                     @Param("year") int year);
+
 //    TODO не работает ссылка с фронта для поиска
 //    @Query(nativeQuery = true,
 //            value = "SELECT COUNT(*) " +
