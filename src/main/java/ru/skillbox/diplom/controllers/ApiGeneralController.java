@@ -170,7 +170,7 @@ public class ApiGeneralController {
             statistics.put("dislikesCount", votesRepositori.countByValue(-1));
             statistics.put("viewsCount", postRepositori.sumByViewCount());
             statistics.put("firstPublication",
-                    Instant.ofEpochMilli(postRepositori.firstPublication().get().getTime()).atZone(ZoneId.systemDefault())
+                    Instant.ofEpochMilli(postRepositori.findFirstByOrderByIdAsc().get().getTime()).atZone(ZoneId.systemDefault())
                             .toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             return new ResponseEntity<>(statistics, HttpStatus.OK);
         }

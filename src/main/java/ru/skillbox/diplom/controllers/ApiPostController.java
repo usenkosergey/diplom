@@ -212,35 +212,42 @@ public class ApiPostController {
                                                        @RequestParam(required = false) String status) {
         int userId = Constant.userId(httpServletRequest.getSession().getId());
         if (userId == 0) return null;
+
+        User user = new User();
+        user.setId(userId);
+
+        Pageable pageable = PageRequest.of(offset / limit, limit);
+
         Optional<Integer> countMyPosts = Optional.empty();
-        String moderationStatus = "";
+        EModerationStatus eModerationStatus = null;
+        //String moderationStatus = "";
         logger.info("/my -> userId " + userId + " -> " + status);
         PostsResponseAll postsResponseAll = new PostsResponseAll();
         switch (status) {
             case "inactive":
-                countMyPosts = postRepositori.countMyPostsInactive(offset, userId);
+                countMyPosts = postRepositori.countMyPostsInactive(user);
                 if (countMyPosts.isPresent()) {
                     postsResponseAll.setCount(countMyPosts.get());
-                    postsResponseAll.setPosts(listPostToResponse(postRepositori.getMyPostsInactive(offset, userId)));
+                    postsResponseAll.setPosts(listPostToResponse(postRepositori.getMyPostsInactive(user, pageable)));
                     return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
                 } else {
                     return null;
                 }
             case "pending":
-                moderationStatus = "NEW";
+                eModerationStatus = EModerationStatus.NEW;
                 break;
             case "declined":
-                moderationStatus = "DECLINED";
+                eModerationStatus = EModerationStatus.DECLINED;
                 break;
             case "published":
-                moderationStatus = "ACCEPTED";
+                eModerationStatus = EModerationStatus.ACCEPTED;
                 break;
         }
 
-        countMyPosts = postRepositori.countMyPostsActive(offset, userId, moderationStatus);
+        countMyPosts = postRepositori.countMyPostsActive(user, eModerationStatus);
         if (countMyPosts.isPresent()) {
             postsResponseAll.setCount(countMyPosts.get());
-            postsResponseAll.setPosts(listPostToResponse(postRepositori.getMyPostsActive(offset, userId, moderationStatus)));
+            postsResponseAll.setPosts(listPostToResponse(postRepositori.getMyPostsActive(user, eModerationStatus, pageable)));
             return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
         } else {
             return null;
@@ -305,6 +312,8 @@ public class ApiPostController {
         Optional<User> currentUser = userRepositori.findById(userId);
         if (!currentUser.get().getModerator()) return null;
 
+        Pageable pageable = PageRequest.of(offset / limit, limit);
+
         logger.info("/moderation -> " + userId + ", status -> " + status);
         String moderationStatus = "";
         Optional<Long> countPosts = Optional.empty();
@@ -315,7 +324,7 @@ public class ApiPostController {
                 countPosts = postRepositori.countNewPosts();
                 if (countPosts.isPresent()) {
                     postsResponseAll.setCount(countPosts.orElse(0L));
-                    postsResponseAll.setPosts(listPostToResponse(postRepositori.getNewPostsForModeration(offset)));
+                    postsResponseAll.setPosts(listPostToResponse(postRepositori.getNewPostsForModeration(pageable)));
                     return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
                 }
             case "declined":
@@ -328,7 +337,7 @@ public class ApiPostController {
 
         countPosts = postRepositori.countModerationPosts(moderationStatus, userId);
         postsResponseAll.setCount(countPosts.orElse(0L));
-        postsResponseAll.setPosts(listPostToResponse(postRepositori.getModerationPosts(moderationStatus, userId, offset)));
+        postsResponseAll.setPosts(listPostToResponse(postRepositori.getModerationPosts(moderationStatus, userId, pageable)));
         return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
     }
 

@@ -103,17 +103,12 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
                     "WHERE id = (:id);")
     Integer updateViewCount(@Param("id") int id);
 
-    @Query(nativeQuery = true,
-            value = "SELECT SUM(view_count) " +
-                    "FROM posts;")
+    @Query("SELECT SUM(p.viewCount) FROM Post AS p")
     long sumByViewCount();
 
-    @Query(nativeQuery = true,
-            value = "SELECT * " +
-                    "FROM posts " +
-                    "ORDER BY id ASC " +
-                    "LIMIT 1;")
-    Optional<Post> firstPublication();
+    Optional<Post> findFirstByOrderByIdAsc();
+
+    Optional<Post> findFirstByUserOrderByIdAsc(User user);
 
     @Query(nativeQuery = true,
             value = "SELECT posts.* " +
@@ -173,81 +168,62 @@ public interface PostRepositori extends PagingAndSortingRepository<Post, Integer
 //                               @Param("searchString") String searchString);
 //TODO не работает ссылка с фронта для поиска
 
-    @Query(nativeQuery = true,
-            value = "SELECT * " +
-                    "FROM posts " +
-                    "WHERE user_id = (:userId) " +
-                    "AND is_active = false " +
-                    limit + ";")
-    List<Post> getMyPostsInactive(@Param("offset") int offset,
-                                  @Param("userId") int userId);
+    @Query("FROM Post AS p " +
+            "WHERE p.user = :user " +
+            "AND p.isActive = false ")
+    List<Post> getMyPostsInactive(User user,
+                                  Pageable pageable);
 
-    @Query(nativeQuery = true,
-            value = "SELECT COUNT(*) " +
-                    "FROM posts " +
-                    "WHERE user_id = (:userId) " +
-                    "AND is_active = false " +
-                    limit + ";")
-    Optional<Integer> countMyPostsInactive(@Param("offset") int offset,
-                                           @Param("userId") int userId);
+    @Query("SELECT COUNT(*) " +
+            "FROM Post AS p " +
+            "WHERE p.user = :user " +
+            "AND p.isActive = false ")
+    Optional<Integer> countMyPostsInactive(User user);
 
-    @Query(nativeQuery = true,
-            value = "SELECT COUNT(*) " +
-                    "FROM posts " +
-                    "WHERE user_id = (:userId) " +
-                    "AND " + is_active +
-                    "AND moderation_status = (:status) " +
-                    limit + ";")
-    Optional<Integer> countMyPostsActive(@Param("offset") int offset,
-                                         @Param("userId") int userId,
-                                         @Param("status") String status);
+    @Query("SELECT COUNT(*) " +
+            "FROM Post AS p " +
+            "WHERE p.user = :user " +
+            "AND p.isActive = true " +
+            "AND p.eModerationStatus = :status ")
+    Optional<Integer> countMyPostsActive(User user,
+                                         EModerationStatus status);
 
-    @Query(nativeQuery = true,
-            value = "SELECT * " +
-                    "FROM posts " +
-                    "WHERE user_id = (:userId) " +
-                    "AND " + is_active +
-                    "AND moderation_status = (:status) " +
-                    limit + ";")
-    List<Post> getMyPostsActive(@Param("offset") int offset,
-                                @Param("userId") int userId,
-                                @Param("status") String status);
+    @Query("FROM Post AS p " +
+            "WHERE p.user = :user " +
+            "AND p.isActive = true " +
+            "AND p.eModerationStatus = :status ")
+    List<Post> getMyPostsActive(User user,
+                                EModerationStatus status,
+                                Pageable pageable);
 
     Optional<Integer> countByUser(User user);
 
     @Query("SELECT SUM(p.viewCount) FROM Post AS p WHERE p.user = :user")
     Optional<Integer> sumMyViewCount(User user);
 
-    Optional<Post> findFirstByUserOrderByIdAsc(User user);
-
     int countByeModerationStatusAndIsActive(EModerationStatus eModerationStatus, Boolean status);
 
-    @Query(nativeQuery = true,
-            value = "SELECT COUNT(*)" +
-                    "FROM posts " +
-                    "WHERE moderation_status = 'NEW' " +
-                    "AND is_active = true ;")
+    @Query("SELECT COUNT(*) " +
+            "FROM Post AS p " +
+            "WHERE p.eModerationStatus = 'NEW' " +
+            "AND p.isActive = true")
     Optional<Long> countNewPosts();
 
-    @Query(nativeQuery = true,
-            value = "SELECT * " +
-                    "FROM posts " +
-                    "WHERE moderation_status = 'NEW'" +
-                    "AND " + is_active + limit + ";")
-    List<Post> getNewPostsForModeration(@Param("offset") int offset);
+    @Query("FROM Post AS p " +
+            "WHERE p.eModerationStatus = 'NEW' " +
+            "AND p.isActive = true ")
+    List<Post> getNewPostsForModeration(Pageable pageable);
 
-    @Query(nativeQuery = true,
-            value = "SELECT COUNT(*) " +
-                    "FROM posts WHERE " + is_active + " " +
-                    "AND moderation_status = (:status) " +
-                    "AND moderator_id = (:moderatorId);")
+    @Query("SELECT COUNT(*) " +
+            "FROM Post AS p " +
+            "WHERE p.isActive = true " +
+            "AND p.eModerationStatus = :status " +
+            "AND p.moderatorId = :moderatorId ")
     Optional<Long> countModerationPosts(String status, int moderatorId);
 
-    @Query(nativeQuery = true,
-            value = "SELECT * " +
-                    "FROM posts " +
-                    "WHERE " + is_active +
-                    "AND moderation_status = (:status)" +
-                    "AND moderator_id = (:moderatorId) " + limit + ";")
-    List<Post> getModerationPosts(String status, int moderatorId, int offset);
+    @Query("FROM Post AS p " +
+            "WHERE p.isActive = true " +
+            "AND p.eModerationStatus = :status " +
+            "AND p.moderatorId = :moderatorId ")
+    List<Post> getModerationPosts(String status, int moderatorId, Pageable pageable);
 }
