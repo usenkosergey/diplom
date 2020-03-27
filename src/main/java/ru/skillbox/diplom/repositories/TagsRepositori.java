@@ -13,11 +13,15 @@ import java.util.Optional;
 public interface TagsRepositori extends JpaRepository<Tag, Integer> {
 
     @Query(nativeQuery = true,
-            value = "select tags.name, count(*) from tag2post\n" +
-                    "JOIN posts on posts.id = tag2post.post_id\n" +
-                    "JOIN tags on tag2post.tag_id = tags.id\n" +
-                    "WHERE moderation_status = 'ACCEPTED' and is_active = true\n" +
-                    "and time <= (:currentTime) GROUP BY tags.name ORDER BY count DESC LIMIT 20;")
+            value = "SELECT tags.name, count(*) " +
+                    "FROM tag2post " +
+                    "JOIN posts ON posts.id = tag2post.post_id " +
+                    "JOIN tags ON tag2post.tag_id = tags.id " +
+                    "WHERE moderation_status = 'ACCEPTED' " +
+                    "AND is_active = true " +
+                    "AND time <= (:currentTime) " +
+                    "GROUP BY tags.name " +
+                    "ORDER BY count DESC;")
     List<Object[]> tagsForTopic(@Param("currentTime") long currentTime);
 
     Optional<Tag> findByText(String name);
