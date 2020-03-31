@@ -11,10 +11,9 @@ public interface SettingsRepositori extends JpaRepository<Settings, Integer> {
 
     @Transactional
     @Modifying
-    @Query(nativeQuery = true,
-            value = "UPDATE global_settings " +
-                    "SET value = (:value) " +
-                    "WHERE code = (:code);")
-    Integer updateSettings(@Param("code") String code,
-                           @Param("value") Boolean value);
+    @Query("UPDATE Settings AS s " +
+            "SET s.value = :value " +
+            "WHERE s.code = :code")
+    Integer updateSettings(String code,
+                           Boolean value);
 }

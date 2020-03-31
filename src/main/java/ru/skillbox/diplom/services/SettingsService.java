@@ -28,9 +28,9 @@ public class SettingsService {
                         settingsRequest.isMULTIUSER_MODE());
 
         if (answer == 3) {
-            logger.info("//changeSettings" + " настройки изменены");
+            logger.info("//changeSettings -> настройки изменены");
         } else {
-            logger.error("//changeSettings" + " настройки не записались в базу");
+            logger.error("//changeSettings -> настройки не записались в базу");
         }
 
     }
