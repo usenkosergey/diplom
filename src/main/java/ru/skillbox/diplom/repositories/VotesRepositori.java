@@ -12,7 +12,9 @@ import java.util.Optional;
 public interface VotesRepositori extends JpaRepository<PostVotes, Integer> {
 
     @Query(
-    value = "FROM PostVotes AS PV WHERE PV.postId = (:post_id) AND PV.userId = (:user_id)")
+    value = "FROM PostVotes AS PV " +
+            "WHERE PV.postId = (:post_id) " +
+            "AND PV.userId = (:user_id)")
     Optional<PostVotes> likeForPost(@Param("post_id") int post_id,
                                     @Param("user_id") int user_id);
 
