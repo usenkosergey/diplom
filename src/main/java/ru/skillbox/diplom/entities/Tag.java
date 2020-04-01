@@ -23,6 +23,9 @@ public class Tag {
             mappedBy = "tags")
     private List<Post> posts = new ArrayList<>();
 
+    @OneToMany(mappedBy="tag", fetch= FetchType.LAZY)
+    List<Tag2post> tag2posts;
+
     public Tag() {
     }
 

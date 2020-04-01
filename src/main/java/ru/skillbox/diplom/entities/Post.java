@@ -42,6 +42,9 @@ public class Post {
             inverseJoinColumns = { @JoinColumn(name = "tag_id") })
     private List<Tag> tags = new ArrayList<>();
 
+    @OneToMany(mappedBy="post", fetch= FetchType.LAZY)
+    List<Tag2post> tag2posts;
+
     public Post() {
     }
 

@@ -50,7 +50,6 @@ public class PostService {
             return postRepositori.getListBestPosts(pageable, System.currentTimeMillis());
         } else if (mode.equals("popular")) {
             pageable = PageRequest.of(offset / limit, limit, Sort.Direction.DESC, "countComm");
-            //System.out.println("сортировка комментами"); //TODO удалить позже
             return postRepositori.getListCommentPosts(pageable, System.currentTimeMillis());
         }
         logger.error("не вернулась сортировка, никакая");
