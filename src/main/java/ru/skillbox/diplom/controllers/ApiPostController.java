@@ -37,6 +37,7 @@ import java.util.Optional;
 @RequestMapping("/api/post")
 public class ApiPostController {
 
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
