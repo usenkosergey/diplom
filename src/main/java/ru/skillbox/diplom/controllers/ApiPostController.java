@@ -28,6 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +100,7 @@ public class ApiPostController {
     @PostMapping("")
     public ResponseEntity<Map> addPost(@RequestBody(required = false) PostRequest postRequest) throws ParseException {
         logger.info("/add_Post");
-
+        //System.out.println(postRequest.getTime());
         int userId = Constant.userId(httpServletRequest.getSession().getId());
         if (userId == 0) return new ResponseEntity<>(Constant.responseFalse(), HttpStatus.OK);
 
@@ -113,7 +115,9 @@ public class ApiPostController {
 
         newPost.setUser(user.get());
 
-        long timeLong = Timestamp.valueOf(postRequest.getTime()).getTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        long timeLong = Timestamp.valueOf(LocalDateTime.parse(postRequest.getTime(), formatter)).getTime();
+
         if (timeLong < System.currentTimeMillis()) timeLong = System.currentTimeMillis();
         newPost.setTime(timeLong);
 

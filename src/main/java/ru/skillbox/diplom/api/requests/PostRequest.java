@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class PostRequest {
-    private LocalDateTime time;
+    private String time;
     private int active;
     private String title;
     private String text;
@@ -45,11 +45,11 @@ public class PostRequest {
         this.tags = tags;
     }
 
-    public LocalDateTime getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(String time) {
         this.time = time;
     }
 }
