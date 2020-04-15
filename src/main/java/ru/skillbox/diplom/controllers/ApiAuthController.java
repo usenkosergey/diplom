@@ -114,7 +114,12 @@ public class ApiAuthController {
         } else {
             addUser.setModerator(false);
             addUser.setRegTime(System.currentTimeMillis());
-            addUser.setName("нЕкто");
+
+            if (register.getName().isEmpty()) {
+                addUser.setName("нЕкто");;
+            } else {
+                addUser.setName(register.getName());;
+            }
             addUser.setEmail(register.getE_mail().toLowerCase());
             addUser.setPhoto("default.jpg");
             addUser.setPassword(new BCryptPasswordEncoder().encode(register.getPassword()));

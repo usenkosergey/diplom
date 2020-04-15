@@ -2,6 +2,7 @@ package ru.skillbox.diplom.api.requests;
 
 public class Register {
     private String e_mail;
+    private String name;
     private String password;
     private String captcha;
     private String captcha_secret;
@@ -36,5 +37,13 @@ public class Register {
 
     public void setCaptcha_secret(String captcha_secret) {
         this.captcha_secret = captcha_secret;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
