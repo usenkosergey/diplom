@@ -12,8 +12,6 @@ public class CommentMapper {
         CommentResponse commentResponse = new CommentResponse();
 
         commentResponse.setId(comment.getId());
-        commentResponse.setParentId(comment.getParentId());
-        commentResponse.setPostId(comment.getPostId());
         commentResponse.setUser(UserMapper.getUser(comment.getUser()));
         commentResponse.setText(comment.getText());
         commentResponse.setTime(Instant.ofEpochMilli(comment.getTime()).atZone(ZoneId.systemDefault())

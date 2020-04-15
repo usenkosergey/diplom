@@ -62,15 +62,19 @@ public class ApiPostController {
     private HttpServletRequest httpServletRequest;
 
     @GetMapping("/{id}")
-    public PostResponse getById(@PathVariable(required = false) int id) {
+    public ResponseEntity<PostResponse> getById(@PathVariable(required = false) int id) {
 
-        PostResponse postResponse = PostMapper.getPostResponse(postRepositori.findById(id).get(), commentRepositori.findByPostIdOrderByTimeDesc(id));
-        postResponse.setLikeCount(postRepositori.countLike(id, 1).orElse(0));
-        postResponse.setDislikeCount(postRepositori.countLike(id, -1).orElse(0));
-        if (postRepositori.updateViewCount(id) != 1) {
-            logger.error("Update количество просмотров не +1 :" + id);
+        Optional<Post> post = postRepositori.findById(id);
+        if (post.isPresent()) {
+            PostResponse postResponse = PostMapper.getPostResponse(post.get(), commentRepositori.findByPostIdOrderByTimeDesc(id));
+            postResponse.setLikeCount(postRepositori.countLike(id, 1).orElse(0));
+            postResponse.setDislikeCount(postRepositori.countLike(id, -1).orElse(0));
+            if (postRepositori.updateViewCount(id) != 1) {
+                logger.error("Update количество просмотров не +1 :" + id);
+            }
+            return new ResponseEntity<>(postResponse, HttpStatus.OK);
         }
-        return postResponse; //TODO проверку на существование сделать
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("")

@@ -3,11 +3,9 @@ package ru.skillbox.diplom.api.responses;
 public class CommentResponse {
 
     private int id;
-    private int parentId;
-    private int postId;
-    private UserResponse user;
-    private String text;
     private String time;
+    private String text;
+    private UserResponse user;
 
     public CommentResponse() {
     }
@@ -18,22 +16,6 @@ public class CommentResponse {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
-    }
-
-    public int getPostId() {
-        return postId;
-    }
-
-    public void setPostId(int postId) {
-        this.postId = postId;
     }
 
     public String getText() {
