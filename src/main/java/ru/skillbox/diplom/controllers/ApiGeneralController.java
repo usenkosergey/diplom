@@ -1,12 +1,12 @@
 package ru.skillbox.diplom.controllers;
 
+import org.jsoup.internal.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -109,34 +109,46 @@ public class ApiGeneralController {
 
     //TODO проверить что вышел юзер
     @PostMapping("/profile/my")
-    public ResponseAll profile(@RequestParam(value = "photo", required = false) MultipartFile uploadfile,
-                               @RequestBody(required = false) ProfileRequest profileRequest) throws IOException {
+    public ResponseEntity<ResponseAll> profile(@RequestParam(value = "photo", required = false) MultipartFile uploadfile,
+                                               @RequestBody(required = false) ProfileRequest profileRequest) throws IOException {
         logger.info("/profile/my");
 
         int userId = Constant.userId(httpServletRequest.getSession().getId());
-        if (userId == 0) return null;
+        if (userId == 0) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         Optional<User> currentUser = userRepositori.findById(userId);
-        if (currentUser.isEmpty()) return null;
+        if (currentUser.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        if (profileRequest.getRemovePhoto() == 1) currentUser.get().setPhoto("default.jpg");
+        if (profileRequest.getRemovePhoto() == 1) currentUser.get().setPhoto("");
         if (!profileRequest.getName().equals(currentUser.get().getName()))
             currentUser.get().setName(profileRequest.getName());
-        if (!profileRequest.getPassword().isEmpty())
-            currentUser.get().setPassword(new BCryptPasswordEncoder().encode(profileRequest.getPassword()));
 
-        if (!profileRequest.getEmail().equals(currentUser.get().getEmail()) &&
-                userRepositori.findByEmail(profileRequest.getEmail()).isEmpty()) {
-            currentUser.get().setEmail(profileRequest.getEmail());
-        } else {
-            return new ResponseAll(false, "email", "Этот e-mail уже зарегистрирован");
+        if (!StringUtil.isBlank(profileRequest.getPassword())) {
+            currentUser.get().setPassword(new BCryptPasswordEncoder().encode(profileRequest.getPassword()));
         }
 
-        if (userRepositori.save(currentUser.get()).getId() == userId) return new ResponseAll(true);
-//        byte[] bytes = uploadfile.getBytes();
-//        Path path = Paths.get("./src/main/resources/static/img/" + uploadfile.getOriginalFilename());
-//        Files.write(path, bytes);
+        if (!profileRequest.getEmail().equals(currentUser.get().getEmail())) {
+            if (userRepositori.findByEmail(profileRequest.getEmail()).isEmpty()) {
+                currentUser.get().setEmail(profileRequest.getEmail());
+            } else {
+                return new ResponseEntity<>(new ResponseAll(false, "email", "Этот e-mail уже зарегистрирован"), HttpStatus.OK);
+            }
+        }
 
-        return new ResponseAll(false, "photo", "Фото слишком большое, нужно не более 5 Мб");//TODO доделать
+        if (uploadfile != null) {
+            if (uploadfile.getSize() >= 5242880) return
+                    new ResponseEntity<>(new ResponseAll(false, "photo", "Фото слишком большое, нужно не более 5 Мб"), HttpStatus.OK);
+            byte[] bytes = uploadfile.getBytes();
+            String[] uploadName = Objects.requireNonNull(uploadfile.getOriginalFilename()).split("\\.");
+            String avatarName = Constant.codeGenerator(10) + "." + uploadName[uploadName.length - 1];
+            Path path = Paths.get("./src/main/resources/static/avatars/" + avatarName);
+            Files.write(path, bytes);
+            currentUser.get().setPhoto("/avatars/" + avatarName);
+        }
+
+        if (userRepositori.save(currentUser.get()).getId() == userId)
+            return new ResponseEntity<>(new ResponseAll(true), HttpStatus.OK);
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/image")

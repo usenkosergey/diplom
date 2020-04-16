@@ -274,7 +274,9 @@ public class ApiPostController {
             putPost.seteModerationStatus(EModerationStatus.NEW);
         }
 
-        long timeLong = Timestamp.valueOf(postRequest.getTime()).getTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        long timeLong = Timestamp.valueOf(LocalDateTime.parse(postRequest.getTime(), formatter)).getTime();
+
         if (timeLong < System.currentTimeMillis()) timeLong = System.currentTimeMillis();
         putPost.setTime(timeLong);
 
