@@ -1,21 +1,12 @@
 package ru.skillbox.diplom.api.requests;
 
 public class ProfileRequest {
-    private String photo;
     private int removePhoto;
     private String name;
     private String email;
     private String password;
 
     public ProfileRequest() {
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
     }
 
     public int getRemovePhoto() {
