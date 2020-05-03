@@ -53,6 +53,9 @@ public class ProfileService {
             currentUser.get().setPhoto("\\" + path.toString());
         }
 
-        return new ResponseEntity<>(new ResponseAll(true), HttpStatus.OK);
+        if (userRepositori.save(currentUser.get()).getId() == userId) {
+            return new ResponseEntity<>(new ResponseAll(true), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

@@ -13,14 +13,12 @@ import ru.skillbox.diplom.api.requests.ProfileRequest;
 import ru.skillbox.diplom.api.responses.ResponseAll;
 import ru.skillbox.diplom.config.StorageConfig;
 import ru.skillbox.diplom.repositories.UserRepositori;
+import ru.skillbox.diplom.services.ImageService;
 import ru.skillbox.diplom.services.ProfileService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/profile")
@@ -40,6 +38,8 @@ public class ProfileEditController {
     @Autowired
     private ProfileService profileService;
 
+    @Autowired
+    private ImageService imageService;
 
     @PostMapping(
             value = "/my",
@@ -56,11 +56,7 @@ public class ProfileEditController {
         if (multipartFile != null) {
             if (multipartFile.getSize() >= 5242880) return
                     new ResponseEntity<>(new ResponseAll(false, "photo", "Фото слишком большое, нужно не более 5 Мб"), HttpStatus.OK);
-            byte[] bytes = multipartFile.getBytes();
-            String[] uploadName = Objects.requireNonNull(multipartFile.getOriginalFilename()).split("\\.");
-            String avatarName = Constant.codeGenerator(10) + "." + uploadName[uploadName.length - 1];
-            path = Paths.get(storageConfig.getLocation() + "/" + avatarName);
-            Files.write(path, bytes);
+            path = imageService.addImage(multipartFile);
         }
         return profileService.editProfile(profileRequest, path);
     }

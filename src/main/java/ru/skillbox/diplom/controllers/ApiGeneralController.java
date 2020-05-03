@@ -1,23 +1,18 @@
 package ru.skillbox.diplom.controllers;
 
-import org.jsoup.internal.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skillbox.diplom.Mapper.Constant;
 import ru.skillbox.diplom.api.requests.CommentRequest;
 import ru.skillbox.diplom.api.requests.PostStatusRequest;
-import ru.skillbox.diplom.api.requests.ProfileRequest;
 import ru.skillbox.diplom.api.requests.SettingsRequest;
 import ru.skillbox.diplom.api.responses.CalendarResponse;
-import ru.skillbox.diplom.api.responses.ResponseAll;
 import ru.skillbox.diplom.api.responses.TagsForTopicResponse;
 import ru.skillbox.diplom.entities.EModerationStatus;
 import ru.skillbox.diplom.entities.Post;
@@ -28,15 +23,13 @@ import ru.skillbox.diplom.repositories.SettingsRepositori;
 import ru.skillbox.diplom.repositories.UserRepositori;
 import ru.skillbox.diplom.repositories.VotesRepositori;
 import ru.skillbox.diplom.services.CommentService;
+import ru.skillbox.diplom.services.ImageService;
 import ru.skillbox.diplom.services.SettingsService;
 import ru.skillbox.diplom.services.TagService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -72,6 +65,9 @@ public class ApiGeneralController {
 
     @Autowired
     private UserRepositori userRepositori;
+
+    @Autowired
+    private ImageService imageService;
 
     private List<String> initData = new ArrayList<String>();
 
@@ -109,15 +105,10 @@ public class ApiGeneralController {
     }
 
     @PostMapping("/image")
-    public String uploadFile(@RequestParam(value = "image", required = false) MultipartFile uploadfile) throws IOException {
+    public String uploadFile(@RequestParam(value = "image", required = false) MultipartFile multipartFile) throws IOException {
         logger.info("/api/image");
-        if (uploadfile.isEmpty()) return null;
-        byte[] bytes = uploadfile.getBytes();
-        String[] uploadName = Objects.requireNonNull(uploadfile.getOriginalFilename()).split("\\.");
-        String newFileName = Constant.codeGenerator(10) + "." + uploadName[uploadName.length - 1];
-        Path path = Paths.get("./src/main/resources/static/upload/" + newFileName);
-        Files.write(path, bytes);
-        return "/upload/" + newFileName;
+        if (multipartFile.isEmpty()) return null;
+        return "\\" + imageService.addImage(multipartFile).toString();
     }
 
     @PostMapping("/comment")
