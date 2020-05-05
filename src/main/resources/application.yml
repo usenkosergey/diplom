@@ -1,15 +1,20 @@
 spring:
   datasource:
     driver-class-name:  org.postgresql.Driver
+    #url: ${CLEARDB_DATABASE_URL}
     url:  jdbc:postgresql://localhost:5432/diplom?currentSchema=new
-    #driverClassName: com.p6spy.engine.spy.P6SpyDriver
-    #url:  jdbc:p6spy:postgresql://localhost:5432/diplom?currentSchema=new
     username: postgres
     password: 1111
+
+  #driverClassName: com.p6spy.engine.spy.P6SpyDriver
+  #url:  jdbc:p6spy:postgresql://localhost:5432/diplom?currentSchema=new
+
 
   jpa:
     show-sql: false
     hibernate.ddl-auto: validate
+server:
+  port=${PORT:8080}:
 
 email:
   host: smtp.mail.ru

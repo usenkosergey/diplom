@@ -1,8 +1,8 @@
 INSERT INTO users (is_moderator, reg_time, name, email, password, photo)
 VALUES
-('true',1579956771856,'Sergey-1', 'wert@dfre.cf', '454545', 'default.jpg'),
-('true',1579956771856,'Sergey-2', '2wert@dfre.cf', '454545', 'default.jpg'),
-('false',1579956771856,'Sergey-3', '3wert@dfre.cf', '454545', 'default.jpg');
+('true',1579956771856,'Sergey-1', 'wert@dfre.cf', '$2a$10$mo8lugDK56KT8BQ7n5.0O.o6L8PiFz8q5z4dYuGZReGuR.IWUHVdK', ''),
+('true',1579956771856,'Sergey-2', '2wert@dfre.cf', '$2a$10$mo8lugDK56KT8BQ7n5.0O.o6L8PiFz8q5z4dYuGZReGuR.IWUHVdK', ''),
+('false',1579956771856,'Sergey-3', '3wert@dfre.cf', '454545', '');
 ---------------
 INSERT INTO posts
 (is_active, moderation_status, moderator_id, user_id,

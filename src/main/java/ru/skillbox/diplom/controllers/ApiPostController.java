@@ -200,17 +200,16 @@ public class ApiPostController {
 
         return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
     }
-//TODO не работает ссылка с фронта для поиска
-//    @GetMapping("/search")
-//    public ResponseEntity<PostsResponseAll> getPostBySearch(@RequestParam int offset, @RequestParam int limit, @RequestParam String search) {
-//        logger.info("/search -> " + search);
-//        PostsResponseAll postsResponseAll = new PostsResponseAll();
-//        postsResponseAll.setCount(postRepositori.countPostsBySearch(System.currentTimeMillis(), search));
-//        postsResponseAll.setPosts(listPostToResponse(postRepositori.getPostBySearch(System.currentTimeMillis(), search)));
-//
-//        return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
-//    }
-//TODO не работает ссылка с фронта для поиска
+    @GetMapping("/search")
+    public ResponseEntity<PostsResponseAll> getPostBySearch(@RequestParam int offset, @RequestParam int limit, @RequestParam String query) {
+        logger.info("/search -> " + query);
+        Pageable pageable = PageRequest.of(offset / limit, limit);
+        PostsResponseAll postsResponseAll = new PostsResponseAll();
+        postsResponseAll.setCount(postRepositori.countPostsBySearch(System.currentTimeMillis(), query));
+        postsResponseAll.setPosts(listPostToResponse(postRepositori.getPostBySearch(pageable, System.currentTimeMillis(), query)));
+
+        return new ResponseEntity<>(postsResponseAll, HttpStatus.OK);
+    }
 
     @GetMapping("/my")
     public ResponseEntity<PostsResponseAll> getMyPosts(@RequestParam(required = false) int offset,

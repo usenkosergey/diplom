@@ -121,7 +121,7 @@ public class ApiAuthController {
                 addUser.setName(register.getName());;
             }
             addUser.setEmail(register.getE_mail().toLowerCase());
-            addUser.setPhoto("default.jpg");
+            addUser.setPhoto("");
             addUser.setPassword(new BCryptPasswordEncoder().encode(register.getPassword()));
             userRepositori.save(addUser);
             //TODO проверку тут сделать что юзер записался
