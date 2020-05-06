@@ -1,8 +1,8 @@
 spring:
   datasource:
     driver-class-name:  org.postgresql.Driver
-    #url: ${CLEARDB_DATABASE_URL}
-    url:  jdbc:postgresql://localhost:5432/diplom?currentSchema=new
+    url: ${CLEARDB_DATABASE_URL:jdbc:postgresql://localhost:5432/diplom?currentSchema=new}
+    #url:  jdbc:postgresql://localhost:5432/diplom?currentSchema=new
     username: postgres
     password: 1111
 
@@ -23,9 +23,9 @@ email:
   port: 587
 
 mydata:
-  initData[0]:  title:title
+  initData[0]:  title:Diplom_Skillbox
   initData[1]:  subtitle:subtitle
   initData[2]:  phone:+7 913 712 xx xx
-  initData[3]:  email:Q1122333@yandex.ru
+  initData[3]:  email:Q_____3@yandex.ru
   initData[4]:  copyright:copyright
   initData[5]:  copyrightFrom:2020
