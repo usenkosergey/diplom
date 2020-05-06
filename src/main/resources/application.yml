@@ -8,13 +8,13 @@ spring:
 
   #driverClassName: com.p6spy.engine.spy.P6SpyDriver
   #url:  jdbc:p6spy:postgresql://localhost:5432/diplom?currentSchema=new
-
+#  server:
+#    port=${PORT:8080}:
 
   jpa:
     show-sql: false
     hibernate.ddl-auto: validate
-server:
-  port=${PORT:8080}:
+
 
 email:
   host: smtp.mail.ru
