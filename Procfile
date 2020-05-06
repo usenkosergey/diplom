@@ -1,1 +1,1 @@
-web: java -jar target/blog-engine-1.0.jar --server.port=8080
+web: java -jar target/blog-engine-1.0.jar
